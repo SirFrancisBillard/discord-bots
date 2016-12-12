@@ -7,15 +7,28 @@ var mb = {
 	armor:[{id:0, name:"nothing", protection:0, cost:0}],
 	items:[],
 	settings:{defaultGold:0, defaultWeaponID:0, defaultArmorID:0, numberMin:1, numberMax:18, rollMin:0, rollMax:10, messagesForDrop:20},
-	info:{name:"Math Battles 2.0", author:"Sir Francis Billard"},
+	info:{name:"Math Battles 2.0", author:"Sir Francis Billard", buyhelp:""},
 	equations:{timer:0, active:[]},
 	active:{}
 };
 
-function RandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function RandomInt(min, max)
+{
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function Difference(a, b)
+{
+	if (a > b)
+	{
+		return a - b;
+	}
+	else
+	{
+		return a - b;
+	}
 }
 
 function RegisterWeapon(a, b)
@@ -75,10 +88,29 @@ function KillPlayer(user)
 	ply.gold = mb.settings.defaultGold;
 }
 
+// Hook on to the ready event
+bot.on("ready", () =>
+{
+	// Store buyable stuff in a string to reduce lag
+	mb.info.buyhelp = mb.info.buyhelp + "**Buyable Weapons**\n";
+	for (i = 1; i < mb.weapons.length; i++)
+	{
+		mb.info.buyhelp = mb.info.buyhelp + i + " - " + mb.weapons[i].name + " - Cost: " + mb.weapons[i].cost + "\n";
+	}
+	mb.info.buyhelp = mb.info.buyhelp + "**Buyable Armor**\n";
+	for (i = 1; i < mb.armor.length; i++)
+	{
+		mb.info.buyhelp = mb.info.buyhelp + i + " - " + mb.armor[i].name + " - Cost: " + mb.armor[i].cost + "\n";
+	}
+});
+
 // Hook on the the message event
 bot.on("message", message =>
 {
-	mb.equations.timer++;
+	if (message.author.id != bot.user.id)
+	{
+		mb.equations.timer++;
+	}
 	if (mb.equations.timer >= mb.settings.messagesForDrop)
 	{
 		// Reset timer
@@ -108,7 +140,7 @@ bot.on("message", message =>
 			var n_c = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			var n_d = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			equation.problem = "(" + n_a + " / " + n_b + ") * (" + n_c + " + " + n_d + ")";
-			equation.answer = (n_a / n_b) * (n_c + n_d)
+			equation.answer = (n_a / n_b) * (n_c + n_d);
 		}
 		else if (randy == 2)
 		{
@@ -117,7 +149,7 @@ bot.on("message", message =>
 			var n_c = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			var n_d = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			equation.problem = "(" + n_a + " * " + n_b + ") - (" + n_c + " * " + n_d + ")";
-			equation.answer = (n_a * n_b) - (n_c * n_d)
+			equation.answer = (n_a * n_b) - (n_c * n_d);
 		}
 		else if (randy == 3)
 		{
@@ -126,7 +158,7 @@ bot.on("message", message =>
 			var n_c = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			var n_d = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			equation.problem = "(" + n_a + " - " + n_b + ") / (" + n_c + " + " + n_d + ")";
-			equation.answer = (n_a - n_b) / (n_c + n_d)
+			equation.answer = (n_a - n_b) / (n_c + n_d);
 		}
 		else
 		{
@@ -139,24 +171,18 @@ bot.on("message", message =>
 			var n_g = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			var n_h = RandomInt(mb.settings.numberMin, mb.settings.numberMax);
 			equation.problem = "[(" + n_a + " / " + n_b + ") * (" + n_c + " + " + n_d + ")] + [(" + n_e + " / " + n_f + ") * (" + n_g + " + " + n_h + ")]";
-			equation.answer = ((n_a / n_b) * (n_c + n_d)) + ((n_e / n_f) * (n_g + n_h))
+			equation.answer = ((n_a / n_b) * (n_c + n_d)) + ((n_e / n_f) * (n_g + n_h));
 		}
-		mb.equations.active.push(equation)
+		mb.equations.active.push(equation);
 		// Tell them an item has dropped
-		message.channel.sendMessage("A " + equation.thing.name + " has dropped.");
-		message.channel.sendMessage("The equation is " + equation.problem + ".");
-		message.channel.sendMessage("Type .take <solution> to take the " + equation.thing.name + ".");
+		message.channel.sendMessage("A " + equation.thing.name + " has dropped.\nThe equation is " + equation.problem + ".\nType .take <solution> to take the " + equation.thing.name + ".");
 	}
 	var cmd = message.content.split(" ");
 	if (cmd[0] == ".help")
 	{
 		// Display help text
-		message.reply("**Math Battles 2.0** is a bot where you can gain weapons by solving math equations, you can then use these weapons to murder your friends.");
-		message.reply("__**Commands**__");
-		message.reply("**.help** - *Show this message*");
-		message.reply("**.fight <@User>** - *Fight somebody*");
-		message.reply("**.buy [optional - item]** - *Buy an item*");
-		message.reply("**.take <answer>** - *Take an item by solving the equation*");
+		message.channel.sendMessage("**Math Battles 2.0** is a bot where you can gain weapons by solving math equations, you can then use these weapons to murder your friends.");
+		message.channel.sendMessage("__**Commands**__\n**.help** - *Show this message*\n**.fight <@User>** - *Fight somebody*\n**.buy [optional - item]** - *Buy an item*\n**.take <answer>** - *Take an item by solving the equation*\n**.sell <weapon/armor>** - *Sell your weapon or armor for gold*\n**.equations** - *List all current equations*");
 	}
 	else if (cmd[0] == ".profile")
 	{
@@ -233,7 +259,8 @@ bot.on("message", message =>
 			// Retreieve equation object
 			var equation = mb.equations.active[i];
 			// Allow for a small margin of error
-			if (equation.answer - answer < 0.2 || answer - equation.answer < 0.2)
+			message.channel.sendMessage(Difference(equation.answer, answer));
+			if (Math.abs(Difference(equation.answer, answer)) < 0.2)
 			{
 				ValidatePlayerInventory(message.author)
 				if (equation.type == "weapon")
@@ -251,6 +278,9 @@ bot.on("message", message =>
 						mb.active[message.author.id].weapon = equation.thing;
 						// Tell them what they got
 						message.reply("You took the " + equation.thing.name + ".");
+						// Remove the equation from the list of non-claimed equations
+						mb.equations.active.splice(i, 1);
+						return;
 					}
 				}
 				else if (equation.type == "armor")
@@ -268,6 +298,9 @@ bot.on("message", message =>
 						mb.active[message.author.id].armor = equation.thing;
 						// Tell them what they got
 						message.reply("You took the " + equation.thing.name + ".");
+						// Remove the equation from the list of non-claimed equations
+						mb.equations.active.splice(i, 1);
+						return;
 					}
 				}
 				else if (equation.type == "item")
@@ -280,10 +313,6 @@ bot.on("message", message =>
 					mb.equations.active.splice[i, 1];
 					return;
 				}
-				
-				// Remove the equation from the list of non-claimed equations
-				mb.equations.active.splice[i, 1];
-				return;
 			}
 		}
 		// If the entire loop runs without being aborted, they failed
@@ -294,22 +323,70 @@ bot.on("message", message =>
 		var item = cmd[1];
 		if (typeof item == "undefined")
 		{
-			// Tell them what they can buy
-			message.channel.sendMessage("**Buyable Weapons**");
-			for (i = 1; i < mb.weapons.length; i++)
-			{
-				message.channel.sendMessage(i + " - " + mb.weapons[i].name + " - Cost: " + mb.weapons[i].cost);
-			}
-			message.channel.sendMessage("**Buyable Armor**");
-			for (i = 1; i < mb.armor.length; i++)
-			{
-				message.channel.sendMessage(i + " - " + mb.armor[i].name + " - Cost: " + mb.armor[i].cost);
-			}
+			message.channel.sendMessage(mb.info.buyhelp);
 			return;
 		}
 		else
 		{
 			// Buy the item
+		}
+	}
+	else if (cmd[0] == ".sell")
+	{
+		var item = cmd[1];
+		if (typeof item == "undefined")
+		{
+			message.reply("Invalid argument! Type either \"weapon\" or \"armor\" as arguments.");
+			return;
+		}
+		else
+		{
+			if (item == "weapon")
+			{
+				if (mb.active[message.author.id].weapon == mb.weapons[mb.settings.defaultWeaponID])
+				{
+					message.reply("You cannot sell " + mb.weapons[mb.settings.defaultWeaponID].name + "!");
+					return;
+				}
+				else
+				{
+					message.reply("You have sold your " + mb.active[message.author.id].weapon.name + " for " + Math.ceil(mb.weapons[mb.settings.defaultWeaponID].damage * mb.weapons[mb.settings.defaultWeaponID].damage / 2) + "gold.");
+					mb.active[message.author.id].weapon = mb.weapons[mb.settings.defaultWeaponID];
+					mb.active[message.author.id].gold = mb.active[message.author.id].gold + Math.ceil(mb.weapons[mb.settings.defaultWeaponID].damage * mb.weapons[mb.settings.defaultWeaponID].damage / 2);
+					return;
+				}
+			}
+			else if (item == "armor")
+			{
+				if (mb.active[message.author.id].armor == mb.armor[mb.settings.defaultWeaponID])
+				{
+					message.reply("You cannot sell " + mb.armor[mb.settings.defaultWeaponID].name + "!");
+					return;
+				}
+				else
+				{
+					message.reply("You have sold your " + mb.active[message.author.id].weapon.name + " for " + Math.ceil(mb.armor[mb.settings.defaultArmorID].protection * mb.armor[mb.settings.defaultArmorID].protection / 2) + "gold.");
+					mb.active[message.author.id].armor = mb.armor[mb.settings.defaultArmorID];
+					mb.active[message.author.id].gold = mb.active[message.author.id].gold + Math.ceil(mb.armor[mb.settings.defaultArmorID].protection * mb.armor[mb.settings.defaultArmorID].protection / 2);
+					return;
+				}
+			}
+			else
+			{
+				message.reply("Invalid argument! Type either \"weapon\" or \"armor\" as arguments.");
+				return;
+			}
+		}
+	}
+	else if (cmd[0] == ".equations")
+	{
+		message.channel.sendMessage("**Active Equations**");
+		// Loop through all non-claimed equations
+		for (i = 0; i < mb.equations.active.length; i++)
+		{
+			// Retreieve equation object
+			var equation = mb.equations.active[i];
+			message.channel.sendMessage(equation.problem + " - " + equation.thing.name);
 		}
 	}
 });
