@@ -238,7 +238,7 @@ bot.on("message", message =>
 			message.channel.sendMessage(target.username + " has won the fight!");
 			// Calculate winnings based on inventory quality
 			var winnings = mb.active[attacker.id].weapon.damage + mb.active[attacker.id].armor.protection;
-			message.channel.sendMessage(target.username + " has received " + winnigs + " gold.");
+			message.channel.sendMessage(target.username + " has received " + winnings + " gold.");
 			return;
 		}
 	}
@@ -328,6 +328,7 @@ bot.on("message", message =>
 		}
 		else
 		{
+			ValidatePlayerInventory(message.author);
 			// Buy the item
 		}
 	}
@@ -343,6 +344,7 @@ bot.on("message", message =>
 		{
 			if (item == "weapon")
 			{
+				ValidatePlayerInventory(message.author);
 				if (mb.active[message.author.id].weapon == mb.weapons[mb.settings.defaultWeaponID])
 				{
 					message.reply("You cannot sell " + mb.weapons[mb.settings.defaultWeaponID].name + "!");
@@ -358,6 +360,7 @@ bot.on("message", message =>
 			}
 			else if (item == "armor")
 			{
+				ValidatePlayerInventory(message.author);
 				if (mb.active[message.author.id].armor == mb.armor[mb.settings.defaultWeaponID])
 				{
 					message.reply("You cannot sell " + mb.armor[mb.settings.defaultWeaponID].name + "!");
