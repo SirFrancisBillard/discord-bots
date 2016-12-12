@@ -64,7 +64,7 @@ function ValidatePlayerInventory(user)
 	{
 		ply.armor = mb.armor[mb.settings.defaultArmorID];
 	}
-	if (typeof ply.armor != "number")
+	if (typeof ply.gold != "number")
 	{
 		ply.gold = mb.settings.defaultGold;
 	}
@@ -259,7 +259,6 @@ bot.on("message", message =>
 			// Retreieve equation object
 			var equation = mb.equations.active[i];
 			// Allow for a small margin of error
-			message.channel.sendMessage(Difference(equation.answer, answer));
 			if (Math.abs(Difference(equation.answer, answer)) < 0.2)
 			{
 				ValidatePlayerInventory(message.author)
@@ -320,16 +319,61 @@ bot.on("message", message =>
 	}
 	else if (cmd[0] == ".buy")
 	{
-		var item = cmd[1];
-		if (typeof item == "undefined")
+		var type = cmd[1];
+		var id = cmd[2];
+		if (typeof type == "undefined" || typeof id == "undefined" || id < 1)
 		{
+			// Warn them and abort
 			message.channel.sendMessage(mb.info.buyhelp);
 			return;
 		}
-		else
+		if (type == "weapon")
 		{
 			ValidatePlayerInventory(message.author);
-			// Buy the item
+			var weapon = mb.weapons[id];
+			if (typeof weapon != "undefined")
+			{
+				if (weapon.damage <= mb.active[message.author.id].weapon.damage)
+				{
+					message.reply("You already have a more powerful weapon!");
+					return;
+				}
+				if (weapon.cost > mb.active[message.author.id].gold)
+				{
+					message.reply("You cannot afford this weapon!");
+					return;
+				}
+				message.reply("You have bought a " + weapon.name + " for " + weapon.cost + " gold.")
+				mb.active[message.author.id].gold = mb.active[message.author.id].gold - weapon.cost
+				mb.active[message.author.id].weapon = weapon
+			}
+		}
+		else if (type == "armor")
+		{
+			ValidatePlayerInventory(message.author);
+			var armor = mb.armor[id];
+			if (typeof armor != "undefined")
+			{
+				if (armor.protection <= mb.active[message.author.id].armor.protection)
+				{
+					message.reply("You already have more powerful armor!");
+					return;
+				}
+				if (armor.cost > mb.active[message.author.id].gold)
+				{
+					message.reply("You cannot afford this armor!");
+					return;
+				}
+				message.reply("You have bought a " + armor.name + " for " + armor.cost + " gold.")
+				mb.active[message.author.id].gold = mb.active[message.author.id].gold - armor.cost
+				mb.active[message.author.id].armor = armor
+			}
+		}
+		else
+		{
+			// Warn them and abort
+			message.channel.sendMessage(mb.info.buyhelp);
+			return;
 		}
 	}
 	else if (cmd[0] == ".sell")
@@ -352,9 +396,9 @@ bot.on("message", message =>
 				}
 				else
 				{
-					message.reply("You have sold your " + mb.active[message.author.id].weapon.name + " for " + Math.ceil(mb.weapons[mb.settings.defaultWeaponID].damage * mb.weapons[mb.settings.defaultWeaponID].damage / 2) + "gold.");
+					message.reply("You have sold your " + mb.active[message.author.id].weapon.name + " for " + mb.active[message.author.id].weapon.cost + " gold.");
+					mb.active[message.author.id].gold = mb.active[message.author.id].gold + mb.active[message.author.id].weapon.cost;
 					mb.active[message.author.id].weapon = mb.weapons[mb.settings.defaultWeaponID];
-					mb.active[message.author.id].gold = mb.active[message.author.id].gold + Math.ceil(mb.weapons[mb.settings.defaultWeaponID].damage * mb.weapons[mb.settings.defaultWeaponID].damage / 2);
 					return;
 				}
 			}
@@ -368,9 +412,9 @@ bot.on("message", message =>
 				}
 				else
 				{
-					message.reply("You have sold your " + mb.active[message.author.id].weapon.name + " for " + Math.ceil(mb.armor[mb.settings.defaultArmorID].protection * mb.armor[mb.settings.defaultArmorID].protection / 2) + "gold.");
+					message.reply("You have sold your " + mb.active[message.author.id].armor.name + " for " + mb.active[message.author.id].armor.cost + " gold.");
+					mb.active[message.author.id].gold = mb.active[message.author.id].gold + mb.active[message.author.id].armor.cost;
 					mb.active[message.author.id].armor = mb.armor[mb.settings.defaultArmorID];
-					mb.active[message.author.id].gold = mb.active[message.author.id].gold + Math.ceil(mb.armor[mb.settings.defaultArmorID].protection * mb.armor[mb.settings.defaultArmorID].protection / 2);
 					return;
 				}
 			}
@@ -390,6 +434,51 @@ bot.on("message", message =>
 			// Retreieve equation object
 			var equation = mb.equations.active[i];
 			message.channel.sendMessage(equation.problem + " - " + equation.thing.name);
+		}
+	}
+	else if (cmd[0] == ".setting")
+	{
+		var key = cmd[1];
+		var val = cmd[2];
+		if (typeof key == "undefined" || typeof val == "undefined")
+		{
+			// Warn them and abort
+			message.channel.sendMessage("Unable to change setting.");
+			return;
+		}
+		message.channel.sendMessage("Setting changed.");
+		mb.settings[key] = val;
+	}
+	else if (cmd[0] == ".cheat")
+	{
+		var target = message.mentions.users.first();
+		var command = cmd[1];
+		var arg1 = cmd[3];
+		var arg2 = cmd[4];
+		var hasArg1 = true;
+		var hasArg2 = true;
+		if (typeof command == "undefined" || typeof target == "undefined" || typeof arg1 == "undefined")
+		{
+			message.reply("Invalid argument!");
+			return;
+		}
+		if (typeof arg1 == "undefined")
+		{
+			hasArg1 = false;
+		}
+		if (typeof arg2 == "undefined")
+		{
+			hasArg2 = false;
+		}
+		if (command == "slay")
+		{
+			KillPlayer(target);
+			message.channel.sendMessage(target.username + " was auto-slain.");
+		}
+		else if (command == "givegold" && hasArg1)
+		{
+			mb.active[target.id].gold = mb.active[target.id].gold + arg1;
+			message.channel.sendMessage(target.username + " was given " + arg1 + " gold.");
 		}
 	}
 });
