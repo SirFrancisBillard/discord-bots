@@ -78,7 +78,7 @@ function KillPlayer(user)
 	if (typeof ply == "undefined")
 	{
 		// Create the inventory
-		mb.active[message.author.id] = {};
+		mb.active[user.id] = {};
 		// Retrieve the player's inventory again in case it didn't exist before
 		ply = mb.active[user.id];
 	}
@@ -107,6 +107,7 @@ bot.on("ready", () =>
 // Hook on the the message event
 bot.on("message", message =>
 {
+	ValidatePlayerInventory(message.author)
 	if (message.author.id != bot.user.id)
 	{
 		mb.equations.timer++;
@@ -186,8 +187,6 @@ bot.on("message", message =>
 	}
 	else if (cmd[0] == ".profile")
 	{
-		// Make sure their items exist
-		ValidatePlayerInventory(message.author);
 		// Retrieve their items
 		var ply = mb.active[message.author.id];
 		// Tell them their items
@@ -208,7 +207,6 @@ bot.on("message", message =>
 		// Announce fight
 		message.channel.sendMessage(attacker.username + " is attacking " + target.username + "!");
 		// Make sure all items exist
-		ValidatePlayerInventory(attacker);
 		ValidatePlayerInventory(target);
 		// Round values
 		var min = Math.ceil(mb.settings.rollMin);
@@ -230,6 +228,7 @@ bot.on("message", message =>
 			// Calculate winnings based on inventory quality
 			var winnings = mb.active[target.id].weapon.damage + mb.active[target.id].armor.protection;
 			message.channel.sendMessage(attacker.username + " has received " + winnings + " gold.");
+			KillPlayer(target);
 			return;
 		}
 		else
@@ -239,6 +238,7 @@ bot.on("message", message =>
 			// Calculate winnings based on inventory quality
 			var winnings = mb.active[attacker.id].weapon.damage + mb.active[attacker.id].armor.protection;
 			message.channel.sendMessage(target.username + " has received " + winnings + " gold.");
+			KillPlayer(attacker);
 			return;
 		}
 	}
@@ -261,7 +261,6 @@ bot.on("message", message =>
 			// Allow for a small margin of error
 			if (Math.abs(Difference(equation.answer, answer)) < 0.2)
 			{
-				ValidatePlayerInventory(message.author)
 				if (equation.type == "weapon")
 				{
 					// Check if player has a better weapon
@@ -329,7 +328,6 @@ bot.on("message", message =>
 		}
 		if (type == "weapon")
 		{
-			ValidatePlayerInventory(message.author);
 			var weapon = mb.weapons[id];
 			if (typeof weapon != "undefined")
 			{
@@ -350,7 +348,6 @@ bot.on("message", message =>
 		}
 		else if (type == "armor")
 		{
-			ValidatePlayerInventory(message.author);
 			var armor = mb.armor[id];
 			if (typeof armor != "undefined")
 			{
@@ -388,7 +385,6 @@ bot.on("message", message =>
 		{
 			if (item == "weapon")
 			{
-				ValidatePlayerInventory(message.author);
 				if (mb.active[message.author.id].weapon == mb.weapons[mb.settings.defaultWeaponID])
 				{
 					message.reply("You cannot sell " + mb.weapons[mb.settings.defaultWeaponID].name + "!");
@@ -404,7 +400,6 @@ bot.on("message", message =>
 			}
 			else if (item == "armor")
 			{
-				ValidatePlayerInventory(message.author);
 				if (mb.active[message.author.id].armor == mb.armor[mb.settings.defaultWeaponID])
 				{
 					message.reply("You cannot sell " + mb.armor[mb.settings.defaultWeaponID].name + "!");
@@ -457,7 +452,7 @@ bot.on("message", message =>
 		var arg2 = cmd[4];
 		var hasArg1 = true;
 		var hasArg2 = true;
-		if (typeof command == "undefined" || typeof target == "undefined" || typeof arg1 == "undefined")
+		if (typeof command == "undefined" || typeof target == "undefined")
 		{
 			message.reply("Invalid argument!");
 			return;
@@ -477,7 +472,7 @@ bot.on("message", message =>
 		}
 		else if (command == "givegold" && hasArg1)
 		{
-			mb.active[target.id].gold = mb.active[target.id].gold + arg1;
+			mb.active[target.id].gold = mb.active[target.id].gold + parseInt(arg1);
 			message.channel.sendMessage(target.username + " was given " + arg1 + " gold.");
 		}
 	}
