@@ -27,7 +27,7 @@ function Difference(a, b)
 	}
 	else
 	{
-		return a - b;
+		return b - a;
 	}
 }
 
@@ -502,7 +502,7 @@ RegisterArmor("Coarse Chainmail", 5);
 RegisterArmor("Fine Ringmail", 6);
 RegisterArmor("Carbon Plating", 7);
 RegisterArmor("Kevlar Vest", 8);
-RegisterArmor("Military Grade Ceramic Suit", 9);
+RegisterArmor("Nokia Suit", 9);
 RegisterArmor("HEV Suit", 10);
 
 // Initialize bot
