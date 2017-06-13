@@ -105,7 +105,16 @@ bot.on("message", message =>
 		var str = opinions.responses[opinion][Math.floor(Math.random() * opinions.responses[opinion].length)];
 		var reply = str.replace("{thing}", thing);
 
-		message.reply(reply)
+		message.reply(reply);
+	}
+	else if (txt[0] == ".roll")
+	{
+		var min = Number(txt[1]) || 1;
+		var max = Number(txt[2]) || 6;
+
+		var num = Math.floor(Math.random() * (max - min + 1)) + min;
+
+		message.reply("you rolled a " + num + ".");
 	}
 });
 
