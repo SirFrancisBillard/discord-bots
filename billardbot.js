@@ -19,6 +19,7 @@ var opinions = {
 		["my mother"]:OPINION_LIKE,
 		["your mother"]:OPINION_LIKE,
 		["4chan"]:OPINION_NEUTRAL,
+		["/pol/"]:OPINION_NEUTRAL,
 		["pol"]:OPINION_NEUTRAL,
 		["trump"]:OPINION_NEUTRAL,
 		["donald trump"]:OPINION_NEUTRAL,
@@ -34,8 +35,7 @@ var opinions = {
 		["spider"]:OPINION_FEAR,
 		["spiders"]:OPINION_FEAR,
 		["bug"]:OPINION_FEAR,
-		["bugs"]:OPINION_FEAR,
-		["tayte"]:OPINION_FEAR
+		["bugs"]:OPINION_FEAR
 	},
 	responses:{
 		[OPINION_LIKE]:[
@@ -55,7 +55,7 @@ var opinions = {
 		],
 		[OPINION_FEAR]:[
 			"{thing} creeps me the fuck out.",
-			"{thing} is honestly scary.",
+			"{thing} is spooky.",
 			"Get me away from {thing}."
 		]
 	},
@@ -106,7 +106,7 @@ bot.on("message", message =>
 		var str = opinions.responses[opinion][Math.floor(Math.random() * opinions.responses[opinion].length)];
 		var reply = str.replace("{thing}", thing);
 
-		message.reply(reply);
+		message.channel.send(reply);
 	}
 	else if (txt[0] == ".roll")
 	{
@@ -115,11 +115,11 @@ bot.on("message", message =>
 
 		var num = Math.floor(Math.random() * (max - min + 1)) + min;
 
-		message.reply("you rolled a " + num + ".");
+		message.channel.send("You rolled a " + num + ".");
 	}
 	else if (txt[0] == ".suicide")
 	{
-		message.reply("you rolled a " + num + ".");
+		message.channel.send("You rolled a " + num + ".");
 	}
 });
 
