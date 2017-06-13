@@ -176,14 +176,14 @@ bot.on("message", message =>
 		}
 		mb.equations.active.push(equation);
 		// Tell them an item has dropped
-		message.channel.sendMessage("A " + equation.thing.name + " has dropped.\nThe equation is " + equation.problem + ".\nType .take <solution> to take the " + equation.thing.name + ".");
+		message.channel.send("A " + equation.thing.name + " has dropped.\nThe equation is " + equation.problem + ".\nType .take <solution> to take the " + equation.thing.name + ".");
 	}
 	var cmd = message.content.split(" ");
 	if (cmd[0] == ".help")
 	{
 		// Display help text
-		message.channel.sendMessage("**Math Battles 2.0** is a bot where you can gain weapons by solving math equations, you can then use these weapons to murder your friends.");
-		message.channel.sendMessage("__**Commands**__\n**.help** - *Show this message*\n**.fight <@User>** - *Fight somebody*\n**.buy [optional - item]** - *Buy an item*\n**.take <answer>** - *Take an item by solving the equation*\n**.sell <weapon/armor>** - *Sell your weapon or armor for gold*\n**.equations** - *List all current equations*");
+		message.channel.send("**Math Battles 2.0** is a bot where you can gain weapons by solving math equations, you can then use these weapons to murder your friends.");
+		message.channel.send("__**Commands**__\n**.help** - *Show this message*\n**.fight <@User>** - *Fight somebody*\n**.buy [optional - item]** - *Buy an item*\n**.take <answer>** - *Take an item by solving the equation*\n**.sell <weapon/armor>** - *Sell your weapon or armor for gold*\n**.equations** - *List all current equations*");
 	}
 	else if (cmd[0] == ".profile")
 	{
@@ -205,7 +205,7 @@ bot.on("message", message =>
 			return;
 		}
 		// Announce fight
-		message.channel.sendMessage(attacker.username + " is attacking " + target.username + "!");
+		message.channel.send(attacker.username + " is attacking " + target.username + "!");
 		// Make sure all items exist
 		ValidatePlayerInventory(target);
 		// Round values
@@ -218,26 +218,26 @@ bot.on("message", message =>
 		var attacker_power = mb.active[attacker.id].weapon.damage - mb.active[target.id].armor.protection;
 		var target_power = mb.active[target.id].weapon.damage - mb.active[attacker.id].armor.protection;
 		// Let them know what they rolled
-		message.channel.sendMessage(attacker.username + " rolled a " + attacker_roll + ".");
-		message.channel.sendMessage(target.username + " rolled a " + target_roll + ".");
+		message.channel.send(attacker.username + " rolled a " + attacker_roll + ".");
+		message.channel.send(target.username + " rolled a " + target_roll + ".");
 		// Decide the winner
 		if (attacker_power + attacker_roll > target_power + target_roll)
 		{
 			// Announce the winner
-			message.channel.sendMessage(attacker.username + " has won the fight!");
+			message.channel.send(attacker.username + " has won the fight!");
 			// Calculate winnings based on inventory quality
 			var winnings = mb.active[target.id].weapon.damage + mb.active[target.id].armor.protection;
-			message.channel.sendMessage(attacker.username + " has received " + winnings + " gold.");
+			message.channel.send(attacker.username + " has received " + winnings + " gold.");
 			KillPlayer(target);
 			return;
 		}
 		else
 		{
 			// Announce the winner
-			message.channel.sendMessage(target.username + " has won the fight!");
+			message.channel.send(target.username + " has won the fight!");
 			// Calculate winnings based on inventory quality
 			var winnings = mb.active[attacker.id].weapon.damage + mb.active[attacker.id].armor.protection;
-			message.channel.sendMessage(target.username + " has received " + winnings + " gold.");
+			message.channel.send(target.username + " has received " + winnings + " gold.");
 			KillPlayer(attacker);
 			return;
 		}
@@ -323,7 +323,7 @@ bot.on("message", message =>
 		if (typeof type == "undefined" || typeof id == "undefined" || id < 1)
 		{
 			// Warn them and abort
-			message.channel.sendMessage(mb.info.buyhelp);
+			message.channel.send(mb.info.buyhelp);
 			return;
 		}
 		if (type == "weapon")
@@ -369,7 +369,7 @@ bot.on("message", message =>
 		else
 		{
 			// Warn them and abort
-			message.channel.sendMessage(mb.info.buyhelp);
+			message.channel.send(mb.info.buyhelp);
 			return;
 		}
 	}
@@ -422,13 +422,13 @@ bot.on("message", message =>
 	}
 	else if (cmd[0] == ".equations")
 	{
-		message.channel.sendMessage("**Active Equations**");
+		message.channel.send("**Active Equations**");
 		// Loop through all non-claimed equations
 		for (i = 0; i < mb.equations.active.length; i++)
 		{
 			// Retreieve equation object
 			var equation = mb.equations.active[i];
-			message.channel.sendMessage(equation.problem + " - " + equation.thing.name);
+			message.channel.send(equation.problem + " - " + equation.thing.name);
 		}
 	}
 	else if (cmd[0] == ".setting")
@@ -438,10 +438,10 @@ bot.on("message", message =>
 		if (typeof key == "undefined" || typeof val == "undefined")
 		{
 			// Warn them and abort
-			message.channel.sendMessage("Unable to change setting.");
+			message.channel.send("Unable to change setting.");
 			return;
 		}
-		message.channel.sendMessage("Setting changed.");
+		message.channel.send("Setting changed.");
 		mb.settings[key] = val;
 	}
 	else if (cmd[0] == ".cheat")
@@ -468,12 +468,12 @@ bot.on("message", message =>
 		if (command == "slay")
 		{
 			KillPlayer(target);
-			message.channel.sendMessage(target.username + " was auto-slain.");
+			message.channel.send(target.username + " was auto-slain.");
 		}
 		else if (command == "givegold" && hasArg1)
 		{
 			mb.active[target.id].gold = mb.active[target.id].gold + parseInt(arg1);
-			message.channel.sendMessage(target.username + " was given " + arg1 + " gold.");
+			message.channel.send(target.username + " was given " + arg1 + " gold.");
 		}
 	}
 });
@@ -502,7 +502,7 @@ RegisterArmor("Coarse Chainmail", 5);
 RegisterArmor("Fine Ringmail", 6);
 RegisterArmor("Carbon Plating", 7);
 RegisterArmor("Kevlar Vest", 8);
-RegisterArmor("Nokia Suit", 9);
+RegisterArmor("Military Grade Ceramic Suit", 9);
 RegisterArmor("HEV Suit", 10);
 
 // Initialize bot
