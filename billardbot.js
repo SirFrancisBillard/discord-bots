@@ -64,19 +64,19 @@ var opinions = {
 
 function GenerateOpinion(thing)
 {
-	if (typeof opinions.preset[thing.lower()] == "number")
+	if (typeof opinions.preset[thing] == "number")
 	{
-		return opinions.preset[thing.lower()];
+		return opinions.preset[thing];
 	}
 
-	if (typeof opinions.generated[thing.lower()] == "number")
+	if (typeof opinions.generated[thing] == "number")
 	{
-		return opinions.generated[thing.lower()];
+		return opinions.generated[thing];
 	}
 	else
 	{
 		var opinion = Math.floor(Math.random() * 4) + 1;
-		opinions.generated[thing.lower()] = opinion;
+		opinions.generated[thing] = opinion;
 		return opinion;
 	}
 
@@ -100,7 +100,7 @@ bot.on("message", message =>
 			thing += " " + txt[i];
 		}
 
-		var opinion = GenerateOpinion(thing);
+		var opinion = GenerateOpinion(thing.toLowerCase());
 
 		var str = opinions.responses[opinion][Math.floor(Math.random() * opinions.responses[opinion].length)];
 		var reply = str.replace("{thing}", thing);
