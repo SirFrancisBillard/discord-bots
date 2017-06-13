@@ -226,7 +226,8 @@ bot.on("message", message =>
 			// Announce the winner
 			message.channel.send(attacker.username + " has won the fight!");
 			// Calculate winnings based on inventory quality
-			var winnings = mb.active[target.id].weapon.damage + mb.active[target.id].armor.protection;
+			var winnings = mb.active[target.id].weapon.damage + mb.active[target.id].armor.protection + mb.active[target.id].gold;
+			mb.active[attacker.id].gold += winnings;
 			message.channel.send(attacker.username + " has received " + winnings + " gold.");
 			KillPlayer(target);
 			return;
@@ -236,7 +237,8 @@ bot.on("message", message =>
 			// Announce the winner
 			message.channel.send(target.username + " has won the fight!");
 			// Calculate winnings based on inventory quality
-			var winnings = mb.active[attacker.id].weapon.damage + mb.active[attacker.id].armor.protection;
+			var winnings = mb.active[attacker.id].weapon.damage + mb.active[attacker.id].armor.protection + mb.active[attacker.id].gold;
+			mb.active[target.id].gold += winnings;
 			message.channel.send(target.username + " has received " + winnings + " gold.");
 			KillPlayer(attacker);
 			return;
