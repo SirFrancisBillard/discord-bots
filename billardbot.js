@@ -99,6 +99,7 @@ bot.on("message", message =>
 		for (i = 1; i < txt.length; i++) { 
 			thing += " " + txt[i];
 		}
+		thing = thing.substring(1);
 
 		var opinion = GenerateOpinion(thing.toLowerCase());
 
@@ -114,6 +115,10 @@ bot.on("message", message =>
 
 		var num = Math.floor(Math.random() * (max - min + 1)) + min;
 
+		message.reply("you rolled a " + num + ".");
+	}
+	else if (txt[0] == ".suicide")
+	{
 		message.reply("you rolled a " + num + ".");
 	}
 });
