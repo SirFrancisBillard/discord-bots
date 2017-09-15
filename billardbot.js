@@ -99,6 +99,10 @@ var takyon = [
 	"TAKYON"
 ];
 
+var beheading_images = [
+	"https://i.imgur.com/NNyutPI.jpg"
+];
+
 function GenerateOpinion(thing)
 {
 	if (typeof opinions.preset[thing] == "number")
@@ -187,6 +191,7 @@ bot.on("message", message =>
 		if (message.mentions.members.first(1))
 		{
 			var kiddo = message.mentions.members.first(1);
+			message.channel.send(beheading_images[Math.floor(Math.random() * beheading_images.length)]);
 		}
 	}
 	else if (txt[0].toLowerCase() == ".bushism")
