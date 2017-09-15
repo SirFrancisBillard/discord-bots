@@ -62,6 +62,16 @@ var opinions = {
 	generated:{}
 };
 
+var bushisms = [
+	"They misunderestimated me.",
+	"I know the human being and fish can coexist peacefully.",
+	"There's an old saying in Tennessee - I know it's in Texas, probably in Tennessee - thay says, 'Fool me once, shame on... shame on you. Fool me - you can't get fooled again.'",
+	"Too many good docs are getting out of the business. Too many OB-GYNs aren't able to practice their love with women all across this country.",
+	"We ought to make the pie higher.",
+	"Rarely is the question asked; Is our children learning?",
+	"If you teach a child to read, he or her will be able to pass a literacy test."
+];
+
 function GenerateOpinion(thing)
 {
 	if (typeof opinions.preset[thing] == "number")
@@ -93,7 +103,7 @@ bot.on("ready", () =>
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
-	if (txt[0] == ".opinion")
+	if (txt[0].toLowerCase() == ".opinion")
 	{
 		var thing = "";
 		for (i = 1; i < txt.length; i++) { 
@@ -108,7 +118,7 @@ bot.on("message", message =>
 
 		message.channel.send(reply);
 	}
-	else if (txt[0] == ".roll")
+	else if (txt[0].toLowerCase() == ".roll")
 	{
 		var min = Number(txt[1]) || 1;
 		var max = Number(txt[2]) || 6;
@@ -117,9 +127,36 @@ bot.on("message", message =>
 
 		message.channel.send("You rolled a " + num + ".");
 	}
-	else if (txt[0] == ".suicide")
+	else if (txt[0].toLowerCase() == ".suicide")
 	{
 		message.channel.send("You rolled a " + num + ".");
+	}
+	else if (txt[0].toLowerCase() == ".behead")
+	{
+		if (message.mentions.members.first(1))
+		{
+			var kiddo = message.mentions.members.first(1);
+		}
+	}
+	else if (txt[0].toLowerCase() == ".bushism")
+	{
+		message.channel.send("\"" + bushisms[Math.floor(Math.random() * bushisms.length)] + "\"\n- George W. Bush");
+	}
+	else if (txt[0].toLowerCase() == ".startvote")
+	{
+		var yeah = "yeah";
+	}
+	else if (txt[0] == "WEW" && txt.length == 1)
+	{
+		message.channel.send("LAD");
+	}
+	else if (txt[0].toLowerCase() == "wew" && txt.length == 1)
+	{
+		message.channel.send("lad");
+	}
+	else if (txt[0].toLowerCase() == "ding" && txt[1].toLowerCase() == "dong" && txt.length == 2)
+	{
+		message.channel.send("your opinion is wrong");
 	}
 });
 
