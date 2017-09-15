@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const token = "MzI0MDYyODUzNDc4ODc1MTQx.DCEOmA.55VzXZ2oQ6uQQLkP1oWMsQdmDew";
+const token = "wew lad";
 
 var billard = {
 	commands:{}
@@ -72,6 +72,33 @@ var bushisms = [
 	"If you teach a child to read, he or her will be able to pass a literacy test."
 ];
 
+var roullette_start = [
+	"places the barrel of a revolver on their tongue.",
+	"presses a revolver to their temple.",
+	"raises a gun to their head."
+];
+
+var roullette_finish = [
+	"blows their brains across the pacific.",
+	"vaporizes their skull and all of its contents.",
+	"spreads their gray matter across four counties."
+];
+
+var takyon = [
+	"TRIPLE SIX",
+	"FIVE",
+	"FORKED TONGUE",
+	"SUBATOMIC PENETRATION RAPID FIRE THROUGH YOUR SKULL",
+	"HOW I SHOT IT ON ONE TAKING IT BACK TO THE DAYS OF TRYING TO LOSE CONTROL",
+	"SWERVING IN A BLAZE OF FIRE RAGING IN MY BONES",
+	"OH SHIT I'M FEELING IT",
+	"TAKYON",
+	"HELL YEAH FUCK YEAH I FEEL LIKE KILLING IT",
+	"TAKYON",
+	"ALRIGHT THAT'S RIGHT WHAT IT'S LIKE TO EXPERIENCE",
+	"TAKYON"
+];
+
 function GenerateOpinion(thing)
 {
 	if (typeof opinions.preset[thing] == "number")
@@ -127,9 +154,33 @@ bot.on("message", message =>
 
 		message.channel.send("You rolled a " + num + ".");
 	}
+	else if (txt[0].toLowerCase() == ".russian")
+	{
+		var rando = Math.floor(Math.random() * 6) + 1;
+		var name = message.member.nickname || message.author.username
+		message.channel.send(name + " " + roullette_start[Math.floor(Math.random() * roullette_start.length)]);
+		if (rando == 1)
+		{
+			message.channel.send("*BANG*");
+			message.channel.send(name + " " + roullette_finish[Math.floor(Math.random() * roullette_finish.length)]);
+		}
+		else
+		{
+			message.channel.send("*CLICK*");
+		}
+		
+	}
+	else if (txt[0].toLowerCase() == ".takyon")
+	{
+		var lyrics = "";
+		for (var i = 0; i < takyon.length; i++) {
+			lyrics += takyon[i] + "\n"
+		}
+		message.channel.send(lyrics)
+	}
 	else if (txt[0].toLowerCase() == ".suicide")
 	{
-		message.channel.send("You rolled a " + num + ".");
+		message.channel.send("ur ded now\nrip");
 	}
 	else if (txt[0].toLowerCase() == ".behead")
 	{
