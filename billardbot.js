@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const token = "wew lad";
+const token = "MzI0MDYyODUzNDc4ODc1MTQx.DJz8XA.JByVd-rompg0pKWH9Qz3l88JNuA";
 
 var billard = {
 	commands:{}
@@ -73,8 +73,8 @@ var bushisms = [
 ];
 
 var roullette_start = [
-	"places the barrel of a revolver on their tongue.",
-	"presses a revolver to their temple.",
+	// "places the barrel of a revolver on their tongue.",
+	// "presses a revolver to their temple.",
 	"raises a gun to their head."
 ];
 
@@ -100,7 +100,24 @@ var takyon = [
 ];
 
 var beheading_images = [
-	"https://i.imgur.com/NNyutPI.jpg"
+	"https://i.imgur.com/hHQ4vEu.gifv",
+	"https://i.imgur.com/eY9kEc5.gifv",
+	"https://i.imgur.com/ZYADxx4.gifv",
+	"https://i.imgur.com/J37kqjN.gifv"
+];
+
+var gay_kisses = [
+	"https://i.imgur.com/jaldFcg.gifv",
+	"https://i.imgur.com/o0Wt5jV.gifv",
+	"https://i.imgur.com/WP07gNq.gifv",
+	"https://i.imgur.com/AbUVaRY.gifv",
+	"https://i.imgur.com/3hd4wvc.gifv",
+	"https://i.imgur.com/dWl2fk1.gifv",
+	"https://i.imgur.com/XcyZN4T.gifv"
+];
+
+var not_my_problem = [
+	"https://i.imgur.com/pI61TL6.gifv"
 ];
 
 function GenerateOpinion(thing)
@@ -161,7 +178,7 @@ bot.on("message", message =>
 	else if (txt[0].toLowerCase() == ".russian")
 	{
 		var rando = Math.floor(Math.random() * 6) + 1;
-		var name = message.member.nickname || message.author.username
+		var name = message.member.nickname || message.author.username;
 		message.channel.send(name + " " + roullette_start[Math.floor(Math.random() * roullette_start.length)]);
 		if (rando == 1)
 		{
@@ -188,11 +205,19 @@ bot.on("message", message =>
 	}
 	else if (txt[0].toLowerCase() == ".behead")
 	{
-		if (message.mentions.members.first(1))
-		{
-			var kiddo = message.mentions.members.first(1);
-			message.channel.send(beheading_images[Math.floor(Math.random() * beheading_images.length)]);
-		}
+		var bad_thing = message.content.slice(8);
+		var name = message.member.nickname || message.author.username;
+		message.channel.send(name + " beheads " + bad_thing + "\n" + beheading_images[Math.floor(Math.random() * beheading_images.length)]);
+	}
+	else if (txt[0].toLowerCase() == ".kiss")
+	{
+		var good_thing = message.content.slice(6);
+		var name = message.member.nickname || message.author.username;
+		message.channel.send(name + " kisses " + good_thing + "\n" + gay_kisses[Math.floor(Math.random() * gay_kisses.length)]);
+	}
+	else if (txt[0].toLowerCase() == ".noneofmybusiness")
+	{
+		message.channel.send(not_my_problem[Math.floor(Math.random() * not_my_problem.length)]);
 	}
 	else if (txt[0].toLowerCase() == ".bushism")
 	{
@@ -213,6 +238,10 @@ bot.on("message", message =>
 	else if (txt[0].toLowerCase() == "ding" && txt[1].toLowerCase() == "dong" && txt.length == 2)
 	{
 		message.channel.send("your opinion is wrong");
+	}
+	else if (txt[0].toLowerCase() == "sweartest")
+	{
+		message.edit("WOAAAAH I AM SO HIGH RIGHT NOW...");
 	}
 });
 
