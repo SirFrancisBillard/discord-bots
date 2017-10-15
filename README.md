@@ -1,2 +1,2 @@
 # Discord Bots
-Some discord bots that I'm making.
+some dope-ass discord bottos
