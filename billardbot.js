@@ -1,10 +1,6 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const token = "MzI0MDYyODUzNDc4ODc1MTQx.DJz8XA.JByVd-rompg0pKWH9Qz3l88JNuA";
-
-var billard = {
-	commands:{}
-};
+const token = "ToKeN";
 
 const OPINION_LIKE = 1
 const OPINION_NEUTRAL = 2
@@ -41,22 +37,30 @@ var opinions = {
 		[OPINION_LIKE]:[
 			"I quite like {thing}.",
 			"{thing} is great!",
-			"I love {thing}."
+			"I love {thing}.",
+			"{thing} is pretty good!",
+			"I like {thing}."
 		],
 		[OPINION_NEUTRAL]:[
 			"{thing} is alright.",
 			"{thing} is okay.",
-			"{thing} is fine, not great though."
+			"{thing} is fine, not great though.",
+			"I don't mind {thing}.",
+			"I'm alright with {thing}."
 		],
 		[OPINION_HATE]:[
 			"{thing} is a fucking weeb.",
 			"Fuck {thing}.",
-			"{thing} can suck a bag of donkey dicks."
+			"{thing} can suck a bag of donkey dicks.",
+			"I hate {thing}.",
+			"{thing} can eat my ass."
 		],
 		[OPINION_FEAR]:[
+			"{thing} creeps me out.",
 			"{thing} creeps me the fuck out.",
 			"{thing} is spooky.",
-			"Get me away from {thing}."
+			"Get me away from {thing}.",
+			"Get me the fuck away from {thing}."
 		]
 	},
 	generated:{}
