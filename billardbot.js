@@ -9,11 +9,15 @@ const OPINION_FEAR = 4
 
 var opinions = {
 	preset:{
-		["adolf hitler"]:OPINION_LIKE,
-		["adolf"]:OPINION_LIKE,
-		["hitler"]:OPINION_LIKE,
+		["joseph stalin"]:OPINION_LIKE,
+		["josef stalin"]:OPINION_LIKE,
+		["josef"]:OPINION_LIKE,
+		["stalin"]:OPINION_LIKE,
 		["my mother"]:OPINION_LIKE,
 		["your mother"]:OPINION_LIKE,
+		["adolf hitler"]:OPINION_NEUTRAL,
+		["adolf"]:OPINION_NEUTRAL,
+		["hitler"]:OPINION_NEUTRAL,
 		["4chan"]:OPINION_NEUTRAL,
 		["/pol/"]:OPINION_NEUTRAL,
 		["pol"]:OPINION_NEUTRAL,
@@ -143,6 +147,41 @@ function GenerateOpinion(thing)
 	}
 
 	return OPINION_HATE;
+}
+
+var song_list = [
+	{url:"songurl", tags:["kai_roberts"]}
+];
+
+function ArrayHasValue(arr, val)
+{
+	return arr.indexOf(val) != -1
+}
+
+function MatchingTags(a, b, i)
+{
+
+}
+
+function SuggestSongsBasedOnTags(tags, got_songs, on_index)
+{
+	if !(got_songs)
+	{
+		got_songs = [];
+	}
+	if !(on_index)
+	{
+		on_index = 0;
+	}
+	if !(song_list[on_index])
+	{
+		return got_songs;
+	}
+	if MatchingTags(song_list[on_index].tags, tags)
+	{
+		tags.push(on_index)
+	}
+	return SuggestSongsBasedOnTags(tags, got_songs, on_index + 1);
 }
 
 // Hook on to the ready event
