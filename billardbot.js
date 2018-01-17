@@ -150,7 +150,18 @@ function GenerateOpinion(thing)
 }
 
 var song_list = [
-	{url:"songurl", tags:["kai_roberts"]}
+	{url:"kaibobertsidk", tags:["kai_roberts"]},
+	{url:"RBF - Sayonara Senorita", tags:["rbf", "trumpet"]},
+	{url:"RBF - Everyone Else is an Asshole", tags:["rbf", "comedy"]},
+	{url:"Dusty Brown - This City is Killing Me", tags:["depressing", "piano"]},
+	{url:"Proleter - Faidherbe Square", tags:["swing"]},
+	{url:"Lore, Lore", tags:["deutschland"]},
+	{url:"Sir Francis Billard - Agar Holmes: The Final Chapter", tags:["best"]},
+	{url:"Carpenter Brut - Paradise Warfare", tags:["synth"]},
+	{url:"El Huervo - Daisuke", tags:["chill"]},
+	{url:"El Huervo - Rust", tags:["chill"]},
+	{url:"Scattle - Bloodline", tags:["pardo"]},
+	{url:"Men at Work - Down Under", tags:["meme"]},
 ];
 
 function ArrayHasValue(arr, val)
@@ -160,7 +171,19 @@ function ArrayHasValue(arr, val)
 
 function MatchingTags(a, b, i)
 {
-
+	if !(i)
+	{
+		i = 0;
+	}
+	if !(b[i])
+	{
+		return false;
+	}
+	if (ArrayHasValue(a, b[i]))
+	{
+		return true;
+	}
+	return MatchingTags(a, b, i + 1)
 }
 
 function SuggestSongsBasedOnTags(tags, got_songs, on_index)
@@ -184,16 +207,47 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 	return SuggestSongsBasedOnTags(tags, got_songs, on_index + 1);
 }
 
-// Hook on to the ready event
+var changelog = "BillardBot 2.0: Billboy Edition\nChangelog:\n-Song suggestions (.suggestsong)\n-More opinion statements"
+
 bot.on("ready", () =>
 {
-
+	// say the changelog in general or something idk
 });
 
-// Hook on the the message event
+var command_prefix = "."; // make a way to change this or something idk
+
+var bot_commands = [
+	{command:"echo", func:function(msg, txt){msg.channel.send(txt)}},
+	{command:"changeprefix", func:function(msg, txt){command_prefix = txt[1]}} // wew
+];
+
+// hopefully a more efficient method of adding commands
+function LoopForBotCommand(msg, txt, i)
+{
+	if !(i)
+	{
+		i = 0;
+	}
+	if !(bot_commands[i])
+	{
+		return;
+	}
+	var cmd = bot_commands[i].command;
+	if !(bot_commands[i].no_prefix)
+	{
+		cmd = "." + cmd;
+	}
+	if (txt[0].toLowerCase() == cmd.toLowerCase())
+	{
+		return bot_commands[i].func(msg, txt);
+	}
+	return LoopForBotCommand(msg, txt, i + 1)
+}
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
+	LoopForBotCommand(message, txt)
 	if (txt[0].toLowerCase() == ".opinion")
 	{
 		var thing = "";
@@ -281,10 +335,6 @@ bot.on("message", message =>
 	else if (txt[0].toLowerCase() == "ding" && txt[1].toLowerCase() == "dong" && txt.length == 2)
 	{
 		message.channel.send("your opinion is wrong");
-	}
-	else if (txt[0].toLowerCase() == "sweartest")
-	{
-		message.edit("WOAAAAH I AM SO HIGH RIGHT NOW...");
 	}
 });
 
