@@ -26,7 +26,7 @@ const TranslateLanguageNameToSomethingReadable = { // A+ naming conventions
 	["cn"]:"中文 (Chinese)",
 	["jp"]:"日本語 (Japanese)",
 	["ru"]:"Pусский (Russian)",
-}
+};
 
 function ReadableLanguageName(str)
 {
@@ -49,8 +49,15 @@ const lang = { // put all strings in here eventually
 			"Bad language string",
 			"Nonexistant language string",
 		],
-	}
-}
+		under_construction:[
+			"This feature is under construction",
+			"This feature is incomplete",
+			"Still working on this part, sorry!",
+			"This part's not done yet",
+			"This feature isn't done yet",
+		],
+	},
+};
 
 var opinions = {
 	preset:{
@@ -252,7 +259,7 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 	return SuggestSongsBasedOnTags(tags, got_songs, on_index + 1);
 }
 
-var changelog = "BillardBot 2.0: Billboy Edition\nChangelog:\n-Song suggestions (.suggestsong)\n-More opinion statements"
+var changelog = "BillardBot 2.0: Billboy Edition\nChangelog:\n-Song suggestions (.suggestsong)\n-More opinion statements";
 
 bot.on("ready", () =>
 {
@@ -368,6 +375,7 @@ bot.on("message", message =>
 	else if (txt[0].toLowerCase() == ".startvote")
 	{
 		var yeah = "yeah";
+		message.channel.send(yeah); // under construction
 	}
 	else if (txt[0] == "WEW" && txt.length == 1)
 	{
