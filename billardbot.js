@@ -7,6 +7,51 @@ const OPINION_NEUTRAL = 2
 const OPINION_HATE = 3
 const OPINION_FEAR = 4
 
+var language = "en"; // english by default cuz yeah
+
+function ValidLanguage(str)
+{
+	if (lang[str.toLowerCase()])
+	{
+		return str.toLowerCase();
+	}
+
+	return "en"; // idk
+}
+
+const TranslateLanguageNameToSomethingReadable = { // A+ naming conventions
+	["en"]:"English",
+	["es"]:"Español (Spanish)",
+	["fr"]:"Français (French)",
+	["cn"]:"中文 (Chinese)",
+	["jp"]:"日本語 (Japanese)",
+	["ru"]:"Pусский (Russian)",
+}
+
+function ReadableLanguageName(str)
+{
+	if !(TranslateLanguageNameToSomethingReadable[str.toLowerCase()])
+	{
+		return "Unknown";
+	}
+
+	return TranslateLanguageNameToSomethingReadable[str.toLowerCase()];
+}
+
+const lang = { // put all strings in here eventually
+	["en"]:{
+		error_generic:[
+			"Error",
+			"Generic error",
+		],
+		lang_missing:[
+			"Language string missing",
+			"Bad language string",
+			"Nonexistant language string",
+		],
+	}
+}
+
 var opinions = {
 	preset:{
 		["joseph stalin"]:OPINION_LIKE,
@@ -149,7 +194,7 @@ function GenerateOpinion(thing)
 	return OPINION_HATE;
 }
 
-var song_list = [
+const song_list = [
 	{url:"kaibobertsidk", tags:["kai_roberts"]},
 	{url:"RBF - Sayonara Senorita", tags:["rbf", "trumpet"]},
 	{url:"RBF - Everyone Else is an Asshole", tags:["rbf", "comedy"]},
@@ -336,7 +381,10 @@ bot.on("message", message =>
 	{
 		message.channel.send("your opinion is wrong");
 	}
+	else if (txt[0].toLowerCase() == ".language" && txt.length == 1)
+	{
+		message.channel.send("Current language: " + ReadableLanguageName(language));
+	}
 });
 
-// Initialize bot
 bot.login(token);
