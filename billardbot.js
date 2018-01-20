@@ -144,7 +144,7 @@ const roullette_finish = [
 	"{name} vaporizes their skull and all of its contents.",
 	"{name} spreads their gray matter across four counties.",
 	"Holy shit! {name} just blew their head off!",
-	"*i shouldn't have done that...* is probably what {name} would be thinking right now... if they still had a head!",
+	// "*i shouldn't have done that...* is probably what {name} would be thinking right now... if they still had a head!",
 ];
 
 const takyon = [
@@ -212,15 +212,27 @@ const song_list = [
 	{url:"https://open.spotify.com/track/02Q0bei8227VUIxJgqppUk", title:"Lore, Lore", tags:["deutschland", "heil"]},
 	{url:"https://open.spotify.com/track/7MwjanOxjvV2ILQPfOKIIm", title:"Carpenter Brut - Paradise Warfare", tags:["synth"]},
 	{url:"https://open.spotify.com/track/4FdQL99ZOQTAsAQv2EJGnw", title:"Carpenter Brut - Meet Matt Stryker", tags:["synth"]},
+	{url:"https://open.spotify.com/track/7oxnK2wg8qFv8EXyyxKDJ4", title:"Carpenter Brut - Roller Mobster", tags:["synth"]},
 	{url:"https://open.spotify.com/track/1hGRe4d3LJCg1VszAU8Cy1", title:"El Huervo - Daisuke", tags:["chill"]},
 	{url:"https://open.spotify.com/track/2uA9EGy7KifPvk2F342IvR", title:"El Huervo - Rust", tags:["chill"]},
 	{url:"https://open.spotify.com/track/6NCM7ADhVKOo2tT84p60hP", title:"Scattle - Bloodline", tags:["pardo", "meme"]},
 	{url:"https://open.spotify.com/track/2bHpNAMEsB3Wc00y87JTdn", title:"Magic Sword - In The Face Of Evil", tags:["synth"]},
 	{url:"https://open.spotify.com/track/2hQCzcb3qyZirWzOD5Yzoj", title:"Justice - D.A.N.C.E.", tags:["bass"]},
-	{url:"https://open.spotify.com/track/1tA9cQEtQPvUdcndCUcP9E", title:"Lil Dicky - White Crime", tags:["rap", "meme"]},
+	{url:"https://open.spotify.com/track/1tA9cQEtQPvUdcndCUcP9E", title:"Lil Dicky - White Crime", tags:["rap", "comedy"]},
+	{url:"https://open.spotify.com/track/53duuSwaLOZuIrELvZXqLH", title:"The Notorious B.I.G. - Going Back To Cali", tags:["rap", "posthumous"]},
 	{url:"https://open.spotify.com/track/46RVKt5Edm1zl0rXhPJZxz", title:"Men at Work - Down Under", tags:["meme"]},
 	{url:"https://open.spotify.com/track/6tC2iHfUlzB2W4ntXXL2BH", title:"Pendulum - Propane Nightmares", tags:["oldschool"]},
 	{url:"https://open.spotify.com/track/3DPdm3xVRuBIzWbDTt3Gde", title:"Push it to the Limit", tags:["rock"]},
+	{url:"https://open.spotify.com/track/3ctoHckjyd13eBi2IDw2Ip", title:"The White Stripes - Seven Nation Army", tags:["rock", "stadium"]},
+	{url:"https://open.spotify.com/track/4fQMGlCawbTkH9yPPZ49kP", title:"Booker T and the M.G.'s - Green Onions", tags:["classic", "funky"]},
+	{url:"https://open.spotify.com/track/2hhFpD32iXUd4GaCu6T4wn", title:"Jon Lajoie - Everyday Normal Guy 2", tags:["comedy", "meme", "rap"]},
+	{url:"https://open.spotify.com/track/7I1uAzqqdNVUptxlHPj9pZ", title:"Lemon Demon - Action Movie Hero Boy", tags:["comedy", "rock"]},
+	{url:"https://open.spotify.com/track/3cfOd4CMv2snFaKAnMdnvK", title:"Smash Mouth - All Star", tags:["meme"]},
+	{url:"https://open.spotify.com/track/4jacsL77ZYnpInmTtUBaJW", title:"Junior Senior - Move Your Feet", tags:["upbeat"]},
+	{url:"https://open.spotify.com/track/0U0ldCRmgCqhVvD6ksG63j", title:"Kavinsky - Nightcall", tags:["synth"]},
+	{url:"https://open.spotify.com/track/1eyzqe2QqGZUmfcPZtrIyt", title:"M83 - Midnight City", tags:["synth"]},
+	{url:"https://open.spotify.com/track/1JcwHjETNNbUH0yfrc9w9n", title:"Power Glove - Power Core", tags:["synth"]},
+	{url:"https://open.spotify.com/track/34x6hEJgGAOQvmlMql5Ige", title:"Kenny Loggins - Danger Zone", tags:["classic", "rock"]},
 ];
 
 const i_like_this_song = [
@@ -246,7 +258,7 @@ function ArrayHasValue(arr, val)
 	return arr.indexOf(val) != -1
 }
 
-function MatchingTags(a, b, i)
+function MatchingTags_RECURSIVE(a, b, i)
 {
 	if (!i)
 	{
@@ -261,6 +273,12 @@ function MatchingTags(a, b, i)
 		return true;
 	}
 	return MatchingTags(a, b, i + 1)
+}
+
+function MatchingTags(a, b)
+{
+	var new_array = a.filter((n) => b.includes(n));
+	return (new_array.length > 0);
 }
 
 function SuggestSongsBasedOnTags(tags, got_songs, on_index)
@@ -279,12 +297,18 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 	}
 	if (MatchingTags(song_list[on_index].tags, tags))
 	{
-		tags.push(on_index)
+		got_songs.push(on_index);
 	}
 	return SuggestSongsBasedOnTags(tags, got_songs, on_index + 1);
 }
 
-const changelog = "**BillardBot 2.0: Billboy Edition**\n\n**New Features**\nSong suggestions (.suggestsong)\nMore opinion statements\nChangeable command prefix\n\n**Features in Progress**\nSuggesting songs based on tags\nOverall nicer looks\nLocalization";
+function PickRandomSongFromTags(tags)
+{
+	var got_songs = SuggestSongsBasedOnTags(tags);
+	return got_songs[Math.floor(Math.random() * got_songs.length)];
+}
+
+const changelog = "**BillardBot 2.0: Billboy Edition**\n\n**New Features**\nSong suggestions w/ optional tags (.suggestsong <tags>)\nMore opinion statements\nChangeable command prefix\n\n**Features in Progress**\nOverall nicer looks\nLocalization";
 
 bot.on("ready", () =>
 {
@@ -295,8 +319,20 @@ var command_prefix = "."; // make a way to change this or something idk (EDIT: i
 
 const bot_commands = [
 	{command:"echo", func:function(message, txt){message.channel.send("ECHOE")}},
+	{command:"mentionshawntoannoyhim", func:function(message, txt){message.channel.send("@sjun21#1824")}},
 	{command:"suicide", func:function(message, txt){message.channel.send("ur ded now\nrip")}},
-	{command:"suggestsong", func:function(message, txt){message.channel.send(FormatSuggestedSong(Math.floor(Math.random() * song_list.length)))}},
+	{command:"suggestsong", func:function(message, txt)
+	{
+		if (txt.length == 1)
+		{
+			message.channel.send(FormatSuggestedSong(Math.floor(Math.random() * song_list.length)));
+		}
+		else
+		{
+			txt.shift() // i dont like this; it modifies the variable itself
+			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
+		}
+	}},
 	{command:"changelog", func:function(message, txt){message.channel.send(changelog)}},
 	{command:"language", func:function(message, txt){message.channel.send("Current language: " + ReadableLanguageName(language))}},
 	{command:"startvote", func:function(message, txt)
@@ -367,8 +403,7 @@ const bot_commands = [
 		message.channel.send(name + " " + roullette_start[Math.floor(Math.random() * roullette_start.length)]);
 		if (rando == 1)
 		{
-			message.channel.send("*BANG*");
-			message.channel.send(name + " " + roullette_finish[Math.floor(Math.random() * roullette_finish.length)]);
+			message.channel.send("*BANG*\n" + roullette_finish[Math.floor(Math.random() * roullette_finish.length)].replace("{name}", name));
 		}
 		else
 		{
@@ -415,6 +450,24 @@ function LoopForBotCommand(msg, txt, i)
 	return LoopForBotCommand(msg, txt, i + 1)
 }
 
+var annoyance_level = 0;
+
+const are_you_nig = [
+	"no, im not a nigger",
+	"no, im not",
+	"no",
+	"stop saying that",
+	"im not a nigger",
+	"fucking stop",
+	"its not funny anymore",
+	"im not a fucking nigger",
+	"i WILL file a restraining order",
+	"stop fucking saying that",
+	"is this what you want? a restraining order?",
+	"say that one more fucking time i swear",
+	"https://i.imgur.com/5ddwkPj.jpg", // "your tip has been submitted!"
+];
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
@@ -433,6 +486,14 @@ bot.on("message", message =>
 	else if (txt[0].toLowerCase() == "ding" && txt[1].toLowerCase() == "dong" && txt.length == 2)
 	{
 		message.channel.send("your opinion is wrong");
+	}
+	if (message.content.toLowerCase() == "billardbot, are you a nigger?")
+	{
+		if (annoyance_level < are_you_nig.length)
+		{
+			message.channel.send(are_you_nig[annoyance_level]);
+			annoyance_level += 1
+		}
 	}
 });
 
