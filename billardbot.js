@@ -452,15 +452,15 @@ function LoopForBotCommand(msg, txt, i)
 
 var annoyance_level = 0;
 
-const are_you_nig = [
-	"no, im not a nigger",
+const are_you_egg = [
+	"no, im not an egg boy",
 	"no, im not",
 	"no",
 	"stop saying that",
-	"im not a nigger",
+	"im not an egg boy",
 	"fucking stop",
 	"its not funny anymore",
-	"im not a fucking nigger",
+	"im not a fucking egg boy",
 	"i WILL file a restraining order",
 	"stop fucking saying that",
 	"is this what you want? a restraining order?",
@@ -468,9 +468,68 @@ const are_you_nig = [
 	"https://i.imgur.com/5ddwkPj.jpg", // "your tip has been submitted!"
 ];
 
+const acronym_i = [
+	"immense",
+	"iodized",
+	"immovable",
+	"idiotic",
+	"icecaps",
+	"inhuman",
+	"impactful",
+	"inflicted",
+	"intense",
+	"ignorant",
+];
+
+const acronym_n = [
+	"noun",
+	"nozzle",
+	"nocturnal",
+	"nonzero",
+	"nostril",
+	"networked",
+	"niggardly",
+	"nitpicky",
+	"nicked",
+	"napkins",
+	"nighttime",
+	"numbing",
+];
+
+const acronym_t = [
+	"testicular",
+	"treasure",
+	"toothpaste",
+	"thumb",
+	"truck",
+	"tequila",
+	"technical",
+	"tranquil",
+	"tweezed",
+	"thimble",
+	"touchup",
+	"tiny",
+	"twelfth",
+];
+
+const acronym_l = [
+	"lame",
+	"loving",
+	"longbow",
+	"loser",
+	"lockbox",
+	"liquid",
+	"lament",
+	"luck",
+	"lullaby",
+	"lamppost",
+	"lexicon",
+];
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
+	var raw = message.content.toLowerCase()
 	LoopForBotCommand(message, txt);
 
 	// someday i'll figure out how to fix these
@@ -487,13 +546,29 @@ bot.on("message", message =>
 	{
 		message.channel.send("your opinion is wrong");
 	}
-	if (message.content.toLowerCase() == "billardbot, are you a nigger?")
+	else if (raw == "billardbot, are you an egg boy?")
 	{
-		if (annoyance_level < are_you_nig.length)
+		if (annoyance_level < are_you_egg.length)
 		{
-			message.channel.send(are_you_nig[annoyance_level]);
+			message.channel.send(are_you_egg[annoyance_level]);
 			annoyance_level += 1
 		}
+	}
+	else if (raw == "billardbot, does kai roberts have the gay?")
+	{
+		message.channel.send("DEFINITELY YES");
+	}
+	else if (raw == "billardbot, what do you think?")
+	{
+		message.channel.send("i think thats some GAY SHIT lmao miss me nigga");
+	}
+	else if (raw == "thanks, billardbot" || raw == "many thanks, billardbot" || raw == "many thanks billardbot" || raw == "thank you, billardbot" || raw == "thank you billardbot" || raw == "thanks billardbot")
+	{
+		message.channel.send("you're welcome my dude");
+	}
+	else if (raw == "billardbot, what does intl stand for?")
+	{
+		message.channel.send(acronym_i[Math.floor(Math.random() * acronym_i.length)] + " " + acronym_n[Math.floor(Math.random() * acronym_n.length)] + " " + acronym_t[Math.floor(Math.random() * acronym_t.length)] + " " + acronym_l[Math.floor(Math.random() * acronym_l.length)]);
 	}
 });
 
