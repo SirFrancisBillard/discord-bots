@@ -526,6 +526,88 @@ const acronym_l = [
 	"lexicon",
 ];
 
+const alexa = {
+	util: {
+		commandPrefix: function(txt)
+		{
+			if (txt)
+			{
+				return alexa.name + ", " + txt
+			}
+			else
+			{
+				return alexa.name + ", "
+			}
+		},
+		evaluate: function(raw, message, i)
+		{
+			if (!i)
+			{
+				i = 0;
+			}
+			if (!alexa.commands[i])
+			{
+				return alexa.sorrymate || "goofed";
+			}
+			var cmd = alexa.commandPrefix(alexa.commands[i].command);
+			if (raw[0].toLowerCase() == cmd.toLowerCase())
+			{
+				if (alexa.commands[i].func)
+				{
+					return alexa.commands[i].func(raw, message);
+				}
+				elseif (alexa.commands[i].response)
+				{
+					if (alexa.commands[i].rare_response && Math.random() > 0.97)
+					{
+						var promise = message.channel.send(alexa.commands[i].rare_response);
+						if (alexa.commands[i].auto_censor)
+						{
+							promise.then(function(message)
+							{
+								message.edit(alexa.commands[i].response);
+							});
+							return; // edit the rare message to have the same content as a common message (after a delay of like 1 second)
+						}
+					}
+					else
+					{
+						return message.channel.send(alexa.commands[i].response);
+					}
+				}
+				else
+				{
+					return message.channel.send("WHAT THE FUCK AM I DOING")
+				}
+			}
+			return alexa.evaluate(raw, message, i + 1)
+		},
+	},
+	name: "billardbot",
+	sorrymate: "Sorry, I don't understand you.",
+	commands: {
+		{command: "are you an egg boy?", func: function(raw, message)
+		{
+			if (annoyance_level < are_you_egg.length)
+			{
+				message.channel.send(are_you_egg[annoyance_level]);
+				annoyance_level += 1;
+			}
+		}},
+		{command: "what does intl stand for?", func: function(raw, message)
+		{
+			message.channel.send(acronym_i[Math.floor(Math.random() * acronym_i.length)] + " " + acronym_n[Math.floor(Math.random() * acronym_n.length)] + " " + acronym_t[Math.floor(Math.random() * acronym_t.length)] + " " + acronym_l[Math.floor(Math.random() * acronym_l.length)]);
+		}},
+		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni:b::b:a"},
+		{command: "what's up?", response: "not much", rare_response: "oh, just mass genocide, school shootings, and terrorism. the usual", auto_censor: true},
+		{command: "does kai roberts have the gay?", response: "idk maybe", rare_response: "DEFINITELY YES", auto_censor: true},
+		{command: "drumroll please", response: ":drum:", rare_response: "i'm not your slave", auto_censor: true},
+		{command: "can i have some free porb?", response: "no", rare_response: "ok fine :eggplant: :sweat_drops: :peach: :heart_eyes:"},
+		{command: "do you have stairs in your house?", response: "what kind of question is that?", rare_response: "I AM PROTECTED", auto_censor: true},
+		{command: "what is best country?", response: ":flag_ru:", rare_response: "actually it's :flag_sl:, all the other answers are decoys to distract the spies"},
+	},
+};
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
@@ -546,29 +628,9 @@ bot.on("message", message =>
 	{
 		message.channel.send("your opinion is wrong");
 	}
-	else if (raw == "billardbot, are you an egg boy?")
-	{
-		if (annoyance_level < are_you_egg.length)
-		{
-			message.channel.send(are_you_egg[annoyance_level]);
-			annoyance_level += 1
-		}
-	}
-	else if (raw == "billardbot, does kai roberts have the gay?")
-	{
-		message.channel.send("DEFINITELY YES");
-	}
-	else if (raw == "billardbot, what do you think?")
-	{
-		message.channel.send("i think thats some GAY SHIT lmao miss me nigga");
-	}
 	else if (raw == "thanks, billardbot" || raw == "many thanks, billardbot" || raw == "many thanks billardbot" || raw == "thank you, billardbot" || raw == "thank you billardbot" || raw == "thanks billardbot")
 	{
 		message.channel.send("you're welcome my dude");
-	}
-	else if (raw == "billardbot, what does intl stand for?")
-	{
-		message.channel.send(acronym_i[Math.floor(Math.random() * acronym_i.length)] + " " + acronym_n[Math.floor(Math.random() * acronym_n.length)] + " " + acronym_t[Math.floor(Math.random() * acronym_t.length)] + " " + acronym_l[Math.floor(Math.random() * acronym_l.length)]);
 	}
 });
 
