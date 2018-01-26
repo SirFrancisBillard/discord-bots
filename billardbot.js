@@ -1,3 +1,7 @@
+// BillardBot 3.0 - Egg Boy Edition
+// Vulgarity warning: this bot is approved by George Carlin
+// https://www.youtube.com/watch?v=vbZhpf3sQxQ
+
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 const token = "ToKeN";
@@ -20,12 +24,12 @@ function ValidLanguage(str)
 }
 
 const TranslateLanguageNameToSomethingReadable = { // A+ naming conventions
-	["en"]:"English",
-	["es"]:"Español (Spanish)",
-	["fr"]:"Français (French)",
-	["cn"]:"中文 (Chinese)",
-	["jp"]:"日本語 (Japanese)",
-	["ru"]:"Pусский (Russian)",
+	["en"]: "English",
+	["es"]: "Español (Spanish)",
+	["fr"]: "Français (French)",
+	["cn"]: "中文 (Chinese)",
+	["jp"]: "日本語 (Japanese)",
+	["ru"]: "Pусский (Russian)",
 };
 
 function ReadableLanguageName(str)
@@ -39,17 +43,17 @@ function ReadableLanguageName(str)
 }
 
 const lang = { // put all strings in here eventually
-	["en"]:{
-		error_generic:[
+	["en"]: {
+		error_generic: [
 			"Error",
 			"Generic error",
 		],
-		lang_missing:[
+		lang_missing: [
 			"Language string missing",
 			"Bad language string",
 			"Nonexistant language string",
 		],
-		under_construction:[
+		under_construction: [
 			"This feature is under construction",
 			"This feature is incomplete",
 			"Still working on this part, sorry!",
@@ -60,59 +64,59 @@ const lang = { // put all strings in here eventually
 };
 
 var opinions = {
-	preset:{
-		["joseph stalin"]:OPINION_LIKE,
-		["josef stalin"]:OPINION_LIKE,
-		["josef"]:OPINION_LIKE,
-		["stalin"]:OPINION_LIKE,
-		["my mother"]:OPINION_LIKE,
-		["your mother"]:OPINION_LIKE,
-		["adolf hitler"]:OPINION_NEUTRAL,
-		["adolf"]:OPINION_NEUTRAL,
-		["hitler"]:OPINION_NEUTRAL,
-		["4chan"]:OPINION_NEUTRAL,
-		["/pol/"]:OPINION_NEUTRAL,
-		["pol"]:OPINION_NEUTRAL,
-		["trump"]:OPINION_NEUTRAL,
-		["donald trump"]:OPINION_NEUTRAL,
-		["league"]:OPINION_HATE,
-		["lol"]:OPINION_HATE,
-		["league of legends"]:OPINION_HATE,
-		["fidget spinners"]:OPINION_HATE,
-		["hillary clinton"]:OPINION_HATE,
-		["hillary"]:OPINION_HATE,
-		["clinton"]:OPINION_HATE,
-		["tayte"]:OPINION_HATE,
-		["brockhampton"]:OPINION_HATE,
-		["deep water"]:OPINION_FEAR,
-		["spider"]:OPINION_FEAR,
-		["spiders"]:OPINION_FEAR,
-		["bug"]:OPINION_FEAR,
-		["bugs"]:OPINION_FEAR
+	preset: {
+		["joseph stalin"]: OPINION_LIKE,
+		["josef stalin"]: OPINION_LIKE,
+		["josef"]: OPINION_LIKE,
+		["stalin"]: OPINION_LIKE,
+		["my mother"]: OPINION_LIKE,
+		["your mother"]: OPINION_LIKE,
+		["adolf hitler"]: OPINION_NEUTRAL,
+		["adolf"]: OPINION_NEUTRAL,
+		["hitler"]: OPINION_NEUTRAL,
+		["4chan"]: OPINION_NEUTRAL,
+		["/pol/"]: OPINION_NEUTRAL,
+		["pol"]: OPINION_NEUTRAL,
+		["trump"]: OPINION_NEUTRAL,
+		["donald trump"]: OPINION_NEUTRAL,
+		["league"]: OPINION_HATE,
+		["lol"]: OPINION_HATE,
+		["league of legends"]: OPINION_HATE,
+		["fidget spinners"]: OPINION_HATE,
+		["hillary clinton"]: OPINION_HATE,
+		["hillary"]: OPINION_HATE,
+		["clinton"]: OPINION_HATE,
+		["tayte"]: OPINION_HATE,
+		["brockhampton"]: OPINION_HATE,
+		["deep water"]: OPINION_FEAR,
+		["spider"]: OPINION_FEAR,
+		["spiders"]: OPINION_FEAR,
+		["bug"]: OPINION_FEAR,
+		["bugs"]: OPINION_FEAR
 	},
-	responses:{
-		[OPINION_LIKE]:[
+	responses: {
+		[OPINION_LIKE]: [
 			"I quite like {thing}.",
 			"{thing} is great!",
 			"I love {thing}.",
 			"{thing} is pretty good!",
 			"I like {thing}."
 		],
-		[OPINION_NEUTRAL]:[
+		[OPINION_NEUTRAL]: [
 			"{thing} is alright.",
 			"{thing} is okay.",
 			"{thing} is fine, not great though.",
 			"I don't mind {thing}.",
 			"I'm alright with {thing}.",
 		],
-		[OPINION_HATE]:[
+		[OPINION_HATE]: [
 			"{thing} is a fucking weeb.",
 			"Fuck {thing}.",
 			"{thing} can suck a bag of donkey dicks.",
 			"I hate {thing}.",
 			"{thing} can eat my ass.",
 		],
-		[OPINION_FEAR]:[
+		[OPINION_FEAR]: [
 			"{thing} creeps me out.",
 			"{thing} creeps me the fuck out.",
 			"{thing} is spooky.",
@@ -120,7 +124,22 @@ var opinions = {
 			"Get me the fuck away from {thing}.",
 		]
 	},
-	generated:{}
+	generated: {}
+};
+
+const util = {
+	RandomFromArray:  function(arr)
+	{
+		return arr[Math.floor(Math.random() * arr.length)];
+	},
+	FormatImgurGifV: function(txt)
+	{
+		return "https://i.imgur.com/" + txt + ".gifv";
+	},
+	FormatSpotifySong: function(txt)
+	{
+		return "https://open.spotify.com/track/" + txt;
+	},
 };
 
 const bushisms = [
@@ -162,25 +181,25 @@ const takyon = [
 	"TAKYON",
 ];
 
-const beheading_images = [
-	"https://i.imgur.com/hHQ4vEu.gifv",
-	"https://i.imgur.com/eY9kEc5.gifv",
-	"https://i.imgur.com/ZYADxx4.gifv",
-	"https://i.imgur.com/J37kqjN.gifv",
+const decappi_boi = [
+	"hHQ4vEu",
+	"eY9kEc5",
+	"ZYADxx4",
+	"J37kqjN",
 ];
 
-const gay_kisses = [
-	"https://i.imgur.com/jaldFcg.gifv",
-	"https://i.imgur.com/o0Wt5jV.gifv",
-	"https://i.imgur.com/WP07gNq.gifv",
-	"https://i.imgur.com/AbUVaRY.gifv",
-	"https://i.imgur.com/3hd4wvc.gifv",
-	"https://i.imgur.com/dWl2fk1.gifv",
-	"https://i.imgur.com/XcyZN4T.gifv",
+const kissi_boi = [
+	"jaldFcg",
+	"o0Wt5jV",
+	"WP07gNq",
+	"AbUVaRY",
+	"3hd4wvc",
+	"dWl2fk1",
+	"XcyZN4T",
 ];
 
 const not_my_problem = [
-	"https://i.imgur.com/pI61TL6.gifv",
+	"pI61TL6",
 ];
 
 function GenerateOpinion(thing)
@@ -205,34 +224,34 @@ function GenerateOpinion(thing)
 }
 
 const song_list = [
-	{url:"https://open.spotify.com/track/78WVCYkTIJgWUAbwTTrTiO", title:"Reel Big Fish - Sayonara Senorita", tags:["rbf", "trumpet"]},
-	{url:"https://open.spotify.com/track/7vPLB09s3XNhIM5S5wF1Si", title:"Reel Big Fish - Everyone Else is an Asshole", tags:["rbf", "comedy"]},
-	{url:"https://open.spotify.com/track/1sIVrEY8WNhQNpON9BmXTd", title:"Dusty Brown - This City is Killing Me", tags:["depressing", "piano"]},
-	{url:"https://open.spotify.com/track/2hHNFmRgj2KUCeCcJH0QLP", title:"Proleter - Faidherbe Square", tags:["swing"]},
-	{url:"https://open.spotify.com/track/02Q0bei8227VUIxJgqppUk", title:"Lore, Lore", tags:["deutschland", "heil"]},
-	{url:"https://open.spotify.com/track/7MwjanOxjvV2ILQPfOKIIm", title:"Carpenter Brut - Paradise Warfare", tags:["synth"]},
-	{url:"https://open.spotify.com/track/4FdQL99ZOQTAsAQv2EJGnw", title:"Carpenter Brut - Meet Matt Stryker", tags:["synth"]},
-	{url:"https://open.spotify.com/track/7oxnK2wg8qFv8EXyyxKDJ4", title:"Carpenter Brut - Roller Mobster", tags:["synth"]},
-	{url:"https://open.spotify.com/track/1hGRe4d3LJCg1VszAU8Cy1", title:"El Huervo - Daisuke", tags:["chill"]},
-	{url:"https://open.spotify.com/track/2uA9EGy7KifPvk2F342IvR", title:"El Huervo - Rust", tags:["chill"]},
-	{url:"https://open.spotify.com/track/6NCM7ADhVKOo2tT84p60hP", title:"Scattle - Bloodline", tags:["pardo", "meme"]},
-	{url:"https://open.spotify.com/track/2bHpNAMEsB3Wc00y87JTdn", title:"Magic Sword - In The Face Of Evil", tags:["synth"]},
-	{url:"https://open.spotify.com/track/2hQCzcb3qyZirWzOD5Yzoj", title:"Justice - D.A.N.C.E.", tags:["bass"]},
-	{url:"https://open.spotify.com/track/1tA9cQEtQPvUdcndCUcP9E", title:"Lil Dicky - White Crime", tags:["rap", "comedy"]},
-	{url:"https://open.spotify.com/track/53duuSwaLOZuIrELvZXqLH", title:"The Notorious B.I.G. - Going Back To Cali", tags:["rap", "posthumous"]},
-	{url:"https://open.spotify.com/track/46RVKt5Edm1zl0rXhPJZxz", title:"Men at Work - Down Under", tags:["meme"]},
-	{url:"https://open.spotify.com/track/6tC2iHfUlzB2W4ntXXL2BH", title:"Pendulum - Propane Nightmares", tags:["oldschool"]},
-	{url:"https://open.spotify.com/track/3DPdm3xVRuBIzWbDTt3Gde", title:"Push it to the Limit", tags:["rock"]},
-	{url:"https://open.spotify.com/track/3ctoHckjyd13eBi2IDw2Ip", title:"The White Stripes - Seven Nation Army", tags:["rock", "stadium"]},
-	{url:"https://open.spotify.com/track/4fQMGlCawbTkH9yPPZ49kP", title:"Booker T and the M.G.'s - Green Onions", tags:["classic", "funky"]},
-	{url:"https://open.spotify.com/track/2hhFpD32iXUd4GaCu6T4wn", title:"Jon Lajoie - Everyday Normal Guy 2", tags:["comedy", "meme", "rap"]},
-	{url:"https://open.spotify.com/track/7I1uAzqqdNVUptxlHPj9pZ", title:"Lemon Demon - Action Movie Hero Boy", tags:["comedy", "rock"]},
-	{url:"https://open.spotify.com/track/3cfOd4CMv2snFaKAnMdnvK", title:"Smash Mouth - All Star", tags:["meme"]},
-	{url:"https://open.spotify.com/track/4jacsL77ZYnpInmTtUBaJW", title:"Junior Senior - Move Your Feet", tags:["upbeat"]},
-	{url:"https://open.spotify.com/track/0U0ldCRmgCqhVvD6ksG63j", title:"Kavinsky - Nightcall", tags:["synth"]},
-	{url:"https://open.spotify.com/track/1eyzqe2QqGZUmfcPZtrIyt", title:"M83 - Midnight City", tags:["synth"]},
-	{url:"https://open.spotify.com/track/1JcwHjETNNbUH0yfrc9w9n", title:"Power Glove - Power Core", tags:["synth"]},
-	{url:"https://open.spotify.com/track/34x6hEJgGAOQvmlMql5Ige", title:"Kenny Loggins - Danger Zone", tags:["classic", "rock"]},
+	{url: "78WVCYkTIJgWUAbwTTrTiO", title: "Reel Big Fish - Sayonara Senorita", tags: ["rbf", "trumpet"]},
+	{url: "7vPLB09s3XNhIM5S5wF1Si", title: "Reel Big Fish - Everyone Else is an Asshole", tags: ["rbf", "comedy"]},
+	{url: "1sIVrEY8WNhQNpON9BmXTd", title: "Dusty Brown - This City is Killing Me", tags: ["depressing", "piano"]},
+	{url: "2hHNFmRgj2KUCeCcJH0QLP", title: "Proleter - Faidherbe Square", tags: ["swing"]},
+	{url: "02Q0bei8227VUIxJgqppUk", title: "Lore, Lore", tags: ["deutschland", "heil"]},
+	{url: "7MwjanOxjvV2ILQPfOKIIm", title: "Carpenter Brut - Paradise Warfare", tags: ["synth"]},
+	{url: "4FdQL99ZOQTAsAQv2EJGnw", title: "Carpenter Brut - Meet Matt Stryker", tags: ["synth"]},
+	{url: "7oxnK2wg8qFv8EXyyxKDJ4", title: "Carpenter Brut - Roller Mobster", tags: ["synth"]},
+	{url: "1hGRe4d3LJCg1VszAU8Cy1", title: "El Huervo - Daisuke", tags: ["chill"]},
+	{url: "2uA9EGy7KifPvk2F342IvR", title: "El Huervo - Rust", tags: ["chill"]},
+	{url: "6NCM7ADhVKOo2tT84p60hP", title: "Scattle - Bloodline", tags: ["pardo", "meme"]},
+	{url: "2bHpNAMEsB3Wc00y87JTdn", title: "Magic Sword - In The Face Of Evil", tags: ["synth"]},
+	{url: "2hQCzcb3qyZirWzOD5Yzoj", title: "Justice - D.A.N.C.E.", tags: ["bass"]},
+	{url: "1tA9cQEtQPvUdcndCUcP9E", title: "Lil Dicky - White Crime", tags: ["rap", "comedy"]},
+	{url: "53duuSwaLOZuIrELvZXqLH", title: "The Notorious B.I.G. - Going Back To Cali", tags: ["rap", "posthumous"]},
+	{url: "46RVKt5Edm1zl0rXhPJZxz", title: "Men at Work - Down Under", tags: ["meme"]},
+	{url: "6tC2iHfUlzB2W4ntXXL2BH", title: "Pendulum - Propane Nightmares", tags: ["oldschool"]},
+	{url: "3DPdm3xVRuBIzWbDTt3Gde", title: "Push it to the Limit", tags: ["rock"]},
+	{url: "3ctoHckjyd13eBi2IDw2Ip", title: "The White Stripes - Seven Nation Army", tags: ["rock", "stadium"]},
+	{url: "4fQMGlCawbTkH9yPPZ49kP", title: "Booker T and the M.G.'s - Green Onions", tags: ["classic", "funky"]},
+	{url: "2hhFpD32iXUd4GaCu6T4wn", title: "Jon Lajoie - Everyday Normal Guy 2", tags: ["comedy", "meme", "rap"]},
+	{url: "7I1uAzqqdNVUptxlHPj9pZ", title: "Lemon Demon - Action Movie Hero Boy", tags: ["comedy", "rock"]},
+	{url: "3cfOd4CMv2snFaKAnMdnvK", title: "Smash Mouth - All Star", tags: ["meme"]},
+	{url: "4jacsL77ZYnpInmTtUBaJW", title: "Junior Senior - Move Your Feet", tags: ["upbeat"]},
+	{url: "0U0ldCRmgCqhVvD6ksG63j", title: "Kavinsky - Nightcall", tags: ["synth"]},
+	{url: "1eyzqe2QqGZUmfcPZtrIyt", title: "M83 - Midnight City", tags: ["synth"]},
+	{url: "1JcwHjETNNbUH0yfrc9w9n", title: "Power Glove - Power Core", tags: ["synth"]},
+	{url: "34x6hEJgGAOQvmlMql5Ige", title: "Kenny Loggins - Danger Zone", tags: ["classic", "rock"]},
 ];
 
 const i_like_this_song = [
@@ -250,7 +269,7 @@ function FormatSuggestedSong(n)
 		return;
 	}
 
-	return i_like_this_song[Math.floor(Math.random() * i_like_this_song.length)] + "\n\n" + song_list[n].title + "\n\n" + song_list[n].url;
+	return util.RandomFromArray(i_like_this_song) + "\n\n" + song_list[n].title + "\n\n" + util.FormatSpotifySong(song_list[n].url);
 }
 
 function ArrayHasValue(arr, val)
@@ -305,9 +324,11 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 function PickRandomSongFromTags(tags)
 {
 	var got_songs = SuggestSongsBasedOnTags(tags);
-	return got_songs[Math.floor(Math.random() * got_songs.length)];
+	return util.RandomFromArray(got_songs);
 }
 
+// i have enough time to write this comment saying that the changelog is outdated but i'm not going to actually update the changelog
+// A+ coding skills
 const changelog = "**BillardBot 2.0: Billboy Edition**\n\n**New Features**\nSong suggestions w/ optional tags (.suggestsong <tags>)\nMore opinion statements\nChangeable command prefix\n\n**Features in Progress**\nOverall nicer looks\nLocalization";
 
 bot.on("ready", () =>
@@ -318,10 +339,10 @@ bot.on("ready", () =>
 var command_prefix = "."; // make a way to change this or something idk (EDIT: i half-assed it)
 
 const bot_commands = [
-	{command:"echo", func:function(message, txt){message.channel.send("ECHOE")}},
-	{command:"mentionshawntoannoyhim", func:function(message, txt){message.channel.send("@sjun21#1824")}},
-	{command:"suicide", func:function(message, txt){message.channel.send("ur ded now\nrip")}},
-	{command:"suggestsong", func:function(message, txt)
+	{command: "echo", func: function(message, txt){message.channel.send("ECHOE")}},
+	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("@sjun21#1824")}},
+	{command: "suicide", func: function(message, txt){message.channel.send("ur ded now\nrip")}},
+	{command: "suggestsong", func: function(message, txt)
 	{
 		if (txt.length == 1)
 		{
@@ -329,32 +350,32 @@ const bot_commands = [
 		}
 		else
 		{
-			txt.shift() // i dont like this; it modifies the variable itself
+			txt.shift() // i dont like this - it modifies the variable itself
 			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
 		}
 	}},
-	{command:"changelog", func:function(message, txt){message.channel.send(changelog)}},
-	{command:"language", func:function(message, txt){message.channel.send("Current language: " + ReadableLanguageName(language))}},
-	{command:"startvote", func:function(message, txt)
+	{command: "changelog", func: function(message, txt){message.channel.send(changelog)}},
+	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language))}},
+	{command: "startvote", func: function(message, txt)
 	{
 		var yeah = "yeah";
 		message.channel.send(yeah); // under construction
 	}},
-	{command:"kiss", func:function(message, txt)
+	{command: "kiss", func: function(message, txt)
 	{
 		var good_thing = message.content.slice(6);
 		var name = message.member.nickname || message.author.username;
-		message.channel.send(name + " kisses " + good_thing + "\n" + gay_kisses[Math.floor(Math.random() * gay_kisses.length)]);
+		message.channel.send(name + " kisses " + good_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(kissi_boi)));
 	}},
-	{command:"bushism", func:function(message, txt)
+	{command: "bushism", func: function(message, txt)
 	{
-		message.channel.send("\"" + bushisms[Math.floor(Math.random() * bushisms.length)] + "\"\n- George W. Bush");
+		message.channel.send("\"" + util.RandomFromArray(bushisms) + "\"\n    -George W. Bush");
 	}},
-	{command:"noneofmybusiness", func:function(message, txt)
+	{command: "noneofmybusiness", func: function(message, txt)
 	{
-		message.channel.send(not_my_problem[Math.floor(Math.random() * not_my_problem.length)]);
+		message.channel.send( util.FormatImgurGifV(util.RandomFromArray(not_my_problem)));
 	}},
-	{command:"changeprefix", func:function(message, txt)
+	{command: "changeprefix", func: function(message, txt)
 	{
 		var new_prefix = "";
 		for (i = 1; i < txt.length; i++)
@@ -365,7 +386,7 @@ const bot_commands = [
 
 		if (new_prefix) // check for an empty string
 		{
-			command_prefix = new_prefix; // maybe serialize it a bit? lmao (EDIT: serialized, but still VERY editable)
+			command_prefix = new_prefix; // maybe serialize it a bit? lmao (EDIT: serialized, but still very editable)
 			message.channel.send("Command prefix changed to \"" + command_prefix + "\"");
 		}
 		else
@@ -373,7 +394,7 @@ const bot_commands = [
 			message.channel.send("Invalid command prefix! What the fuck are you thinkin?");
 		}
 	}},
-	{command:"takyon", func:function(message, txt)
+	{command: "takyon", func: function(message, txt)
 	{
 		var lyrics = "";
 		for (var i = 0; i < takyon.length; i++)
@@ -382,13 +403,13 @@ const bot_commands = [
 		}
 		message.channel.send(lyrics)
 	}},
-	{command:"behead", func:function(message, txt)
+	{command: "behead", func: function(message, txt)
 	{
 		var bad_thing = message.content.slice(8);
 		var name = message.member.nickname || message.author.username;
-		message.channel.send(name + " beheads " + bad_thing + "\n" + beheading_images[Math.floor(Math.random() * beheading_images.length)]);
+		message.channel.send(name + " beheads " + bad_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(decappi_boi)));
 	}},
-	{command:"roll", func:function(message, txt)
+	{command: "roll", func: function(message, txt)
 	{
 		var min = Number(txt[1]) || 1;
 		var max = Number(txt[2]) || 6;
@@ -396,21 +417,21 @@ const bot_commands = [
 
 		message.channel.send("You rolled a " + num + ".");
 	}},
-	{command:"russian", func:function(message, txt)
+	{command: "russian", func: function(message, txt)
 	{
 		var rando = Math.floor(Math.random() * 6) + 1;
 		var name = message.member.nickname || message.author.username;
-		message.channel.send(name + " " + roullette_start[Math.floor(Math.random() * roullette_start.length)]);
+		message.channel.send(name + " " + util.RandomFromArray(roullette_start));
 		if (rando == 1)
 		{
-			message.channel.send("*BANG*\n" + roullette_finish[Math.floor(Math.random() * roullette_finish.length)].replace("{name}", name));
+			message.channel.send("*BANG*\n" + util.RandomFromArray(roullette_finish).replace("{name}", name));
 		}
 		else
 		{
 			message.channel.send("*CLICK*");
 		}
 	}},
-	{command:"opinion", func:function(message, txt)
+	{command: "opinion", func: function(message, txt)
 	{
 		var thing = "";
 		for (i = 1; i < txt.length; i++)
@@ -420,7 +441,7 @@ const bot_commands = [
 		thing = thing.substring(1);
 
 		var opinion = GenerateOpinion(thing.toLowerCase());
-		var str = opinions.responses[opinion][Math.floor(Math.random() * opinions.responses[opinion].length)];
+		var str = util.RandomFromArray(opinions.responses[opinion]);
 		var reply = str.replace("{thing}", thing);
 
 		message.channel.send(reply);
@@ -527,16 +548,16 @@ const acronym_l = [
 ];
 
 const alexa = {
-	util: {
+	util:  {
 		commandPrefix: function(txt)
 		{
 			if (txt)
 			{
-				return alexa.name + ", " + txt
+				return alexa.name + ", " + txt;
 			}
 			else
 			{
-				return alexa.name + ", "
+				return alexa.name + ", ";
 			}
 		},
 		evaluate: function(raw, message, i)
@@ -549,25 +570,27 @@ const alexa = {
 			{
 				return alexa.sorrymate || "goofed";
 			}
-			var cmd = alexa.commandPrefix(alexa.commands[i].command);
-			if (raw[0].toLowerCase() == cmd.toLowerCase())
+			var cmd = alexa.util.commandPrefix(alexa.commands[i].command);
+			if (raw.toLowerCase() == cmd.toLowerCase())
 			{
 				if (alexa.commands[i].func)
 				{
 					return alexa.commands[i].func(raw, message);
 				}
-				elseif (alexa.commands[i].response)
+				else if (alexa.commands[i].response)
 				{
-					if (alexa.commands[i].rare_response && Math.random() > 0.97)
+					if (alexa.commands[i].rare_response && Math.random() > 0.60)
 					{
 						var promise = message.channel.send(alexa.commands[i].rare_response);
 						if (alexa.commands[i].auto_censor)
 						{
-							promise.then(function(message)
+							setTimeout(function()
 							{
-								message.edit(alexa.commands[i].response);
-							});
-							return; // edit the rare message to have the same content as a common message (after a delay of like 1 second)
+								promise.then(function(message)
+								{
+									message.edit(alexa.commands[i].response);
+								});
+							}, 1000);
 						}
 					}
 					else
@@ -577,15 +600,15 @@ const alexa = {
 				}
 				else
 				{
-					return message.channel.send("WHAT THE FUCK AM I DOING")
+					return message.channel.send("WHAT THE FUCK AM I DOING");
 				}
 			}
-			return alexa.evaluate(raw, message, i + 1)
+			return alexa.util.evaluate(raw, message, i + 1);
 		},
 	},
 	name: "billardbot",
 	sorrymate: "Sorry, I don't understand you.",
-	commands: {
+	commands: [
 		{command: "are you an egg boy?", func: function(raw, message)
 		{
 			if (annoyance_level < are_you_egg.length)
@@ -596,16 +619,16 @@ const alexa = {
 		}},
 		{command: "what does intl stand for?", func: function(raw, message)
 		{
-			message.channel.send(acronym_i[Math.floor(Math.random() * acronym_i.length)] + " " + acronym_n[Math.floor(Math.random() * acronym_n.length)] + " " + acronym_t[Math.floor(Math.random() * acronym_t.length)] + " " + acronym_l[Math.floor(Math.random() * acronym_l.length)]);
+			message.channel.send(util.RandomFromArray(acronym_i) + " " + util.RandomFromArray(acronym_n) + " " + util.RandomFromArray(acronym_t) + " " + util.RandomFromArray(acronym_l));
 		}},
-		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni:b::b:a"},
+		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni: b: : b: a"},
 		{command: "what's up?", response: "not much", rare_response: "oh, just mass genocide, school shootings, and terrorism. the usual", auto_censor: true},
 		{command: "does kai roberts have the gay?", response: "idk maybe", rare_response: "DEFINITELY YES", auto_censor: true},
-		{command: "drumroll please", response: ":drum:", rare_response: "i'm not your slave", auto_censor: true},
-		{command: "can i have some free porb?", response: "no", rare_response: "ok fine :eggplant: :sweat_drops: :peach: :heart_eyes:"},
+		{command: "drumroll please", response: ": drum: ", rare_response: "i'm not your slave", auto_censor: true},
+		{command: "can i have some free porb?", response: "no", rare_response: "ok fine : eggplant:  : sweat_drops:  : peach:  : heart_eyes: "},
 		{command: "do you have stairs in your house?", response: "what kind of question is that?", rare_response: "I AM PROTECTED", auto_censor: true},
-		{command: "what is best country?", response: ":flag_ru:", rare_response: "actually it's :flag_sl:, all the other answers are decoys to distract the spies"},
-	},
+		{command: "what is best country?", response: ": flag_ru: ", rare_response: "actually it's : flag_sl: , all the other answers are decoys to distract the spies"},
+	],
 };
 
 bot.on("message", message =>
@@ -613,6 +636,7 @@ bot.on("message", message =>
 	var txt = message.content.split(" ");
 	var raw = message.content.toLowerCase()
 	LoopForBotCommand(message, txt);
+	alexa.util.evaluate(raw, message);
 
 	// someday i'll figure out how to fix these
 	// someday...
