@@ -6,10 +6,10 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const token = "ToKeN";
 
-const OPINION_LIKE = 1
-const OPINION_NEUTRAL = 2
-const OPINION_HATE = 3
-const OPINION_FEAR = 4
+const OPINION_LIKE = 1;
+const OPINION_NEUTRAL = 2;
+const OPINION_HATE = 3;
+const OPINION_FEAR = 4;
 
 var language = "en"; // english by default cuz yeah
 
@@ -63,6 +63,9 @@ const lang = { // put all strings in here eventually
 	},
 };
 
+// nobody uses this anymore, i guess the novelty is wearing off
+// it's use is kinda being replaced by the alexa-esque commands
+// *kinda*
 var opinions = {
 	preset: {
 		["joseph stalin"]: OPINION_LIKE,
@@ -127,7 +130,12 @@ var opinions = {
 	generated: {}
 };
 
+// put random functions in here
 const util = {
+	ArrayHasValue: function(arr, val)
+	{
+		return arr.indexOf(val) != -1;
+	},
 	RandomFromArray:  function(arr)
 	{
 		return arr[Math.floor(Math.random() * arr.length)];
@@ -142,10 +150,18 @@ const util = {
 	},
 	FormatSongTitle: function(artist, title)
 	{
-		return artist + " - " + title;
+		if (artist)
+		{
+			return artist + " - " + title;
+		}
+		else
+		{
+			return title;
+		}
 	},
 };
 
+// maybe put all the arrays between here and "boop" into a larger object?
 const bushisms = [
 	"They misunderestimated me.",
 	"I know the human being and fish can coexist peacefully.",
@@ -203,7 +219,9 @@ const kissi_boi = [
 const not_my_problem = [
 	"pI61TL6",
 ];
+// "boop"
 
+// literally older than your grandma
 function GenerateOpinion(thing)
 {
 	if (typeof opinions.preset[thing] == "number")
@@ -230,7 +248,7 @@ const song_list = [
 	{url: "7vPLB09s3XNhIM5S5wF1Si", artist: "Reel Big Fish", title: "Everyone Else is an Asshole", tags: ["rbf", "comedy"]},
 	{url: "1sIVrEY8WNhQNpON9BmXTd", artist: "Dusty Brown", title: "This City is Killing Me", tags: ["depressing", "piano"]},
 	{url: "2hHNFmRgj2KUCeCcJH0QLP", artist: "Proleter", title: "Faidherbe Square", tags: ["swing"]},
-	{url: "02Q0bei8227VUIxJgqppUk", artist: "Lore, Lore", tags: ["deutschland", "heil"]},
+	{url: "02Q0bei8227VUIxJgqppUk", title: "Lore, Lore", tags: ["deutschland", "heil"]},
 	{url: "7MwjanOxjvV2ILQPfOKIIm", artist: "Carpenter Brut", title: "Paradise Warfare", tags: ["synth"]},
 	{url: "4FdQL99ZOQTAsAQv2EJGnw", artist: "Carpenter Brut", title: "Meet Matt Stryker", tags: ["synth"]},
 	{url: "7oxnK2wg8qFv8EXyyxKDJ4", artist: "Carpenter Brut", title: "Roller Mobster", tags: ["synth"]},
@@ -243,7 +261,7 @@ const song_list = [
 	{url: "53duuSwaLOZuIrELvZXqLH", artist: "The Notorious B.I.G.", title: "Going Back To Cali", tags: ["rap", "posthumous"]},
 	{url: "46RVKt5Edm1zl0rXhPJZxz", artist: "Men at Work", title: "Down Under", tags: ["meme"]},
 	{url: "6tC2iHfUlzB2W4ntXXL2BH", artist: "Pendulum", title: "Propane Nightmares", tags: ["oldschool"]},
-	{url: "3DPdm3xVRuBIzWbDTt3Gde", artist: "Push it to the Limit", tags: ["rock"]},
+	{url: "3DPdm3xVRuBIzWbDTt3Gde", title: "Push it to the Limit", tags: ["rock"]},
 	{url: "3ctoHckjyd13eBi2IDw2Ip", artist: "The White Stripes", title: "Seven Nation Army", tags: ["rock", "stadium"]},
 	{url: "4fQMGlCawbTkH9yPPZ49kP", artist: "Booker T and the M.G.'s", title: "Green Onions", tags: ["classic", "funky"]},
 	{url: "2hhFpD32iXUd4GaCu6T4wn", artist: "Jon Lajoie", title: "Everyday Normal Guy 2", tags: ["comedy", "meme", "rap"]},
@@ -256,6 +274,7 @@ const song_list = [
 	{url: "34x6hEJgGAOQvmlMql5Ige", artist: "Kenny Loggins", title: "Danger Zone", tags: ["classic", "rock"]},
 ];
 
+// maybe put this up with the other "boop" ones?
 const i_like_this_song = [
 	"I found a song you might like.",
 	"Here's a song I like.",
@@ -274,11 +293,6 @@ function FormatSuggestedSong(n)
 	return util.RandomFromArray(i_like_this_song) + "\n\n" + util.FormatSongTitle(song_list[n].artist, song_list[n].title) + "\n\n" + util.FormatSpotifySong(song_list[n].url);
 }
 
-function ArrayHasValue(arr, val)
-{
-	return arr.indexOf(val) != -1
-}
-
 // useless function lmao - what loser made this
 function MatchingTags_RECURSIVE(a, b, i)
 {
@@ -290,11 +304,11 @@ function MatchingTags_RECURSIVE(a, b, i)
 	{
 		return false;
 	}
-	if (ArrayHasValue(a, b[i]))
+	if (util.ArrayHasValue(a, b[i]))
 	{
 		return true;
 	}
-	return MatchingTags(a, b, i + 1)
+	return MatchingTags(a, b, i + 1);
 }
 
 function MatchingTags(a, b)
@@ -342,9 +356,9 @@ bot.on("ready", () =>
 var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
 
 const bot_commands = [
-	{command: "echo", func: function(message, txt){message.channel.send("ECHOE")}},
-	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("@sjun21#1824")}},
-	{command: "suicide", func: function(message, txt){message.channel.send("ur ded now\nrip")}},
+	{command: "echo", func: function(message, txt){message.channel.send("ECHOE");}},
+	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("@sjun21#1824");}},
+	{command: "suicide", func: function(message, txt){message.channel.send("ur ded now\nrip");}},
 	{command: "suggestsong", func: function(message, txt)
 	{
 		if (txt.length == 1)
@@ -353,12 +367,12 @@ const bot_commands = [
 		}
 		else
 		{
-			txt.shift() // i dont like this - it modifies the variable itself
+			txt.shift(); // i dont like this - it modifies the variable itself
 			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
 		}
 	}},
-	{command: "changelog", func: function(message, txt){message.channel.send(changelog)}},
-	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language))}},
+	{command: "changelog", func: function(message, txt){message.channel.send(changelog);}},
+	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
 	{command: "startvote", func: function(message, txt)
 	{
 		var yeah = "yeah";
@@ -402,9 +416,9 @@ const bot_commands = [
 		var lyrics = "";
 		for (var i = 0; i < takyon.length; i++)
 		{
-			lyrics += takyon[i] + "\n"
+			lyrics += takyon[i] + "\n";
 		}
-		message.channel.send(lyrics)
+		message.channel.send(lyrics);
 	}},
 	{command: "behead", func: function(message, txt)
 	{
@@ -471,7 +485,7 @@ function LoopForBotCommand(msg, txt, i)
 	{
 		return bot_commands[i].func(msg, txt);
 	}
-	return LoopForBotCommand(msg, txt, i + 1)
+	return LoopForBotCommand(msg, txt, i + 1);
 }
 
 var annoyance_level = 0;
@@ -637,7 +651,7 @@ const alexa = {
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
-	var raw = message.content.toLowerCase()
+	var raw = message.content.toLowerCase();
 	LoopForBotCommand(message, txt);
 	alexa.util.evaluate(raw, message);
 
