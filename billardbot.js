@@ -140,6 +140,10 @@ const util = {
 	{
 		return "https://open.spotify.com/track/" + txt;
 	},
+	FormatSongTitle: function(artist, title)
+	{
+		return artist + " - " + title;
+	},
 };
 
 const bushisms = [
@@ -153,9 +157,7 @@ const bushisms = [
 ];
 
 const roullette_start = [
-	// "places the barrel of a revolver on their tongue.",
-	// "presses a revolver to their temple.",
-	"raises a gun to their head.",
+	"raises a gun to their head.", // wew lad
 ];
 
 const roullette_finish = [
@@ -224,34 +226,34 @@ function GenerateOpinion(thing)
 }
 
 const song_list = [
-	{url: "78WVCYkTIJgWUAbwTTrTiO", title: "Reel Big Fish - Sayonara Senorita", tags: ["rbf", "trumpet"]},
-	{url: "7vPLB09s3XNhIM5S5wF1Si", title: "Reel Big Fish - Everyone Else is an Asshole", tags: ["rbf", "comedy"]},
-	{url: "1sIVrEY8WNhQNpON9BmXTd", title: "Dusty Brown - This City is Killing Me", tags: ["depressing", "piano"]},
-	{url: "2hHNFmRgj2KUCeCcJH0QLP", title: "Proleter - Faidherbe Square", tags: ["swing"]},
-	{url: "02Q0bei8227VUIxJgqppUk", title: "Lore, Lore", tags: ["deutschland", "heil"]},
-	{url: "7MwjanOxjvV2ILQPfOKIIm", title: "Carpenter Brut - Paradise Warfare", tags: ["synth"]},
-	{url: "4FdQL99ZOQTAsAQv2EJGnw", title: "Carpenter Brut - Meet Matt Stryker", tags: ["synth"]},
-	{url: "7oxnK2wg8qFv8EXyyxKDJ4", title: "Carpenter Brut - Roller Mobster", tags: ["synth"]},
-	{url: "1hGRe4d3LJCg1VszAU8Cy1", title: "El Huervo - Daisuke", tags: ["chill"]},
-	{url: "2uA9EGy7KifPvk2F342IvR", title: "El Huervo - Rust", tags: ["chill"]},
-	{url: "6NCM7ADhVKOo2tT84p60hP", title: "Scattle - Bloodline", tags: ["pardo", "meme"]},
-	{url: "2bHpNAMEsB3Wc00y87JTdn", title: "Magic Sword - In The Face Of Evil", tags: ["synth"]},
-	{url: "2hQCzcb3qyZirWzOD5Yzoj", title: "Justice - D.A.N.C.E.", tags: ["bass"]},
-	{url: "1tA9cQEtQPvUdcndCUcP9E", title: "Lil Dicky - White Crime", tags: ["rap", "comedy"]},
-	{url: "53duuSwaLOZuIrELvZXqLH", title: "The Notorious B.I.G. - Going Back To Cali", tags: ["rap", "posthumous"]},
-	{url: "46RVKt5Edm1zl0rXhPJZxz", title: "Men at Work - Down Under", tags: ["meme"]},
-	{url: "6tC2iHfUlzB2W4ntXXL2BH", title: "Pendulum - Propane Nightmares", tags: ["oldschool"]},
-	{url: "3DPdm3xVRuBIzWbDTt3Gde", title: "Push it to the Limit", tags: ["rock"]},
-	{url: "3ctoHckjyd13eBi2IDw2Ip", title: "The White Stripes - Seven Nation Army", tags: ["rock", "stadium"]},
-	{url: "4fQMGlCawbTkH9yPPZ49kP", title: "Booker T and the M.G.'s - Green Onions", tags: ["classic", "funky"]},
-	{url: "2hhFpD32iXUd4GaCu6T4wn", title: "Jon Lajoie - Everyday Normal Guy 2", tags: ["comedy", "meme", "rap"]},
-	{url: "7I1uAzqqdNVUptxlHPj9pZ", title: "Lemon Demon - Action Movie Hero Boy", tags: ["comedy", "rock"]},
-	{url: "3cfOd4CMv2snFaKAnMdnvK", title: "Smash Mouth - All Star", tags: ["meme"]},
-	{url: "4jacsL77ZYnpInmTtUBaJW", title: "Junior Senior - Move Your Feet", tags: ["upbeat"]},
-	{url: "0U0ldCRmgCqhVvD6ksG63j", title: "Kavinsky - Nightcall", tags: ["synth"]},
-	{url: "1eyzqe2QqGZUmfcPZtrIyt", title: "M83 - Midnight City", tags: ["synth"]},
-	{url: "1JcwHjETNNbUH0yfrc9w9n", title: "Power Glove - Power Core", tags: ["synth"]},
-	{url: "34x6hEJgGAOQvmlMql5Ige", title: "Kenny Loggins - Danger Zone", tags: ["classic", "rock"]},
+	{url: "78WVCYkTIJgWUAbwTTrTiO", artist: "Reel Big Fish", title: "Sayonara Senorita", tags: ["rbf", "trumpet"]},
+	{url: "7vPLB09s3XNhIM5S5wF1Si", artist: "Reel Big Fish", title: "Everyone Else is an Asshole", tags: ["rbf", "comedy"]},
+	{url: "1sIVrEY8WNhQNpON9BmXTd", artist: "Dusty Brown", title: "This City is Killing Me", tags: ["depressing", "piano"]},
+	{url: "2hHNFmRgj2KUCeCcJH0QLP", artist: "Proleter", title: "Faidherbe Square", tags: ["swing"]},
+	{url: "02Q0bei8227VUIxJgqppUk", artist: "Lore, Lore", tags: ["deutschland", "heil"]},
+	{url: "7MwjanOxjvV2ILQPfOKIIm", artist: "Carpenter Brut", title: "Paradise Warfare", tags: ["synth"]},
+	{url: "4FdQL99ZOQTAsAQv2EJGnw", artist: "Carpenter Brut", title: "Meet Matt Stryker", tags: ["synth"]},
+	{url: "7oxnK2wg8qFv8EXyyxKDJ4", artist: "Carpenter Brut", title: "Roller Mobster", tags: ["synth"]},
+	{url: "1hGRe4d3LJCg1VszAU8Cy1", artist: "El Huervo", title: "Daisuke", tags: ["chill"]},
+	{url: "2uA9EGy7KifPvk2F342IvR", artist: "El Huervo", title: "Rust", tags: ["chill"]},
+	{url: "6NCM7ADhVKOo2tT84p60hP", artist: "Scattle", title: "Bloodline", tags: ["pardo", "meme"]},
+	{url: "2bHpNAMEsB3Wc00y87JTdn", artist: "Magic Sword", title: "In The Face Of Evil", tags: ["synth"]},
+	{url: "2hQCzcb3qyZirWzOD5Yzoj", artist: "Justice", title: "D.A.N.C.E.", tags: ["bass"]},
+	{url: "1tA9cQEtQPvUdcndCUcP9E", artist: "Lil Dicky", title: "White Crime", tags: ["rap", "comedy"]},
+	{url: "53duuSwaLOZuIrELvZXqLH", artist: "The Notorious B.I.G.", title: "Going Back To Cali", tags: ["rap", "posthumous"]},
+	{url: "46RVKt5Edm1zl0rXhPJZxz", artist: "Men at Work", title: "Down Under", tags: ["meme"]},
+	{url: "6tC2iHfUlzB2W4ntXXL2BH", artist: "Pendulum", title: "Propane Nightmares", tags: ["oldschool"]},
+	{url: "3DPdm3xVRuBIzWbDTt3Gde", artist: "Push it to the Limit", tags: ["rock"]},
+	{url: "3ctoHckjyd13eBi2IDw2Ip", artist: "The White Stripes", title: "Seven Nation Army", tags: ["rock", "stadium"]},
+	{url: "4fQMGlCawbTkH9yPPZ49kP", artist: "Booker T and the M.G.'s", title: "Green Onions", tags: ["classic", "funky"]},
+	{url: "2hhFpD32iXUd4GaCu6T4wn", artist: "Jon Lajoie", title: "Everyday Normal Guy 2", tags: ["comedy", "meme", "rap"]},
+	{url: "7I1uAzqqdNVUptxlHPj9pZ", artist: "Lemon Demon", title: "Action Movie Hero Boy", tags: ["comedy", "rock"]},
+	{url: "3cfOd4CMv2snFaKAnMdnvK", artist: "Smash Mouth", title: "All Star", tags: ["meme"]},
+	{url: "4jacsL77ZYnpInmTtUBaJW", artist: "Junior Senior", title: "Move Your Feet", tags: ["upbeat"]},
+	{url: "0U0ldCRmgCqhVvD6ksG63j", artist: "Kavinsky", title: "Nightcall", tags: ["synth"]},
+	{url: "1eyzqe2QqGZUmfcPZtrIyt", artist: "M83", title: "Midnight City", tags: ["synth"]},
+	{url: "1JcwHjETNNbUH0yfrc9w9n", artist: "Power Glove", title: "Power Core", tags: ["synth"]},
+	{url: "34x6hEJgGAOQvmlMql5Ige", artist: "Kenny Loggins", title: "Danger Zone", tags: ["classic", "rock"]},
 ];
 
 const i_like_this_song = [
@@ -269,7 +271,7 @@ function FormatSuggestedSong(n)
 		return;
 	}
 
-	return util.RandomFromArray(i_like_this_song) + "\n\n" + song_list[n].title + "\n\n" + util.FormatSpotifySong(song_list[n].url);
+	return util.RandomFromArray(i_like_this_song) + "\n\n" + util.FormatSongTitle(song_list[n].artist, song_list[n].title) + "\n\n" + util.FormatSpotifySong(song_list[n].url);
 }
 
 function ArrayHasValue(arr, val)
@@ -277,6 +279,7 @@ function ArrayHasValue(arr, val)
 	return arr.indexOf(val) != -1
 }
 
+// useless function lmao - what loser made this
 function MatchingTags_RECURSIVE(a, b, i)
 {
 	if (!i)
@@ -329,14 +332,14 @@ function PickRandomSongFromTags(tags)
 
 // i have enough time to write this comment saying that the changelog is outdated but i'm not going to actually update the changelog
 // A+ coding skills
-const changelog = "**BillardBot 2.0: Billboy Edition**\n\n**New Features**\nSong suggestions w/ optional tags (.suggestsong <tags>)\nMore opinion statements\nChangeable command prefix\n\n**Features in Progress**\nOverall nicer looks\nLocalization";
+const changelog = "**BillardBot 3.0: Egg Boy Edition**\n\n**New Features**\nSong suggestions w/ optional tags (.suggestsong <tags>)\nMore opinion statements\nChangeable command prefix\nDirectly addressable commands (like Alexa)\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nLocalization";
 
 bot.on("ready", () =>
 {
-	// say the changelog in general or something idk (HOW THO???)
+	// say the changelog in general or something idk (how tho???)
 });
 
-var command_prefix = "."; // make a way to change this or something idk (EDIT: i half-assed it)
+var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
 
 const bot_commands = [
 	{command: "echo", func: function(message, txt){message.channel.send("ECHOE")}},
@@ -386,7 +389,7 @@ const bot_commands = [
 
 		if (new_prefix) // check for an empty string
 		{
-			command_prefix = new_prefix; // maybe serialize it a bit? lmao (EDIT: serialized, but still very editable)
+			command_prefix = new_prefix; // maybe serialize it a bit? lmao (edit: serialized, but still very editable)
 			message.channel.send("Command prefix changed to \"" + command_prefix + "\"");
 		}
 		else
@@ -448,7 +451,7 @@ const bot_commands = [
 	}},
 ];
 
-// hopefully a more efficient method of adding commands (EDIT: yup, its way more efficient)
+// hopefully a more efficient method of adding commands (edit: yup, its way more efficient)
 function LoopForBotCommand(msg, txt, i)
 {
 	if (!i)
@@ -624,10 +627,10 @@ const alexa = {
 		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni: b: : b: a"},
 		{command: "what's up?", response: "not much", rare_response: "oh, just mass genocide, school shootings, and terrorism. the usual", auto_censor: true},
 		{command: "does kai roberts have the gay?", response: "idk maybe", rare_response: "DEFINITELY YES", auto_censor: true},
-		{command: "drumroll please", response: ": drum: ", rare_response: "i'm not your slave", auto_censor: true},
-		{command: "can i have some free porb?", response: "no", rare_response: "ok fine : eggplant:  : sweat_drops:  : peach:  : heart_eyes: "},
+		{command: "drumroll please", response: ":drum::drum::drum:", rare_response: "i'm not your slave", auto_censor: true},
+		{command: "can i have some free porb?", response: "no", rare_response: "ok fine :eggplant: :sweat_drops: :peach: :heart_eyes:"},
 		{command: "do you have stairs in your house?", response: "what kind of question is that?", rare_response: "I AM PROTECTED", auto_censor: true},
-		{command: "what is best country?", response: ": flag_ru: ", rare_response: "actually it's : flag_sl: , all the other answers are decoys to distract the spies"},
+		{command: "what is best country?", response: ":flag_ru:", rare_response: "actually it's :flag_sl:, all the other answers are decoys to distract the spies"},
 	],
 };
 
