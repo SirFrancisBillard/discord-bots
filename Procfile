@@ -1,0 +1,1 @@
+worker: node billardbot.js
