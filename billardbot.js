@@ -675,4 +675,4 @@ bot.on("message", message =>
 	}
 });
 
-bot.login(process.env.BOT_TOKEN);
+bot.login("MzI0MDYyODUzNDc4ODc1MTQx.Dgd_rw.oldQxvQ673Zqmulm8XfHFhFM5VY");
