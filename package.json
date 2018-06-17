@@ -1,0 +1,13 @@
+{
+  "name": "Billard Bot",
+  "description": "The most cancerous bot on the web!",
+  "version": "1.2.5",
+  "main": "billardbot.js",
+  "scripts": {
+    "start": "node billardbot.js"
+  },
+  "dependencies": {
+    "discord.js": "11.1.0",
+    "request": "2.81.0"
+  }
+}
