@@ -1,1 +1,1 @@
-worker: node billardbot.js
+worker node billardbot.js
