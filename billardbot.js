@@ -4,7 +4,7 @@
 
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const token = "ToKeN";
+const token = process.env.BOT_TOKEN; // for Heroku, change to token if not using Heroku
 
 const OPINION_LIKE = 1;
 const OPINION_NEUTRAL = 2;
