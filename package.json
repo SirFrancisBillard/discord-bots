@@ -1,7 +1,7 @@
 {
-  "name": "Billard Bot",
-  "description": "The most cancerous bot on the web!",
-  "version": "1.2.5",
+  "name": "billardbot",
+  "version": "1.0.0",
+  "description": "",
   "main": "billardbot.js",
   "scripts": {
     "start": "node billardbot.js"
