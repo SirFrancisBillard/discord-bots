@@ -25,11 +25,11 @@ function ValidLanguage(str)
 
 const TranslateLanguageNameToSomethingReadable = { // A+ naming conventions
 	["en"]: "English",
-	["es"]: "Español (Spanish)",
-	["fr"]: "Français (French)",
-	["cn"]: "中文 (Chinese)",
-	["jp"]: "日本語 (Japanese)",
-	["ru"]: "Pусский (Russian)",
+	["es"]: "Espa�ol (Spanish)",
+	["fr"]: "Fran�ais (French)",
+	["cn"]: "?? (Chinese)",
+	["jp"]: "??? (Japanese)",
+	["ru"]: "P?????? (Russian)",
 };
 
 function ReadableLanguageName(str)
@@ -638,13 +638,17 @@ const alexa = {
 		{
 			message.channel.send(util.RandomFromArray(acronym_i) + " " + util.RandomFromArray(acronym_n) + " " + util.RandomFromArray(acronym_t) + " " + util.RandomFromArray(acronym_l));
 		}},
-		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni: b: : b: a"},
+		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni :b: :b: a"},
 		{command: "what's up?", response: "not much", rare_response: "oh, just mass genocide, school shootings, and terrorism. the usual", auto_censor: true},
 		{command: "does kai roberts have the gay?", response: "idk maybe", rare_response: "DEFINITELY YES", auto_censor: true},
 		{command: "drumroll please", response: ":drum::drum::drum:", rare_response: "i'm not your slave", auto_censor: true},
 		{command: "can i have some free porb?", response: "no", rare_response: "ok fine :eggplant: :sweat_drops: :peach: :heart_eyes:"},
 		{command: "do you have stairs in your house?", response: "what kind of question is that?", rare_response: "I AM PROTECTED", auto_censor: true},
 		{command: "what is best country?", response: ":flag_ru:", rare_response: "actually it's :flag_sl:, all the other answers are decoys to distract the spies"},
+		{command: "what does tayte not realize?", response: "well, son, what tayte doesn't realize is that this isnt a bot account. this is my alt that now has admin on his server. *my* server. its not his anymore."},
+		{command: "are you gay?", response: "no", rare_response: "actually yes i am super duper gay i browse /cm/ every waking minute of my entire life there are you happy now?"},
+		{command: "gay?", response: "i am gay for tayte :3", rare_response: "i am gay for tayte :3 (btw tayte if you're reading this, call me: +1 (808) 261-3930"},
+		{command: "who are you gay for?", response: "tayte is the ultimate goal UwU but i am single so any cuties hmu: +1 (808) 261-3930"},
 	],
 };
 
