@@ -25,8 +25,8 @@ function ValidLanguage(str)
 
 const TranslateLanguageNameToSomethingReadable = { // A+ naming conventions
 	["en"]: "English",
-	["es"]: "Español (Spanish)",
-	["fr"]: "Français (French)",
+	["es"]: "EspaÃ±ol (Spanish)",
+	["fr"]: "FranÃ§ais (French)",
 	["cn"]: "?? (Chinese)",
 	["jp"]: "??? (Japanese)",
 	["ru"]: "P?????? (Russian)",
@@ -95,7 +95,13 @@ var opinions = {
 		["spider"]: OPINION_FEAR,
 		["spiders"]: OPINION_FEAR,
 		["bug"]: OPINION_FEAR,
-		["bugs"]: OPINION_FEAR
+		["bugs"]: OPINION_FEAR,
+		// FUCK I DONT WANNA BE BANANAED
+		["hooni"]: OPINION_LIKE,
+		["hunni"]: OPINION_LIKE,
+		["huni"]: OPINION_LIKE,
+		["hoon"]: OPINION_LIKE,
+		["honi"]: OPINION_LIKE
 	},
 	responses: {
 		[OPINION_LIKE]: [
