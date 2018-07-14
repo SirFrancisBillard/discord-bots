@@ -469,6 +469,51 @@ const bot_commands = [
 
 		message.channel.send(reply);
 	}},
+	{command: "profile", func: function(message, txt)
+	{
+		var name = message.member.nickname || message.author.username;
+		var target = message.mentions.users.first();
+		var target_name = target.username; // idk lmao
+		message.channel.send("Profiling dis nigga...")
+		if (!target)
+		{
+			message.channel.send("ERROR: Nigga Aint Real !!!");
+			return;
+		}
+		message.channel.send("This will take a fucking while...");
+		message.channel.fetchMessages({limit:500}).then(function(messages)
+		{
+			message.channel.send("Found " + messages.size + " messages...");
+			var MessagesThatDumbNiggaSent = {};
+			var SortNiggasAmount = {};
+			var SortNiggasDay = {};
+			for (var NiggaMsg in messages)
+			{
+				if (messages[NiggaMsg].author.id == target.id)
+				{
+					MessagesThatDumbNiggaSent.push(messages[NiggaMsg].content)
+				}
+				var DisNigga = messages[NiggaMsg].content;
+				if (typeof SortNiggasAmount[DisNigga] == "number")
+				{
+					SortNiggasAmount[DisNigga] += 1;
+				}
+				else
+				{
+					SortNiggasAmount[DisNigga] = 1;
+				}
+			}
+			message.channel.send("Damn nigga found " + MessagesThatDumbNiggaSent.length + " messages from dis nigga");
+			message.channel.send("Calculating dis shit here nigga...");
+			var NiggaFinalMessage = "";
+			for (var OhShit in SortNiggasAmount)
+			{
+				NiggaFinalMessage += "i dunno: " + OhShit + " <- was dat | wuz dis -> " + SortNiggasAmount[OhShit];
+			}
+			message.channel.send(NiggaFinalMessage);
+			message.channel.send("sry about the chat spam lmao im a dum nigga")
+		});
+	}},
 ];
 
 // hopefully a more efficient method of adding commands (edit: yup, its way more efficient)
