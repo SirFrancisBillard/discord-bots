@@ -473,15 +473,15 @@ const bot_commands = [
 	{
 		var name = message.member.nickname || message.author.username;
 		var target = message.mentions.users.first();
-		var target_name = target.username; // idk lmao
 		message.channel.send("Profiling dis nigga...")
 		if (!target)
 		{
 			message.channel.send("ERROR: Nigga Aint Real !!!");
 			return;
 		}
+		var target_name = target.username; // idk lmao
 		message.channel.send("This will take a fucking while...");
-		message.channel.fetchMessages({limit:500}).then(function(messages)
+		message.channel.fetchMessages({limit:100}).then(function(messages)
 		{
 			message.channel.send("Found " + messages.size + " messages...");
 			var MessagesThatDumbNiggaSent = {};
@@ -491,6 +491,7 @@ const bot_commands = [
 			{
 				if (messages[NiggaMsg].author.id == target.id)
 				{
+					message.channel.send(" O H S H I T N I G G A LOOK OUT FOR THE LIZARD :burrito:")
 					MessagesThatDumbNiggaSent.push(messages[NiggaMsg].content)
 				}
 				var DisNigga = messages[NiggaMsg].content;
