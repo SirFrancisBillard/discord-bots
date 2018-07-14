@@ -442,10 +442,10 @@ const bot_commands = [
 	}},
 	{command: "russian", func: function(message, txt)
 	{
-		var rando = Math.floor(Math.random() * 6) + 1;
+		var rando = Math.floor(Math.random() * 5);
 		var name = message.member.nickname || message.author.username;
 		message.channel.send(name + " " + util.RandomFromArray(roullette_start));
-		if (rando == 1)
+		if (rando == 0 || message.author.id == "358133639126581249") // KILL JD ALWAYS
 		{
 			message.channel.send("*BANG*\n" + util.RandomFromArray(roullette_finish).replace("{name}", name));
 		}
