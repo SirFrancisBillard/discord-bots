@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const token = "MjU3NDIzNjI1Mzk1NjM0MTc3.Cy6f9g.gK7EvS9LcY2QxMCis6WvXJGxpSU";
+const token = "xd";
 
 var mb = {
 	weapons:[{id:0, name:"nothing", damage:0, cost:0}],
