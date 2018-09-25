@@ -704,12 +704,28 @@ const alexa = {
 	],
 };
 
+var BannedWordWarning = "looks like you tried to type a degenerate word. use both your brain cells next time. don't do that again.";
+var BannedWordByeBye = "you should have listened. buh-bye!"
+var WarnedNiggas = {};
+var BannedWords = ["weeb", "nerd", "oof"];
+
+function censorship(msg, txt)
+{
+	if (util.ArrayHasValue(BannedWords, txt[0]) && txt.length == 1)
+	{
+		msg.delete();
+		msg.channel.send(BannedWordWarning);
+		WarnedNiggas[message.author.id] = true;
+	}
+}
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
 	var raw = message.content.toLowerCase();
 	LoopForBotCommand(message, txt);
 	alexa.util.evaluate(raw, message);
+	censorship(message, txt);
 
 	// someday i'll figure out how to fix these
 	// someday...
