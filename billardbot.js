@@ -704,18 +704,24 @@ const alexa = {
 	],
 };
 
-var BannedWordWarning = "looks like you tried to type a degenerate word. use both your brain cells next time. don't do that again.";
-var BannedWordByeBye = "you should have listened. buh-bye!"
 var WarnedNiggas = {};
-var BannedWords = ["weeb", "nerd", "oof"];
+var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":true};
 
 function censorship(msg, txt)
 {
-	if (util.ArrayHasValue(BannedWords, txt[0]) && txt.length == 1)
+	if (BannedWords[txt[0]] && txt.length == 1)
 	{
+		if (WarnedNiggas[message.author.id])
+		{
+			msg.channel.send("you should have listened. buh-bye!");
+			msg.member.kick("dumb fuck");
+		}
+		else
+		{
+			msg.channel.send("looks like you tried to type a degenerate word. use both your brain cells next time. don't do that again.");
+			WarnedNiggas[message.author.id] = true;
+		}
 		msg.delete();
-		msg.channel.send(BannedWordWarning);
-		WarnedNiggas[message.author.id] = true;
 	}
 }
 
