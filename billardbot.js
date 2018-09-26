@@ -362,8 +362,8 @@ bot.on("ready", () =>
 var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
 
 const bot_commands = [
-	{command: "echo", func: function(message, txt){message.channel.send("ECHOE");}},
-	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("@sjun21#1824");}},
+	{command: "echo", func: function(message, txt){message.channel.send("ECHOE (virgin)");}},
+	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("no");}},
 	{command: "suicide", func: function(message, txt){message.channel.send("ur ded now\nrip");}},
 	{command: "suggestsong", func: function(message, txt)
 	{
@@ -709,7 +709,8 @@ var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":t
 
 function censorship(msg, txt)
 {
-	if (BannedWords[txt[0]] && txt.length == 1)
+	msg.channel.send("fuck u")
+	if (BannedWords[txt[0].toLowerCase()] && txt.length == 1)
 	{
 		if (WarnedNiggas[message.author.id])
 		{
@@ -721,6 +722,7 @@ function censorship(msg, txt)
 			msg.channel.send("looks like you tried to type a degenerate word. use both your brain cells next time. don't do that again.");
 			WarnedNiggas[message.author.id] = true;
 		}
+		msg.channel.send("delet this")
 		msg.delete();
 	}
 }
