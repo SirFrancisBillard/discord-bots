@@ -709,7 +709,6 @@ var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":t
 
 function censorship(msg, txt)
 {
-	msg.channel.send("fuck u")
 	if (BannedWords[txt[0].toLowerCase()] && txt.length == 1)
 	{
 		if (WarnedNiggas[message.author.id])
@@ -722,7 +721,6 @@ function censorship(msg, txt)
 			msg.channel.send("looks like you tried to type a degenerate word. use both your brain cells next time. don't do that again.");
 			WarnedNiggas[message.author.id] = true;
 		}
-		msg.channel.send("delet this")
 		msg.delete();
 	}
 }
