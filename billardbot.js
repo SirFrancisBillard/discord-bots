@@ -771,14 +771,17 @@ const alexa = {
 	],
 };
 
+const censor_enabled = false;
 var WarnedNiggas = {};
-var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":true};
+// old banned words
+// var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":true};
+var BannedWords = {"bluealbumsucks":true};
 
 function censorship(msg, txt)
 {
-	if (BannedWords[txt[0].toLowerCase()] && txt.length == 1)
+	if (censor_enabled && BannedWords[txt[0].toLowerCase()] && txt.length == 1)
 	{
-		if (WarnedNiggas[message.author.id])
+		if (WarnedNiggas[msg.author.id])
 		{
 			msg.channel.send("you should have listened. buh-bye!");
 			msg.member.kick("dumb fuck");
@@ -786,7 +789,7 @@ function censorship(msg, txt)
 		else
 		{
 			msg.channel.send("looks like you tried to type a degenerate word. use both your brain cells next time. don't do that again.");
-			WarnedNiggas[message.author.id] = true;
+			WarnedNiggas[msg.author.id] = true;
 		}
 		msg.delete();
 	}
