@@ -27,16 +27,16 @@ const TranslateLanguageNameToSomethingReadable = { // A+ naming conventions
 	["en"]: "English",
 	["es"]: "Español (Spanish)",
 	["fr"]: "Français (French)",
-	["cn"]: "?? (Chinese)",
-	["jp"]: "??? (Japanese)",
-	["ru"]: "P?????? (Russian)",
+	["cn"]: "(Chinese)",
+	["jp"]: "(Japanese)",
+	["ru"]: "(Russian)"
 };
 
 function ReadableLanguageName(str)
 {
 	if (!TranslateLanguageNameToSomethingReadable[str.toLowerCase()])
 	{
-		return "Unknown";
+		return "Segmentation fault."; // i mean yeah kinda
 	}
 
 	return TranslateLanguageNameToSomethingReadable[str.toLowerCase()];
@@ -225,6 +225,65 @@ const kissi_boi = [
 const not_my_problem = [
 	"pI61TL6",
 ];
+
+const eightball_responses = [
+	"It is certain.",
+	"It is decidedly so.",
+	"Without a doubt.",
+	"Yes - definitely.",
+	"You may rely on it.",
+	"As I see it, yes.",
+	"Most likely.",
+	"Outlook good.",
+	"Yes.",
+	"Signs point to yes.",
+	"Reply hazy, try again.",
+	"Ask again later.",
+	"Better not tell you now.",
+	"Cannot predict now.",
+	"Concentrate and ask again."
+	"Don't count on it.",
+	"My reply is no.",
+	"My sources say no.",
+	"Outlook not so good.",
+	"Very doubtful."
+];
+
+const emojiball_responses = [
+	":eggplant: :sweat_drops:",
+	":heart:",
+	":b:",
+	":thinking:",
+	":thinking:",
+	":upside_down:",
+	":slight_smile:",
+	":rage:",
+	":blush:",
+	":grimacing:",
+	":sunglasses:",
+	":weary:",
+	":unamused:",
+	":pensive:",
+	":smiling_imp:",
+	":sob:",
+	":cold_sweat:",
+	":gun: :cowboy:",
+	":expressionless:",
+	":scream:",
+	":yum:",
+	":point_left: :sunglasses: :point_left:",
+	":point_right: :sunglasses: :point_right:",
+	":see_no_evil: :hear_no_evil: :speak_no_evil:",
+	":ok_hand: :100:",
+	":fire: :fire: :fire:",
+	":money_mouth:",
+	":rolling_eyes:",
+	":eye: :lips: :eye:",
+	":joy:",
+	":eyes:\n:tongue:",
+	":heart_eyes:"
+];
+
 // "boop"
 
 // literally older than your grandma
@@ -362,7 +421,7 @@ bot.on("ready", () =>
 var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
 
 const bot_commands = [
-	{command: "echo", func: function(message, txt){message.channel.send("ECHOE (virgin)");}},
+	{command: "echo", func: function(message, txt){message.channel.send(":eggplant: (virgin)");}},
 	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("no");}},
 	{command: "suicide", func: function(message, txt){message.channel.send("ur ded now\nrip");}},
 	{command: "suggestsong", func: function(message, txt)
@@ -394,9 +453,17 @@ const bot_commands = [
 	{
 		message.channel.send("\"" + util.RandomFromArray(bushisms) + "\"\n    -George W. Bush");
 	}},
+	{command: "8ball", func: function(message, txt)
+	{
+		message.channel.send("```" + message.content + "```" + "\n" util.RandomFromArray(eightball_responses));
+	}},
+	{command: "emojiball", func: function(message, txt)
+	{
+		message.channel.send(util.RandomFromArray(emojiball_responses));
+	}},
 	{command: "noneofmybusiness", func: function(message, txt)
 	{
-		message.channel.send( util.FormatImgurGifV(util.RandomFromArray(not_my_problem)));
+		message.channel.send(util.FormatImgurGifV(util.RandomFromArray(not_my_problem)));
 	}},
 	{command: "changeprefix", func: function(message, txt)
 	{
@@ -409,7 +476,7 @@ const bot_commands = [
 
 		if (new_prefix) // check for an empty string
 		{
-			command_prefix = new_prefix; // maybe serialize it a bit? lmao (edit: serialized, but still very editable)
+			command_prefix = new_prefix; // maybe serialize it a bit"lmao (edit: serialized, but still very editable)
 			message.channel.send("Command prefix changed to \"" + command_prefix + "\"");
 		}
 		else
@@ -517,7 +584,7 @@ const bot_commands = [
 	}},
 ];
 
-// hopefully a more efficient method of adding commands (edit: yup, its way more efficient)
+// more efficient method of adding commands
 function LoopForBotCommand(msg, txt, i)
 {
 	if (!i)
@@ -690,7 +757,7 @@ const alexa = {
 		{
 			message.channel.send(util.RandomFromArray(acronym_i) + " " + util.RandomFromArray(acronym_n) + " " + util.RandomFromArray(acronym_t) + " " + util.RandomFromArray(acronym_l));
 		}},
-		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni :b: :b: a"},
+		{command: "what do you think?", response: "i think thats some gay shit LMAO miss me nigga", rare_response: "i think thats some gay shit LMAO miss me ni:b::b:a"},
 		{command: "what's up?", response: "not much", rare_response: "oh, just mass genocide, school shootings, and terrorism. the usual", auto_censor: true},
 		{command: "does kai roberts have the gay?", response: "idk maybe", rare_response: "DEFINITELY YES", auto_censor: true},
 		{command: "drumroll please", response: ":drum::drum::drum:", rare_response: "i'm not your slave", auto_censor: true},
