@@ -455,7 +455,7 @@ const bot_commands = [
 	}},
 	{command: "8ball", func: function(message, txt)
 	{
-		message.channel.send("```" + message.content + "```" + "\n" util.RandomFromArray(eightball_responses));
+		message.channel.send("```" + message.content + "```\n" + util.RandomFromArray(eightball_responses));
 	}},
 	{command: "emojiball", func: function(message, txt)
 	{
