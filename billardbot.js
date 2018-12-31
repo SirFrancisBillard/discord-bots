@@ -771,7 +771,7 @@ const alexa = {
 	],
 };
 
-const censor_enabled = false;
+const censor_enabled = true;
 var WarnedNiggas = {};
 // old banned words
 // var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":true};
