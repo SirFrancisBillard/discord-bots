@@ -777,6 +777,26 @@ var WarnedNiggas = {};
 // var BannedWords = {"weeb":true, "weebs":true, "nerd":true, "nerds":true, "oof":true};
 var BannedWords = {"bluealbumsucks":true};
 
+const YoureWelcome = [
+	"you're welcome my dude",
+	"you're welcome my dude",
+	"your welcome my dude", // based
+	"no problem",
+	"no problem",
+	"no problem",
+	"no problem",
+	"no problemo",
+	"your welcome",
+	"you're welcome",
+	"you're welcome",
+	"you're welcome",
+	"you're welcome",
+	"you're welcome",
+	"you're welcome",
+	"you're welcome",
+	"fuck you dip shit"
+];
+
 function censorship(msg, txt)
 {
 	if (censor_enabled && BannedWords[txt[0].toLowerCase()] && txt.length == 1)
@@ -803,8 +823,6 @@ bot.on("message", message =>
 	alexa.util.evaluate(raw, message);
 	censorship(message, txt);
 
-	// someday i'll figure out how to fix these
-	// someday...
 	if (txt[0] == "WEW" && txt.length == 1)
 	{
 		message.channel.send("LAD");
@@ -815,11 +833,17 @@ bot.on("message", message =>
 	}
 	else if (txt[0].toLowerCase() == "ding" && txt[1].toLowerCase() == "dong" && txt.length == 2)
 	{
+		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("suck my fuck");}
 		message.channel.send("your opinion is wrong");
+	}
+	else if (txt[0].toLowerCase() == "splish" && txt[1].toLowerCase() == "splash" && txt.length == 2)
+	{
+		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("fuck you loser");}
+		message.channel.send("your opinion is trash");
 	}
 	else if (raw == "thanks, billardbot" || raw == "many thanks, billardbot" || raw == "many thanks billardbot" || raw == "thank you, billardbot" || raw == "thank you billardbot" || raw == "thanks billardbot")
 	{
-		message.channel.send("you're welcome my dude");
+		message.channel.send(util.RandomFromArray(YoureWelcome));
 	}
 });
 
