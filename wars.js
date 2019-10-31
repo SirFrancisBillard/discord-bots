@@ -47,7 +47,8 @@ const TYPE_WEAPON = 3;
 const TYPE_HAT = 4;
 const TYPE_SHOE = 5;
 const TYPE_MATERIAL = 6;
-const TYPE_TOOL = 7;
+const TYPE_THROWABLE = 7;
+const TYPE_TOOL = 8;
 
 const common_errors = {
 	invalid_user: "Invalid user.",
@@ -58,6 +59,7 @@ const common_errors = {
 	invalid_mood: "Invalid mood.",
 	invalid_category: "Invalid category.",
 	invalid_location: "Invalid location.",
+	invalid_wiki: "Invalid wiki.",
 	cant_during_fight: "You can't do that during a fight.",
 	already_fighting: "You are already in a fight.",
 	not_fighting: "You aren't fighting anyone.",
@@ -66,6 +68,7 @@ const common_errors = {
 	item_uncraftable: "That item can't be crafted.",
 	bad_ingredients: "You lack the right ingredients.",
 	not_enough_energy: "You're too tired.",
+	query_empty: "Empty query.",
 }
 
 const translate_types = {
@@ -101,14 +104,13 @@ const FIGHT_NULL = 0;
 const FIGHT_PLAYER = 1;
 const FIGHT_MONSTER = 2;
 
-const max_energy = 30;
 
 const STAT_NULL = 0;
 const STAT_BUFF = 1;
 const STAT_DEBUFF = 2;
 
 const data_format = "3_1_0";
-
+const max_energy = 30;
 const default_accuracy = 10;
 
 // classy utils :cool_sunglasses:
@@ -132,7 +134,7 @@ function moneyf_short(count) {return "¥" + numcomma(count);}
 function contains(a, b) {for (let i = 0; i < a.length; i++) {if (a[i] == b) {return true;}} return false;}
 function conflict(a, b) {for (let i = 0; i < a.length; i++) {if (contains(b, a[i])) {return true;}} return false;}
 function statf(name, num) {return num < 0 ? num + " " + name : "+" + num + " " + name;}
-function objf(obj) {return emotef(obj) + " **" + obj.name + "**" + typef(obj.type) + statsf(obj.stats) + "\n";}
+function objf(obj) {return emotef(obj) + " **" + obj.name + "**" + typef(obj.type) + statsf(obj.stats);}
 function minf(obj) {return emotef(obj) + " **" + obj.name + "**";}
 function itemf(id) {return objf(wars.items[id]);}
 function minitemf(id) {return minf(wars.items[id]);}
@@ -252,8 +254,7 @@ function energyf(amt)
 	{
 		str += "|";
 	}
-	str += "``";
-	return str;
+	return str + "``";
 }
 function newuser(user)
 {
@@ -731,7 +732,11 @@ function useitem(userid, itemid)
 		case TYPE_THROWABLE:
 			if (!fighting(userid)) return errorf(common_errors.not_fighting);
 			takeitem(userid, itemid);
-			ret += "You equipped " + minitemf(itemid) + ".";
+			ret += "You threw " + minitemf(itemid) + ".";
+			break;
+
+		case TYPE_MATERIAL:
+		case TYPE_TOOL:
 			break;
 	}
 	userupdate(userid);
@@ -914,7 +919,6 @@ function isvalidformatversion(str)
 	return true;
 }
 function codeitemstackf(item) {return (item.count > 1 ? numcomma(item.count) + " x " : "") + wars.items[item.id].name;}
-
 const token = DEBUG ? s.revf(["_HUvzSc", "ujgMafnoviKW_", "QVA.KP1KvKk", "jM0MTc3.XOk", "NjI1Mzk1N", "MjU3NDIz"]) : process.env.BOT_TOKEN;
 let wars = {
 	command_prefix: ".",
@@ -949,7 +953,7 @@ let wars = {
 			{
 				if (wars[type][id] != undefined) return msend(msg, wikif(id, type));
 			}
-			return merror(msg, common_errors.invalid_query);
+			return merror(msg, common_errors.invalid_wiki);
 		}},
 		{command:"open", alias:"use"},
 		{command:"useitem", alias:"use"},
@@ -998,6 +1002,7 @@ let wars = {
 			msend(msg, gather(userid));
 			if (rand(1, 3) == 3) msend(msg, encounter(userid));
 		}},
+		{command:"giveme", alias:"give"},
 		{command:"spawnitem", alias:"give"},
 		{command:"cheatitem", alias:"give"},
 		{command:"give", func: function(msg, txt) {
@@ -1012,6 +1017,7 @@ let wars = {
 		{command:"items", alias:"inventory"},
 		{command:"inv", alias:"inventory"},
 		{command:"inventory", func: function(msg, txt) {msend(msg, invf(senderid(msg)));}},
+		{command:"tagline", alias:"slogan"},
 		{command:"catchphrase", alias:"slogan"},
 		{command:"slogan", func: function(msg, txt) {
 			txt[0] = "";
@@ -1062,12 +1068,14 @@ let wars = {
 			wars.users[senderid(msg)].location = newloc;
 			msend(msg, "Travelled to " + minf(loctab) + ".");
 		}},
+		{command:"setmood", alias:"mood"},
 		{command:"mood", func: function(msg, txt) {
 			let mood = txt[1];
 			if (mood == undefined || wars.moods[mood] == undefined) return merror(msg, common_errors.invalid_mood);
 			wars.users[senderid(msg)].mood = mood;
-			msend(msg, "Mood set to " + objf(wars.moods[mood]) + ".");
+			msend(msg, "Mood set to " + minf(wars.moods[mood]) + ".");
 		}},
+		{command:"setreligion", alias:"religion"},
 		{command:"religion", func: function(msg, txt) {
 			let rel = txt[1];
 			if (rel == undefined || wars.religions[rel] == undefined) return merror(msg, common_errors.invalid_religion);
@@ -1075,6 +1083,7 @@ let wars = {
 			msend(msg, "You are now " + (rand(1, 30) == 12 ? "a devout " : "") + religf(rel) + ".");
 		}},
 		{command:"char", alias:"character"},
+		{command:"setcharacter", alias:"character"},
 		{command:"character", func: function(msg, txt) {
 			let character = txt[1];
 			if (character == undefined || wars.characters[character] == undefined) return merror(msg, common_errors.invalid_character);
@@ -1082,6 +1091,7 @@ let wars = {
 			msend(msg, "Character set to " + minf(wars.characters[character]) + ".");
 		}},
 		{command:"me", alias:"profile"},
+		{command:"showprofile", alias:"profile"},
 		{command:"profile", func: function(msg, txt) {
 			msend(msg, profilef(senderid(msg)));
 		}},
@@ -1107,6 +1117,7 @@ let wars = {
 			giveitem(userid, itemid, recipe.count * amount);
 			msend(msg, "Successfully crafted " + stackf(itemid, recipe.count * amount) + ".");
 		}},
+		{command:"purchase", alias:"buy"},
 		{command:"buy", func: function(msg, txt) {
 			let itemid = txt[1];
 			if (itemid == undefined || wars.items[itemid] == undefined) return merror(msg, common_errors.invalid_item);
