@@ -680,11 +680,7 @@ function LoopForBotCommand(msg, txt, i)
 	{
 		return;
 	}
-	if (bot_commands[i].alias)
-	{
-		txt[0] = bot_commands[i].alias;
-		return LoopForBotCommand(msg, txt);
-	}
+	
 	var cmd = bot_commands[i].command;
 	if (!bot_commands[i].no_prefix)
 	{
@@ -692,6 +688,11 @@ function LoopForBotCommand(msg, txt, i)
 	}
 	if (txt[0].toLowerCase() == cmd.toLowerCase())
 	{
+		if (bot_commands[i].alias)
+		{
+			txt[0] = bot_commands[i].alias;
+			return LoopForBotCommand(msg, txt);
+		}
 		return bot_commands[i].func(msg, txt);
 	}
 	return LoopForBotCommand(msg, txt, i + 1);
