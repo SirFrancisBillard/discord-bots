@@ -544,7 +544,7 @@ const bot_commands = [
 	{command: "setlang", alias: "setlanguage"},
 	{command: "setlanguage", func: function(message, txt){
 		let langue = txt[1].toLowerCase();
-		if (language[langue])
+		if (lang[langue])
 		{
 			language = langue;
 			message.channel.send(lang[language].language_set.replace("{language}", ReadableLanguageName(language)));
