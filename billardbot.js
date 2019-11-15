@@ -514,7 +514,7 @@ function GetCommandHelpText(command)
 
 function GetSenderName(msg)
 {
-	return message.member ? (message.member.nickname || message.author.username) : message.author.username;
+	return msg.member ? (msg.member.nickname || msg.author.username) : msg.author.username;
 }
 
 const changelog = "**BillardBot 3.3: Autofellatio Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
