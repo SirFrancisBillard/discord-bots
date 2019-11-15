@@ -447,28 +447,6 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 
 function PickRandomSongFromTags(tags) {return util.RandomFromArray(SuggestSongsBasedOnTags(tags));}
 
-// FIXME: this table is only built once, could be problematic
-let aliases = false;
-
-function BuildCommandAliasTable()
-{
-	aliases = [];
-	for (let cmd in bot_commands)
-	{
-		if (cmd.alias)
-		{
-			if (aliases[cmd.alias])
-			{
-				aliases[cmd.alias].push(cmdinfo.command);
-			}
-			else
-			{
-				aliases[cmd.alias] = [cmdinfo.command];
-			}
-		}
-	}
-}
-
 function GetCommandInfo(command)
 {
 	for (let cmd in bot_commands)
@@ -480,19 +458,15 @@ function GetCommandInfo(command)
 
 function GetCommandHelpText(command)
 {
-	if (!aliases) BuildCommandAliasTable();
-
 	cmd = GetCommandInfo(command);
 	if (!cmd) return false;
 
-	if (cmd.alias) return GetCommandHelpText(cmd.alias);
-
 	helptext += command;
 
-	if (aliases[command])
+	if (cmd.aliases)
 	{
 		helptext += " (aliases:";
-		for (let alias in aliases)
+		for (let alias in cmd.aliases)
 		{
 			helptext += " " + alias;
 		}
@@ -529,7 +503,7 @@ var command_prefix = "."; // make a way to change this or something idk (edit: i
 const bot_commands = [
 	{command: "echo", func: function(message, txt){message.channel.send(":eggplant: (virgin)");}},
 	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("no");}},
-	{command: "suicide", func: function(message, txt){message.channel.send("ur ded now\nrip");}},
+	{command: "suicide", aliases: ["kms", "killmyself"], func: function(message, txt){message.channel.send("ur ded now\nrip");}},
 	{command: "suggestsong", func: function(message, txt)
 	{
 		if (txt.length == 1)
@@ -542,10 +516,7 @@ const bot_commands = [
 			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
 		}
 	}},
-	{command: "updates", alias:"changelog"},
-	{command: "whatsnew", alias:"changelog"},
-	{command: "changes", alias:"changelog"},
-	{command: "changelog", help: "See what's new with BillardBot.", func: function(message, txt){message.channel.send(changelog);}},
+	{command: "changelog", aliases: ["updates", "whatsnew", "changes"], help: "See what's new with BillardBot.", func: function(message, txt){message.channel.send(changelog);}},
 	{command: "setlang", alias: "setlanguage"},
 	{command: "setlanguage", func: function(message, txt){
 		let langue = txt[1].toLowerCase();
@@ -559,8 +530,7 @@ const bot_commands = [
 			message.channel.send(lang[language].invalid_language);
 		}
 	}},
-	{command: "currentlanguage", alias: "language"},
-	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
+	{command: "language", aliases: ["currentlanguage"], func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
 	{command: "startvote", func: function(message, txt)
 	{
 		var yeah = "yeah";
@@ -572,19 +542,15 @@ const bot_commands = [
 		var name = GetSenderName(message);
 		message.channel.send(name + " kisses " + good_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(kissi_boi)));
 	}},
-	{command: "bushquote", alias:"bushism"},
-	{command: "bushism", help: "Learn a little bit of knowledge from former president and pro golfer George W. Bush.", func: function(message, txt)
+	{command: "bushism", aliases: ["bushquote", "georgewbush"], help: "Learn a little bit of knowledge from former president and pro golfer George W. Bush.", func: function(message, txt)
 	{
 		message.channel.send("\"" + util.RandomFromArray(bushisms) + "\"\n    -George W. Bush");
 	}},
-	{command: "eightball", alias:"8ball"},
-	{command: "magic8ball", alias:"8ball"},
-	{command: "8ball", args: "<query>", help: "Picks a majic 8 ball response for your query.", func: function(message, txt)
+	{command: "8ball", aliases: ["eightball", "magic8ball"], args: "<query>", help: "Picks a majic 8 ball response for your query.", func: function(message, txt)
 	{
 		message.channel.send("```" + message.content + "```\n" + util.RandomFromArray(lang[language].eightball));
 	}},
-	{command: "emoji8ball", alias:"emojiball"},
-	{command: "emojiball", args: "<query>", help: "Picks a random emoji in response to your query.", func: function(message, txt)
+	{command: "emojiball", aliases: ["emoji8ball", "randomemoji"], args: "<query>", help: "Picks a random emoji in response to your query.", func: function(message, txt)
 	{
 		message.channel.send(util.RandomFromArray(emojiball_responses));
 	}},
@@ -626,11 +592,7 @@ const bot_commands = [
 		var name = GetSenderName(message);
 		message.channel.send(name + " beheads " + bad_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(decappi_boi)));
 	}},
-	{command: "pick", alias: "roll"},
-	{command: "pickrandom", alias: "roll"},
-	{command: "rolldice", alias: "roll"},
-	{command: "dice", alias: "roll"},
-	{command: "roll", args: "[min=1] [max=6]", help: "Roll a random number between min and max.", func: function(message, txt)
+	{command: "roll", aliases: ["pick", "pickrandom", "rolldice", "dice", "diceroll"], args: "[min=1] [max=6]", help: "Roll a random number between min and max.", func: function(message, txt)
 	{
 		var min = Number(txt[1]) || 1;
 		var max = Number(txt[2]) || 6;
@@ -638,7 +600,7 @@ const bot_commands = [
 
 		message.channel.send("You rolled a " + num + ".");
 	}},
-	{command: "russian", help: "Kill yourself! (16.7% of the time)\n100% chance to kill JD.", func: function(message, txt)
+	{command: "russian", aliases: ["russianroullette", "roullette"], help: "Kill yourself! (16.7% of the time)\n100% chance to kill JD.", func: function(message, txt)
 	{
 		var rando = Math.floor(Math.random() * 5);
 		var name = GetSenderName(message);
@@ -713,9 +675,7 @@ const bot_commands = [
 			message.channel.send("sry about the chat spam lmao im a dum nigga")
 		});
 	}},
-	{command: "wiki", alias: "help"},
-	{command: "info", alias: "help"},
-	{command: "help", args: "[command]", help: "Find out more about BillardBot's commands.", func: function(message, txt)
+	{command: "help", aliases: ["wiki", "info"], args: "[command]", help: "Find out more about BillardBot's commands.", func: function(message, txt)
 	{		
 		if (txt[1])
 		{
@@ -733,9 +693,7 @@ const bot_commands = [
 			message.channel.send(help + "```");
 		}
 	}},
-	{command: "lifeprotip", alias: "wisdom"},
-	{command: "tip", alias: "wisdom"},
-	{command: "wisdom", help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
+	{command: "wisdom", aliases: ["protip", "lifeprotip", "tip", "lifehack"], help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
 		message.channel.send(util.RandomFromArray(WiseWords));
 	}}
 ];
@@ -759,12 +717,23 @@ function LoopForBotCommand(msg, txt, i)
 	}
 	if (txt[0].toLowerCase() == cmd.toLowerCase())
 	{
-		if (bot_commands[i].alias)
-		{
-			txt[0] = txt[0].replace(bot_commands[i].command, bot_commands[i].alias);
-			return LoopForBotCommand(msg, txt);
-		}
 		return bot_commands[i].func(msg, txt);
+	}
+	else
+	{
+		// wow this is terrible
+		// at least it works i guess?
+		for (let alias in bot_commands[i].aliases)
+		{
+			if (!bot_commands[i].no_prefix)
+			{
+				alias = command_prefix + alias;
+			}
+			if (txt[0].toLowerCase() == alias.toLowerCase())
+			{
+				return bot_commands[i].func(msg, txt);
+			}
+		}
 	}
 	return LoopForBotCommand(msg, txt, i + 1);
 }
