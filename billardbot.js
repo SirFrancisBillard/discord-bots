@@ -46,6 +46,7 @@ const lang = {
 	["en"]: {
 		error_generic: "Unknown error",
 		lang_missing: "Bad language string",
+		invalid_language: "Invalid language",
 		under_construction: "This part's not done yet, sorry.",
 		language_set: "Language set to {language}.",
 		opinion_responses: {
@@ -117,6 +118,7 @@ const lang = {
 	["fr"]: {
 		error_generic: "Zut, desolé, j'fais un erreur.",
 		lang_missing: "Mal langue ID",
+		invalid_language: "Cette langue n'est pas vrai.",
 		under_construction: "Ceci n'est pas fini encore.",
 		language_set: "La langue est maintenant {language}.",
 		opinion_responses: {
@@ -542,12 +544,17 @@ const bot_commands = [
 	{command: "setlang", alias: "setlanguage"},
 	{command: "setlanguage", func: function(message, txt){
 		let langue = txt[1].toLowerCase();
-		if (ValidLanguage(langue))
+		if (language[langue])
 		{
 			language = langue;
 			message.channel.send(lang[language].language_set.replace("{language}", ReadableLanguageName(language)));
 		}
+		else
+		{
+			message.channel.send(lang[language].invalid_language);
+		}
 	}},
+	{command: "currentlanguage", alias: "language"},
 	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
 	{command: "startvote", func: function(message, txt)
 	{
