@@ -449,9 +449,9 @@ function PickRandomSongFromTags(tags) {return util.RandomFromArray(SuggestSongsB
 
 function GetCommandInfo(command)
 {
-	for (let cmd in bot_commands)
+	for (let i in bot_commands)
 	{
-		if (cmd.command == command) return cmd;
+		if (bot_commands[i].command == command) return bot_commands[i];
 	}
 	return false;
 }
@@ -466,9 +466,9 @@ function GetCommandHelpText(command)
 	if (cmd.aliases)
 	{
 		helptext += " (aliases:";
-		for (let alias in cmd.aliases)
+		for (let i in cmd.aliases)
 		{
-			helptext += " " + alias;
+			helptext += " " + cmd.aliases[i];
 		}
 		helptext += ")";
 	}
@@ -685,10 +685,9 @@ const bot_commands = [
 		else
 		{
 			let help = "```";
-			for (let cmd in bot_commands)
+			for (let i in bot_commands)
 			{
-				if (cmd.alias) continue;
-				help += GetCommandHelpText(cmd.command) + "\n\n";
+				help += GetCommandHelpText(bot_commands[i].command) + "\n\n";
 			}
 			message.channel.send(help + "```");
 		}
@@ -719,12 +718,13 @@ function LoopForBotCommand(msg, txt, i)
 	{
 		return bot_commands[i].func(msg, txt);
 	}
-	else
+	else if (bot_commands[i].aliases)
 	{
 		// wow this is terrible
 		// at least it works i guess?
-		for (let alias in bot_commands[i].aliases)
+		for (let j in bot_commands[i].aliases)
 		{
+			let alias = bot_commands[i].aliases[j]
 			if (!bot_commands[i].no_prefix)
 			{
 				alias = command_prefix + alias;
