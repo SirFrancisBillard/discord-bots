@@ -1,4 +1,4 @@
-// BillardBot 3.2 - Kinda Shit Edition
+// BillardBot 3.3 - Kinda Shittier Edition
 // Vulgarity warning: this bot is approved by George Carlin
 // https://www.youtube.com/watch?v=vbZhpf3sQxQ
 
@@ -36,30 +36,150 @@ function ReadableLanguageName(str)
 {
 	if (!TranslateLanguageNameToSomethingReadable[str.toLowerCase()])
 	{
-		return "Segmentation fault."; // i mean yeah kinda
+		return "Segmentation fault"; // i mean yeah kinda
 	}
 
 	return TranslateLanguageNameToSomethingReadable[str.toLowerCase()];
 }
 
-const lang = { // put all strings in here eventually
+const lang = {
 	["en"]: {
-		error_generic: [
-			"Error",
-			"Generic error",
+		error_generic: "Unknown error",
+		lang_missing: "Bad language string",
+		under_construction: "This part's not done yet, sorry.",
+		language_set: "Language set to {language}.",
+		opinion_responses: {
+			[OPINION_LIKE]: [
+				"I quite like {thing}.",
+				"{thing} is great!",
+				"I love {thing}.",
+				"{thing} is pretty good!",
+				"I like {thing}."
+			],
+			[OPINION_NEUTRAL]: [
+				"{thing} is alright.",
+				"{thing} is okay.",
+				"{thing} is fine, not great though.",
+				"I don't mind {thing}.",
+				"I'm alright with {thing}.",
+			],
+			[OPINION_HATE]: [
+				"{thing} is a fucking weeb.",
+				"Fuck {thing}.",
+				"{thing} can suck a bag of donkey dicks.",
+				"I hate {thing}.",
+				"{thing} can eat my ass.",
+			],
+			[OPINION_FEAR]: [
+				"{thing} creeps me out.",
+				"{thing} creeps me the fuck out.",
+				"{thing} is spooky.",
+				"Get me away from {thing}.",
+				"Get me the fuck away from {thing}.",
+			]
+		},
+		russian: {
+			click: "*CLICK*",
+			bang: "*BANG!*",
+			start: [
+				"{name} raises a gun to their head.",
+			],
+			finish: [
+				"{name} shoots their fuckin' head off and dies.",
+				"Holy shit! {name} just blew their head off!",
+				"{name} blew their brains out.",
+			],
+		},
+		eightball: [
+			"It is certain.",
+			"It is decidedly so.",
+			"Without a doubt.",
+			"Yes - definitely.",
+			"You may rely on it.",
+			"As I see it, yes.",
+			"Most likely.",
+			"Outlook good.",
+			"Yes.",
+			"Signs point to yes.",
+			"Reply hazy, try again.",
+			"Ask again later.",
+			"Better not tell you now.",
+			"Cannot predict now.",
+			"Concentrate and ask again.",
+			"Don't count on it.",
+			"My reply is no.",
+			"My sources say no.",
+			"Outlook not so good.",
+			"Very doubtful.",
 		],
-		lang_missing: [
-			"Language string missing",
-			"Bad language string",
-			"Nonexistant language string",
+		command_prefix_changed = "Command prefix changed to \"{prefix}\".",
+	},
+	["fr"]: {
+		error_generic: "Zut, desolé, j'fais un erreur.",
+		lang_missing: "Mal langue ID",
+		under_construction: "Ceci n'est pas fini encore.",
+		language_set: "La langue est maintenant {language}.",
+		opinion_responses: {
+			[OPINION_LIKE]: [
+				"J'aime beaucoup {thing}.",
+				"{thing}, c'est très bon!",
+				"J'adore {thing}.",
+				"{thing} est bon!",
+				"{thing}. Je l'aime."
+			],
+			[OPINION_NEUTRAL]: [
+				"{thing} is alright.",
+				"{thing} is okay.",
+				"{thing} is fine, not great though.",
+				"I don't mind {thing}.",
+				"I'm alright with {thing}.",
+			],
+			[OPINION_HATE]: [
+				"{thing} est un ouiabou.",
+				"{thing} est merde.",
+				"La mère de {thing} est belge.",
+				"Je déteste {thing}.",
+				"{thing} peu manger mon zizi.",
+			],
+			[OPINION_FEAR]: [
+				"{thing} est spooky.",
+				"Je peux pas regarder {thing}.",
+				"Mets-moi loin de {thing}.",
+			]
+		},
+		russian: {
+			click: "*CLIQUE*",
+			bang: "*BANGE!*",
+			start: [
+				"{name} mets un pistole à son tête.",
+			],
+			finish: [
+				"{name} se suicide. REP.",
+				"Zut! {name} est très, très morte!",
+				"{name} blew their brains out.",
+			],
+		},
+		eightball: [
+			"C'est certain.",
+			"C'est comme ça.",
+			"Sans doût.",
+			"Oui - defini.",
+			"Tu que entruste.",
+			"Comme je le vois? Ouai.",
+			"C'est probable.",
+			"Bon regarder.",
+			"Oui.",
+			"Non.",
+			"Je sais pas.",
+			"Pose à quelques temps plus.",
+			"C'est meilleur que tu sais pas.",
+			"J'ai pas d'idée.",
+			"Ne pose encore.",
+			"Je dit 'non'.",
+			"Mes sources ditent 'non'.",
+			"J'ai doût.",
 		],
-		under_construction: [
-			"This feature is under construction",
-			"This feature is incomplete",
-			"Still working on this part, sorry!",
-			"This part's not done yet",
-			"This feature isn't done yet",
-		],
+		command_prefix_changed = "Préfixe de commande a changé à \"{prefix}\".",
 	},
 };
 
@@ -103,36 +223,6 @@ var opinions = {
 		["hoon"]: OPINION_LIKE,
 		["honi"]: OPINION_LIKE
 	},
-	responses: {
-		[OPINION_LIKE]: [
-			"I quite like {thing}.",
-			"{thing} is great!",
-			"I love {thing}.",
-			"{thing} is pretty good!",
-			"I like {thing}."
-		],
-		[OPINION_NEUTRAL]: [
-			"{thing} is alright.",
-			"{thing} is okay.",
-			"{thing} is fine, not great though.",
-			"I don't mind {thing}.",
-			"I'm alright with {thing}.",
-		],
-		[OPINION_HATE]: [
-			"{thing} is a fucking weeb.",
-			"Fuck {thing}.",
-			"{thing} can suck a bag of donkey dicks.",
-			"I hate {thing}.",
-			"{thing} can eat my ass.",
-		],
-		[OPINION_FEAR]: [
-			"{thing} creeps me out.",
-			"{thing} creeps me the fuck out.",
-			"{thing} is spooky.",
-			"Get me away from {thing}.",
-			"Get me the fuck away from {thing}.",
-		]
-	},
 	generated: {}
 };
 
@@ -167,7 +257,6 @@ const util = {
 	},
 };
 
-// maybe put all the arrays between here and "boop" into a larger object?
 const bushisms = [
 	"They misunderestimated me.",
 	"I know the human being and fish can coexist peacefully.",
@@ -176,18 +265,6 @@ const bushisms = [
 	"We ought to make the pie higher.",
 	"Rarely is the question asked; Is our children learning?",
 	"If you teach a child to read, he or her will be able to pass a literacy test.",
-];
-
-const roullette_start = [
-	"raises a gun to their head.", // wew lad
-];
-
-const roullette_finish = [
-	"{name} blows their brains across the pacific.",
-	"{name} vaporizes their skull and all of its contents.",
-	"{name} spreads their gray matter across four counties.",
-	"Holy shit! {name} just blew their head off!",
-	// "*i shouldn't have done that...* is probably what {name} would be thinking right now... if they still had a head!",
 ];
 
 const takyon = [
@@ -226,29 +303,6 @@ const not_my_problem = [
 	"pI61TL6",
 ];
 
-const eightball_responses = [
-	"It is certain.",
-	"It is decidedly so.",
-	"Without a doubt.",
-	"Yes - definitely.",
-	"You may rely on it.",
-	"As I see it, yes.",
-	"Most likely.",
-	"Outlook good.",
-	"Yes.",
-	"Signs point to yes.",
-	"Reply hazy, try again.",
-	"Ask again later.",
-	"Better not tell you now.",
-	"Cannot predict now.",
-	"Concentrate and ask again.",
-	"Don't count on it.",
-	"My reply is no.",
-	"My sources say no.",
-	"Outlook not so good.",
-	"Very doubtful."
-];
-
 const emojiball_responses = [
 	":eggplant: :sweat_drops:",
 	":heart:",
@@ -284,7 +338,17 @@ const emojiball_responses = [
 	":heart_eyes:"
 ];
 
-// "boop"
+const WiseWords = [
+	"dont pee on people",
+	"dont be trans (just dont)",
+	"dont suicide yourself",
+	"dont open crates",
+	"look both ways when crossing the street",
+	"arrays start at 1",
+	"dont expect too much",
+	"dont try your luck",
+	"pursuing an art career? dont quit your day job",
+];
 
 // literally older than your grandma
 function GenerateOpinion(thing)
@@ -308,38 +372,14 @@ function GenerateOpinion(thing)
 	return OPINION_HATE;
 }
 
+// feature sux
 const song_list = [
-	{url: "78WVCYkTIJgWUAbwTTrTiO", artist: "Reel Big Fish", title: "Sayonara Senorita", tags: ["rbf", "trumpet"]},
-	{url: "7vPLB09s3XNhIM5S5wF1Si", artist: "Reel Big Fish", title: "Everyone Else is an Asshole", tags: ["rbf", "comedy"]},
-	{url: "1sIVrEY8WNhQNpON9BmXTd", artist: "Dusty Brown", title: "This City is Killing Me", tags: ["depressing", "piano"]},
-	{url: "2hHNFmRgj2KUCeCcJH0QLP", artist: "Proleter", title: "Faidherbe Square", tags: ["swing"]},
 	{url: "02Q0bei8227VUIxJgqppUk", title: "Lore, Lore", tags: ["deutschland", "heil"]},
-	{url: "7MwjanOxjvV2ILQPfOKIIm", artist: "Carpenter Brut", title: "Paradise Warfare", tags: ["synth"]},
-	{url: "4FdQL99ZOQTAsAQv2EJGnw", artist: "Carpenter Brut", title: "Meet Matt Stryker", tags: ["synth"]},
-	{url: "7oxnK2wg8qFv8EXyyxKDJ4", artist: "Carpenter Brut", title: "Roller Mobster", tags: ["synth"]},
-	{url: "1hGRe4d3LJCg1VszAU8Cy1", artist: "El Huervo", title: "Daisuke", tags: ["chill"]},
-	{url: "2uA9EGy7KifPvk2F342IvR", artist: "El Huervo", title: "Rust", tags: ["chill"]},
-	{url: "6NCM7ADhVKOo2tT84p60hP", artist: "Scattle", title: "Bloodline", tags: ["pardo", "meme"]},
-	{url: "2bHpNAMEsB3Wc00y87JTdn", artist: "Magic Sword", title: "In The Face Of Evil", tags: ["synth"]},
-	{url: "2hQCzcb3qyZirWzOD5Yzoj", artist: "Justice", title: "D.A.N.C.E.", tags: ["bass"]},
-	{url: "1tA9cQEtQPvUdcndCUcP9E", artist: "Lil Dicky", title: "White Crime", tags: ["rap", "comedy"]},
-	{url: "53duuSwaLOZuIrELvZXqLH", artist: "The Notorious B.I.G.", title: "Going Back To Cali", tags: ["rap", "posthumous"]},
 	{url: "46RVKt5Edm1zl0rXhPJZxz", artist: "Men at Work", title: "Down Under", tags: ["meme"]},
-	{url: "6tC2iHfUlzB2W4ntXXL2BH", artist: "Pendulum", title: "Propane Nightmares", tags: ["oldschool"]},
-	{url: "3DPdm3xVRuBIzWbDTt3Gde", title: "Push it to the Limit", tags: ["rock"]},
-	{url: "3ctoHckjyd13eBi2IDw2Ip", artist: "The White Stripes", title: "Seven Nation Army", tags: ["rock", "stadium"]},
-	{url: "4fQMGlCawbTkH9yPPZ49kP", artist: "Booker T and the M.G.'s", title: "Green Onions", tags: ["classic", "funky"]},
-	{url: "2hhFpD32iXUd4GaCu6T4wn", artist: "Jon Lajoie", title: "Everyday Normal Guy 2", tags: ["comedy", "meme", "rap"]},
-	{url: "7I1uAzqqdNVUptxlHPj9pZ", artist: "Lemon Demon", title: "Action Movie Hero Boy", tags: ["comedy", "rock"]},
 	{url: "3cfOd4CMv2snFaKAnMdnvK", artist: "Smash Mouth", title: "All Star", tags: ["meme"]},
-	{url: "4jacsL77ZYnpInmTtUBaJW", artist: "Junior Senior", title: "Move Your Feet", tags: ["upbeat"]},
-	{url: "0U0ldCRmgCqhVvD6ksG63j", artist: "Kavinsky", title: "Nightcall", tags: ["synth"]},
 	{url: "1eyzqe2QqGZUmfcPZtrIyt", artist: "M83", title: "Midnight City", tags: ["synth"]},
-	{url: "1JcwHjETNNbUH0yfrc9w9n", artist: "Power Glove", title: "Power Core", tags: ["synth"]},
-	{url: "34x6hEJgGAOQvmlMql5Ige", artist: "Kenny Loggins", title: "Danger Zone", tags: ["classic", "rock"]},
 ];
 
-// maybe put this up with the other "boop" ones?
 const i_like_this_song = [
 	"I found a song you might like.",
 	"Here's a song I like.",
@@ -403,11 +443,7 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 	return SuggestSongsBasedOnTags(tags, got_songs, on_index + 1);
 }
 
-function PickRandomSongFromTags(tags)
-{
-	var got_songs = SuggestSongsBasedOnTags(tags);
-	return util.RandomFromArray(got_songs);
-}
+function PickRandomSongFromTags(tags) {return util.RandomFromArray(SuggestSongsBasedOnTags(tags));}
 
 // FIXME: this table is only built once, could be problematic
 let aliases = false;
@@ -445,7 +481,7 @@ function GetCommandHelpText(command)
 	if (!aliases) BuildCommandAliasTable();
 
 	cmd = GetCommandInfo(command);
-	if (!cmd) return;
+	if (!cmd) return false;
 
 	if (cmd.alias) return GetCommandHelpText(cmd.alias);
 
@@ -453,7 +489,7 @@ function GetCommandHelpText(command)
 
 	if (aliases[command])
 	{
-		helptext += "(aliases:";
+		helptext += " (aliases:";
 		for (let alias in aliases)
 		{
 			helptext += " " + alias;
@@ -474,7 +510,7 @@ function GetCommandHelpText(command)
 	return helptext;
 }
 
-const changelog = "**BillardBot 3.2: My Best Friend Left Me Because I Assaulted Him Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
+const changelog = "**BillardBot 3.3: Autofellatio Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
 
 bot.on("ready", () =>
 {
@@ -502,7 +538,16 @@ const bot_commands = [
 	{command: "updates", alias:"changelog"},
 	{command: "whatsnew", alias:"changelog"},
 	{command: "changes", alias:"changelog"},
-	{command: "changelog", func: function(message, txt){message.channel.send(changelog);}},
+	{command: "changelog", help: "See what's new with BillardBot.", func: function(message, txt){message.channel.send(changelog);}},
+	{command: "setlang", alias: "setlanguage"},
+	{command: "setlanguage", func: function(message, txt){
+		let langue = txt[1].toLowerCase();
+		if (ValidLanguage(langue))
+		{
+			language = langue;
+			message.channel.send(lang[language].language_set.replace("{language}", ReadableLanguageName(language)));
+		}
+	}},
 	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
 	{command: "startvote", func: function(message, txt)
 	{
@@ -516,7 +561,7 @@ const bot_commands = [
 		message.channel.send(name + " kisses " + good_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(kissi_boi)));
 	}},
 	{command: "bushquote", alias:"bushism"},
-	{command: "bushism", func: function(message, txt)
+	{command: "bushism", help: "Learn a little bit of knowledge from former president and pro golfer George W. Bush.", func: function(message, txt)
 	{
 		message.channel.send("\"" + util.RandomFromArray(bushisms) + "\"\n    -George W. Bush");
 	}},
@@ -524,7 +569,7 @@ const bot_commands = [
 	{command: "magic8ball", alias:"8ball"},
 	{command: "8ball", args: "<query>", help: "Picks a majic 8 ball response for your query.", func: function(message, txt)
 	{
-		message.channel.send("```" + message.content + "```\n" + util.RandomFromArray(eightball_responses));
+		message.channel.send("```" + message.content + "```\n" + util.RandomFromArray(lang[language].eightball));
 	}},
 	{command: "emoji8ball", alias:"emojiball"},
 	{command: "emojiball", args: "<query>", help: "Picks a random emoji in response to your query.", func: function(message, txt)
@@ -535,7 +580,7 @@ const bot_commands = [
 	{
 		message.channel.send(util.FormatImgurGifV(util.RandomFromArray(not_my_problem)));
 	}},
-	{command: "changeprefix", func: function(message, txt)
+	{command: "changeprefix",  args: "<prefix>", help: "Change the command prefix.\nBe very careful with this.\nDefault is \".\".", func: function(message, txt)
 	{
 		var new_prefix = "";
 		for (i = 1; i < txt.length; i++)
@@ -547,11 +592,11 @@ const bot_commands = [
 		if (new_prefix) // check for an empty string
 		{
 			command_prefix = new_prefix; // maybe serialize it a bit"lmao (edit: serialized, but still very editable)
-			message.channel.send("Command prefix changed to \"" + command_prefix + "\"");
+			message.channel.send(lang[language].command_prefix_changed.replace("{prefix}", command_prefix));
 		}
 		else
 		{
-			message.channel.send("Invalid command prefix! What the fuck are you thinkin?");
+			message.channel.send("wow, you broke it. i dont even know how you did that. im disappointed.");
 		}
 	}},
 	{command: "takyon", func: function(message, txt)
@@ -563,13 +608,17 @@ const bot_commands = [
 		}
 		message.channel.send(lyrics);
 	}},
-	{command: "behead", func: function(message, txt)
+	{command: "behead", args: "<things>", help: "Behead somebody or something.", func: function(message, txt)
 	{
 		var bad_thing = message.content.slice(8);
 		var name = message.member.nickname || message.author.username;
 		message.channel.send(name + " beheads " + bad_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(decappi_boi)));
 	}},
-	{command: "roll", func: function(message, txt)
+	{command: "pick", alias: "roll"},
+	{command: "pickrandom", alias: "roll"},
+	{command: "rolldice", alias: "roll"},
+	{command: "dice", alias: "roll"},
+	{command: "roll", args: "[min=1] [max=6]", help: "Roll a random number between min and max.", func: function(message, txt)
 	{
 		var min = Number(txt[1]) || 1;
 		var max = Number(txt[2]) || 6;
@@ -577,18 +626,18 @@ const bot_commands = [
 
 		message.channel.send("You rolled a " + num + ".");
 	}},
-	{command: "russian", func: function(message, txt)
+	{command: "russian", help: "Kill yourself! (16.7% of the time)\n100% chance to kill JD.", func: function(message, txt)
 	{
 		var rando = Math.floor(Math.random() * 5);
 		var name = message.member.nickname || message.author.username;
-		message.channel.send(name + " " + util.RandomFromArray(roullette_start));
+		message.channel.send(name + " " + util.RandomFromArray(lang[language].russian.start).replace("{name}", name));
 		if (rando == 0 || message.author.id == "358133639126581249") // KILL JD ALWAYS
 		{
-			message.channel.send("*BANG*\n" + util.RandomFromArray(roullette_finish).replace("{name}", name));
+			message.channel.send(lang[language].russian.bang + "\n" + util.RandomFromArray(lang[language].russian.finish).replace("{name}", name));
 		}
 		else
 		{
-			message.channel.send("*CLICK*");
+			message.channel.send(lang[language].russian.click);
 		}
 	}},
 	{command: "opinion", func: function(message, txt)
@@ -601,7 +650,7 @@ const bot_commands = [
 		thing = thing.substring(1);
 
 		var opinion = GenerateOpinion(thing.toLowerCase());
-		var str = util.RandomFromArray(opinions.responses[opinion]);
+		var str = util.RandomFromArray(lang[language].opinion_responses[opinion]);
 		var reply = str.replace("{thing}", thing);
 
 		message.channel.send(reply);
@@ -652,6 +701,8 @@ const bot_commands = [
 			message.channel.send("sry about the chat spam lmao im a dum nigga")
 		});
 	}},
+	{command: "wiki", alias: "help"},
+	{command: "info", alias: "help"},
 	{command: "help", args: "[command]", help: "Find out more about BillardBot's commands.", func: function(message, txt)
 	{		
 		if (txt[1])
@@ -669,6 +720,11 @@ const bot_commands = [
 			}
 			message.channel.send(help + "```");
 		}
+	}},
+	{command: "lifeprotip", alias: "wisdom"},
+	{command: "tip", alias: "wisdom"},
+	{command: "wisdom", help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
+		message.channel.send(util.RandomFromArray(WiseWords));
 	}}
 ];
 
@@ -693,7 +749,7 @@ function LoopForBotCommand(msg, txt, i)
 	{
 		if (bot_commands[i].alias)
 		{
-			txt[0] = bot_commands[i].alias;
+			txt[0] = txt[0].replace(bot_commands[i].command, bot_commands[i].alias);
 			return LoopForBotCommand(msg, txt);
 		}
 		return bot_commands[i].func(msg, txt);
