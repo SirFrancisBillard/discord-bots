@@ -1,4 +1,4 @@
-// BillardBot 3.0 - Egg Boy Edition
+// BillardBot 3.2 - Kinda Shit Edition
 // Vulgarity warning: this bot is approved by George Carlin
 // https://www.youtube.com/watch?v=vbZhpf3sQxQ
 
@@ -466,9 +466,12 @@ function GetCommandHelpText(command)
 		helptext += "\nUsage: " + (cmd.no_prefix ? "" : command_prefix) + command + " " + cmd.args;
 	}
 
-	if (cmd.helptext)
+	if (cmd.help)
+	{
+		helptext += "\n" + cmd.help;
+	}
 
-	return helptext + "\nUsage: " + command_prefix + command + " " + cmd.args + "\n" + cmd.helptext;
+	return helptext;
 }
 
 const changelog = "**BillardBot 3.2: My Best Friend Left Me Because I Assaulted Him Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
@@ -492,7 +495,7 @@ const bot_commands = [
 		}
 		else
 		{
-			txt.shift(); // i dont like this - it modifies the variable itself
+			txt.shift(); // bad - it fucks with txt
 			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
 		}
 	}},
@@ -519,12 +522,12 @@ const bot_commands = [
 	}},
 	{command: "eightball", alias:"8ball"},
 	{command: "magic8ball", alias:"8ball"},
-	{command: "8ball", args: "<query>", helptext: "Picks a majic 8 ball response for your query.", func: function(message, txt)
+	{command: "8ball", args: "<query>", help: "Picks a majic 8 ball response for your query.", func: function(message, txt)
 	{
 		message.channel.send("```" + message.content + "```\n" + util.RandomFromArray(eightball_responses));
 	}},
 	{command: "emoji8ball", alias:"emojiball"},
-	{command: "emojiball", args: "<query>", helptext: "Picks a random emoji in response to your query.", func: function(message, txt)
+	{command: "emojiball", args: "<query>", help: "Picks a random emoji in response to your query.", func: function(message, txt)
 	{
 		message.channel.send(util.RandomFromArray(emojiball_responses));
 	}},
@@ -649,7 +652,7 @@ const bot_commands = [
 			message.channel.send("sry about the chat spam lmao im a dum nigga")
 		});
 	}},
-	{command: "help", args: "[command]", helptext: "Find out more about BillardBot's commands.", func: function(message, txt)
+	{command: "help", args: "[command]", help: "Find out more about BillardBot's commands.", func: function(message, txt)
 	{		
 		if (txt[1])
 		{
