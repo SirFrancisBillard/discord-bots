@@ -409,13 +409,73 @@ function PickRandomSongFromTags(tags)
 	return util.RandomFromArray(got_songs);
 }
 
-// i have enough time to write this comment saying that the changelog is outdated but i'm not going to actually update the changelog
-// A+ coding skills
-const changelog = "**BillardBot 3.0: Egg Boy Edition**\n\n**New Features**\nSong suggestions w/ optional tags (.suggestsong <tags>)\nMore opinion statements\nChangeable command prefix\nDirectly addressable commands (like Alexa)\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nLocalization";
+// FIXME: this table is only built once, could be problematic
+let aliases = false;
+
+function BuildCommandAliasTable()
+{
+	aliases = [];
+	for (let cmd in bot_commands)
+	{
+		if (cmd.alias)
+		{
+			if (aliases[cmd.alias])
+			{
+				aliases[cmd.alias].push(cmdinfo.command);
+			}
+			else
+			{
+				aliases[cmd.alias] = [cmdinfo.command];
+			}
+		}
+	}
+}
+
+function GetCommandInfo(command)
+{
+	for (let cmd in bot_commands)
+	{
+		if (cmd.command == command) return cmd;
+	}
+	return false;
+}
+
+function GetCommandHelpText(command)
+{
+	if (!aliases) BuildCommandAliasTable();
+
+	cmd = GetCommandInfo(command);
+	if (!cmd) return;
+
+	if (cmd.alias) return GetCommandHelpText(cmd.alias);
+
+	helptext += command;
+
+	if (aliases[command])
+	{
+		helptext += "(aliases:";
+		for (let alias in aliases)
+		{
+			helptext += " " + alias;
+		}
+		helptext += ")";
+	}
+
+	if (cmd.args)
+	{
+		helptext += "\nUsage: " + (cmd.no_prefix ? "" : command_prefix) + command + " " + cmd.args;
+	}
+
+	if (cmd.helptext)
+
+	return helptext + "\nUsage: " + command_prefix + command + " " + cmd.args + "\n" + cmd.helptext;
+}
+
+const changelog = "**BillardBot 3.2: My Best Friend Left Me Because I Assaulted Him Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
 
 bot.on("ready", () =>
 {
-	// say the changelog in general or something idk (how tho???)
+	// say the changelog in general or something idk
 });
 
 var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
@@ -436,6 +496,9 @@ const bot_commands = [
 			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
 		}
 	}},
+	{command: "updates", alias:"changelog"},
+	{command: "whatsnew", alias:"changelog"},
+	{command: "changes", alias:"changelog"},
 	{command: "changelog", func: function(message, txt){message.channel.send(changelog);}},
 	{command: "language", func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
 	{command: "startvote", func: function(message, txt)
@@ -449,15 +512,19 @@ const bot_commands = [
 		var name = message.member.nickname || message.author.username;
 		message.channel.send(name + " kisses " + good_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(kissi_boi)));
 	}},
+	{command: "bushquote", alias:"bushism"},
 	{command: "bushism", func: function(message, txt)
 	{
 		message.channel.send("\"" + util.RandomFromArray(bushisms) + "\"\n    -George W. Bush");
 	}},
-	{command: "8ball", func: function(message, txt)
+	{command: "eightball", alias:"8ball"},
+	{command: "magic8ball", alias:"8ball"},
+	{command: "8ball", args: "<query>", helptext: "Picks a majic 8 ball response for your query.", func: function(message, txt)
 	{
 		message.channel.send("```" + message.content + "```\n" + util.RandomFromArray(eightball_responses));
 	}},
-	{command: "emojiball", func: function(message, txt)
+	{command: "emoji8ball", alias:"emojiball"},
+	{command: "emojiball", args: "<query>", helptext: "Picks a random emoji in response to your query.", func: function(message, txt)
 	{
 		message.channel.send(util.RandomFromArray(emojiball_responses));
 	}},
@@ -582,6 +649,24 @@ const bot_commands = [
 			message.channel.send("sry about the chat spam lmao im a dum nigga")
 		});
 	}},
+	{command: "help", args: "[command]", helptext: "Find out more about BillardBot's commands.", func: function(message, txt)
+	{		
+		if (txt[1])
+		{
+			let help = GetCommandHelpText(txt[1]);
+			message.channel.send(help ? "```" + help + "```" : "Error 69XD: Unknown command");
+		}
+		else
+		{
+			let help = "```";
+			for (let cmd in bot_commands)
+			{
+				if (cmd.alias) continue;
+				help += GetCommandHelpText(cmd.command) + "\n\n";
+			}
+			message.channel.send(help + "```");
+		}
+	}}
 ];
 
 // more efficient method of adding commands
@@ -594,6 +679,11 @@ function LoopForBotCommand(msg, txt, i)
 	if (!bot_commands[i])
 	{
 		return;
+	}
+	if (bot_commands[i].alias)
+	{
+		txt[0] = bot_commands[i].alias;
+		return LoopForBotCommand(msg, txt);
 	}
 	var cmd = bot_commands[i].command;
 	if (!bot_commands[i].no_prefix)
