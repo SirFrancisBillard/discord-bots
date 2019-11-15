@@ -112,7 +112,7 @@ const lang = {
 			"Outlook not so good.",
 			"Very doubtful.",
 		],
-		command_prefix_changed = "Command prefix changed to \"{prefix}\".",
+		command_prefix_changed: "Command prefix changed to \"{prefix}\".",
 	},
 	["fr"]: {
 		error_generic: "Zut, desolé, j'fais un erreur.",
@@ -179,7 +179,7 @@ const lang = {
 			"Mes sources ditent 'non'.",
 			"J'ai doût.",
 		],
-		command_prefix_changed = "Préfixe de commande a changé à \"{prefix}\".",
+		command_prefix_changed: "Préfixe de commande a changé à \"{prefix}\".",
 	},
 };
 
