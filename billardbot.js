@@ -512,6 +512,11 @@ function GetCommandHelpText(command)
 	return helptext;
 }
 
+function GetSenderName(msg)
+{
+	return message.member ? (message.member.nickname || message.author.username) : message.author.username;
+}
+
 const changelog = "**BillardBot 3.3: Autofellatio Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
 
 bot.on("ready", () =>
@@ -564,7 +569,7 @@ const bot_commands = [
 	{command: "kiss", func: function(message, txt)
 	{
 		var good_thing = message.content.slice(6);
-		var name = message.member.nickname || message.author.username;
+		var name = GetSenderName(message);
 		message.channel.send(name + " kisses " + good_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(kissi_boi)));
 	}},
 	{command: "bushquote", alias:"bushism"},
@@ -618,7 +623,7 @@ const bot_commands = [
 	{command: "behead", args: "<things>", help: "Behead somebody or something.", func: function(message, txt)
 	{
 		var bad_thing = message.content.slice(8);
-		var name = message.member.nickname || message.author.username;
+		var name = GetSenderName(message);
 		message.channel.send(name + " beheads " + bad_thing + "\n" + util.FormatImgurGifV(util.RandomFromArray(decappi_boi)));
 	}},
 	{command: "pick", alias: "roll"},
@@ -636,7 +641,7 @@ const bot_commands = [
 	{command: "russian", help: "Kill yourself! (16.7% of the time)\n100% chance to kill JD.", func: function(message, txt)
 	{
 		var rando = Math.floor(Math.random() * 5);
-		var name = message.member.nickname || message.author.username;
+		var name = GetSenderName(message);
 		message.channel.send(name + " " + util.RandomFromArray(lang[language].russian.start).replace("{name}", name));
 		if (rando == 0 || message.author.id == "358133639126581249") // KILL JD ALWAYS
 		{
@@ -664,7 +669,7 @@ const bot_commands = [
 	}},
 	{command: "profile", func: function(message, txt)
 	{
-		var name = message.member.nickname || message.author.username;
+		var name = GetSenderName(message);
 		var target = message.mentions.users.first();
 		message.channel.send("Profiling dis nigga...")
 		if (!target)
@@ -956,6 +961,7 @@ const YoureWelcome = [
 
 function censorship(msg, txt)
 {
+	if (!msg.member) return;
 	if (censor_enabled && BannedWords[txt[0].toLowerCase()] && txt.length == 1)
 	{
 		if (WarnedNiggas[msg.author.id])
