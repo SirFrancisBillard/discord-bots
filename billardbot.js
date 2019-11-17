@@ -767,7 +767,7 @@ const bot_commands = [
 		}
 		else
 		{
-			message.channel.send("Usage: .load <beko code>")\\;
+			message.channel.send("Usage: .load <beko code>");
 		}
 	}},
 	{command: "cheat_setbekos_lmao", func: function(message, txt) {
@@ -1082,11 +1082,11 @@ function censorship(msg, txt)
 }
 
 const thanks_wins = [
-	"thanks billardbot"
-	"thanks, billardbot"
-	"many thanks billardbot"
-	"many thanks, billardbot"
-	"thank you billardbot"
+	"thanks billardbot",
+	"thanks, billardbot",
+	"many thanks billardbot",
+	"many thanks, billardbot",
+	"thank you billardbot",
 	"thank you, billardbot"
 ];
 
