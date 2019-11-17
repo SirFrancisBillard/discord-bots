@@ -1,4 +1,4 @@
-// BillardBot 3.3 - Kinda Shittier Edition
+// BillardBot 3.5 - Gambling Addiction Edition
 // Vulgarity warning: this bot is approved by George Carlin
 // https://www.youtube.com/watch?v=vbZhpf3sQxQ
 
@@ -496,6 +496,8 @@ function GetSenderName(msg)
 	return msg.member ? (msg.member.nickname || msg.author.username) : msg.author.username;
 }
 
+var bekos = {};
+
 function GetBekos(id)
 {
 	if (typeof bekos[id] == "undefined") {bekos[id] = 0;}
@@ -533,7 +535,7 @@ function crypt(data, cipher, decrypt)
 	return output;
 }
 
-const changelog = "**BillardBot 3.3: Autofellatio Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
+const changelog = "**BillardBot 3.5: Gambling Addiction Edition**\n\n**New Features**\nBekos and gambling.)\nLearn something new! (.wisdom)\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
 
 bot.on("ready", () =>
 {
