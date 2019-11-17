@@ -447,6 +447,11 @@ function SuggestSongsBasedOnTags(tags, got_songs, on_index)
 
 function PickRandomSongFromTags(tags) {return util.RandomFromArray(SuggestSongsBasedOnTags(tags));}
 
+function AddCommas(x)
+{
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function GetCommandInfo(command)
 {
 	for (let i in bot_commands)
@@ -489,6 +494,43 @@ function GetCommandHelpText(command)
 function GetSenderName(msg)
 {
 	return msg.member ? (msg.member.nickname || msg.author.username) : msg.author.username;
+}
+
+function GetBekos(id)
+{
+	if (typeof bekos[id] == "undefined") {bekos[id] = 0;}
+	return bekos[id];
+}
+
+function SetBekos(id, amt)
+{
+	bekos[id] = amt;
+	return bekos[id];
+}
+
+function AddBekos(id, amt)
+{
+	SetBekos(id, GetBekos(id) + amt);
+	return bekos[id];
+}
+
+// hey peter! "begfedaf" !!! (??)
+
+function crypt(data, cipher, decrypt)
+{
+	let s = 1
+	if (decrypt)
+	{
+		s *= -1;
+	}
+	var output = "";
+	for (var i = 0, j = 0; i < data.length; i++)
+	{
+		var c = data.charCodeAt(i);
+		var j = cipher[i % cipher.length].toLowerCase().charCodeAt() - ('a').charCodeAt() * -2;
+		output += String.fromCharCode(c + (j * s));
+	}
+	return output;
 }
 
 const changelog = "**BillardBot 3.3: Autofellatio Edition**\n\n**New Features**\nRead the docs! (.help)\nLearn something new! (.wisdom)\nCommands now have aliases\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
@@ -694,7 +736,70 @@ const bot_commands = [
 	}},
 	{command: "wisdom", aliases: ["protip", "lifeprotip", "tip", "lifehack"], help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
 		message.channel.send(util.RandomFromArray(WiseWords));
+	}},
+	{command: "bekos", aliases: ["getbekos", "mekoks"], help: "See how many bekos you have.", func: function(message, txt) {
+		message.channel.send(GetSenderName(message) + " currently has " + bekos[message.author.id] + " bekos.")
+	}},
+	{command: "cheat_setbekos_lmao", func: function(message, txt) {
+		bekos[txt[1]] = Number(txt[2]);
+		message.delete();
+	}},
+	{command: "flip", func: function(message, txt) {
+		if (typeof txt[1] == "undefined")
+		{
+			message.channel.send("Specify how many bekos.");
+		}
+		else
+		{
+			let mekos = GetBekos(message.author.id);
+			let amt;
+			switch (txt[1])
+			{
+				case "all":
+					amt = mekos;
+					break;
+
+				case "half":
+					amt = Math.ceil(mekos / 2);
+					break;
+
+				case "quarter":
+					amt = Math.ceil(mekos / 4);
+					break;
+
+				case "eighth":
+					amt = Math.ceil(mekos / 8);
+					break;
+
+				case "sixteenth":
+					amt = Math.ceil(mekos / 16);
+					break;
+
+				case "thirtysecond":
+					amt = Math.ceil(mekos / 32);
+					break;
+
+				case "sixtyfourth":
+					amt = Math.ceil(mekos / 64);
+					break;
+
+				default:
+					amt = Number(txt[1])
+					break;
+			}
+			if (amt > mekos)
+			{
+				message.channel.send("You don't have that many bekos!");
+			}
+			else
+			{
+				let rand = Math.floor(Math.random()) + 1;
+				AddBekos(message.author.id, amt * (rand ? 1 : -1));
+				message.channel.send(GetSenderName(message) + " has gambled " + AddCommas(amt) + " bekos on a coinflip and **" + (rand ? "WON" : "LOST") + "**!\n" + GetSenderName(message) + " now has " + GetBekos(message.author.id) + " bekos.");
+			}
+		}
 	}}
+	
 ];
 
 // more efficient method of adding commands
