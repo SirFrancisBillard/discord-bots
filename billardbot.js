@@ -646,7 +646,7 @@ const bot_commands = [
 	{
 		var rando = Math.floor(Math.random() * 5);
 		var name = GetSenderName(message);
-		message.channel.send(name + " " + util.RandomFromArray(lang[language].russian.start).replace("{name}", name));
+		message.channel.send(util.RandomFromArray(lang[language].russian.start).replace("{name}", name));
 		if (rando == 0 || message.author.id == "358133639126581249") // KILL JD ALWAYS
 		{
 			message.channel.send(lang[language].russian.bang + "\n" + util.RandomFromArray(lang[language].russian.finish).replace("{name}", name));
@@ -738,13 +738,37 @@ const bot_commands = [
 		message.channel.send(util.RandomFromArray(WiseWords));
 	}},
 	{command: "bekos", aliases: ["getbekos", "bekoks"], help: "See how many bekos you have.", func: function(message, txt) {
-		message.channel.send(GetSenderName(message) + " currently has " + bekos[message.author.id] + " bekos.")
+		message.channel.send(GetSenderName(message) + " currently has " + GetBekos(message.author.id) + " bekos.")
 	}},
 	{command: "save", aliases: ["savebekos"], help: "Save your bekos.", func: function(message, txt) {
-		// TODO
+		let code = crypt(message.author.id + "=" + (GetBekos(message.author.id) * 7) + "=" + message.author.id, "begfedaf");
+		message.author.send("Here is your beko code. Use this with ``.load`` to recover your bekos if billardbot ever crashes.\n```" + code + "```");
 	}},
 	{command: "load", aliases: ["loadbekos"], help: "Load your bekos.", func: function(message, txt) {
-		// TODO
+		if (txt[1])
+		{
+			let a = crypt(txt[1], "begfedaf", true).split("=");
+			if (a[0] && a[1] && a[2])
+			{
+				if (a[0] == message.author.id)
+				{
+					bekos[a[0]] = a[1] / 7;
+					message.channel.send("Bekos restored successfully. You now have " + AddCommas(a[1] / 7) + " bekos.");
+				}
+				else
+				{
+					message.channel.send("This is someone else's beko code.");
+				}
+			}
+			else
+			{
+				message.channel.send("This code's busted. Probably your fault, but it could also be outdated. Did you copy it correctly?");
+			}
+		}
+		else
+		{
+			message.channel.send("Usage: .load <beko code>")\\;
+		}
 	}},
 	{command: "cheat_setbekos_lmao", func: function(message, txt) {
 		bekos[txt[1]] = Number(txt[2]);
@@ -1057,6 +1081,15 @@ function censorship(msg, txt)
 	}
 }
 
+const thanks_wins = [
+	"thanks billardbot"
+	"thanks, billardbot"
+	"many thanks billardbot"
+	"many thanks, billardbot"
+	"thank you billardbot"
+	"thank you, billardbot"
+];
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
@@ -1083,9 +1116,9 @@ bot.on("message", message =>
 		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("fuck you loser");}
 		message.channel.send("your opinion is trash");
 	}
-	else if (raw == "thanks, billardbot" || raw == "many thanks, billardbot" || raw == "many thanks billardbot" || raw == "thank you, billardbot" || raw == "thank you billardbot" || raw == "thanks billardbot")
+	else if (util.ArrayHasValue(thanks_wins, raw))
 	{
-		message.channel.send(util.RandomFromArray(YoureWelcome));
+		message.channel.send("thillardbot");
 	}
 });
 
