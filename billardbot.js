@@ -825,7 +825,7 @@ const bot_commands = [
 			}
 			else
 			{
-				let rand = Math.floor(Math.random()) + 1;
+				let rand = Math.floor(Math.random() * 2);
 				AddBekos(message.author.id, amt * (rand ? 1 : -1));
 				message.channel.send(GetSenderName(message) + " has gambled " + AddCommas(amt) + " bekos on a coinflip and **" + (rand ? "WON" : "LOST") + "**!\n" + GetSenderName(message) + " now has " + GetBekos(message.author.id) + " bekos.");
 			}
