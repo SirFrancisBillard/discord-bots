@@ -737,8 +737,14 @@ const bot_commands = [
 	{command: "wisdom", aliases: ["protip", "lifeprotip", "tip", "lifehack"], help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
 		message.channel.send(util.RandomFromArray(WiseWords));
 	}},
-	{command: "bekos", aliases: ["getbekos", "mekoks"], help: "See how many bekos you have.", func: function(message, txt) {
+	{command: "bekos", aliases: ["getbekos", "bekoks"], help: "See how many bekos you have.", func: function(message, txt) {
 		message.channel.send(GetSenderName(message) + " currently has " + bekos[message.author.id] + " bekos.")
+	}},
+	{command: "save", aliases: ["savebekos"], help: "Save your bekos.", func: function(message, txt) {
+		// TODO
+	}},
+	{command: "load", aliases: ["loadbekos"], help: "Load your bekos.", func: function(message, txt) {
+		// TODO
 	}},
 	{command: "cheat_setbekos_lmao", func: function(message, txt) {
 		bekos[txt[1]] = Number(txt[2]);
@@ -799,7 +805,6 @@ const bot_commands = [
 			}
 		}
 	}}
-	
 ];
 
 // more efficient method of adding commands
