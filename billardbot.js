@@ -738,7 +738,7 @@ const bot_commands = [
 		message.channel.send(util.RandomFromArray(WiseWords));
 	}},
 	{command: "bekos", aliases: ["getbekos", "bekoks"], help: "See how many bekos you have.", func: function(message, txt) {
-		message.channel.send(GetSenderName(message) + " currently has " + GetBekos(message.author.id) + " bekos.")
+		message.channel.send(GetSenderName(message) + " currently has " + GetBekos(message.author.id) + " bekos.");
 	}},
 	{command: "save", aliases: ["savebekos"], help: "Save your bekos.", func: function(message, txt) {
 		let code = crypt(message.author.id + "=" + (GetBekos(message.author.id) * 7) + "=" + message.author.id, "begfedaf");
