@@ -690,7 +690,7 @@ const bot_commands = [
 		{ 
 			reply += " " + txt[i];
 		}
-		reply = reply.substring(1).replace("r", "w").replace("R", "W").replace("l", "w").replace("L", "W") + " " + util.RandomFromArray(FurFagFaces);
+		reply = reply.substring(1).replace(/r/g, "w").replace(/R/g, "W").replace(/l/g, "w").replace(/L/g, "W") + " " + util.RandomFromArray(FurFagFaces);
 		message.channel.send(reply);
 	}},
 	{command: "profile", func: function(message, txt)
