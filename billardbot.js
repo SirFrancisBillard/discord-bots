@@ -390,6 +390,17 @@ const i_like_this_song = [
 	"This is probably my favorite song.",
 ];
 
+const FurFagFaces = [
+	"^-^",
+	"UwU",
+	"OwO",
+	"w_w",
+	">w<",
+	">_<",
+	"T_T",
+	"u_u"
+];
+
 function FormatSuggestedSong(n)
 {
 	if (!song_list[n])
@@ -561,8 +572,7 @@ const bot_commands = [
 		}
 	}},
 	{command: "changelog", aliases: ["updates", "whatsnew", "changes"], help: "See what's new with BillardBot.", func: function(message, txt){message.channel.send(changelog);}},
-	{command: "setlang", alias: "setlanguage"},
-	{command: "setlanguage", func: function(message, txt){
+	{command: "setlanguage", aliases: ["setlang"], func: function(message, txt){
 		let langue = txt[1].toLowerCase();
 		if (lang[langue])
 		{
@@ -613,7 +623,7 @@ const bot_commands = [
 
 		if (new_prefix) // check for an empty string
 		{
-			command_prefix = new_prefix; // maybe serialize it a bit"lmao (edit: serialized, but still very editable)
+			command_prefix = new_prefix; // maybe serialize it a bit lmao (edit: serialized, but still very editable)
 			message.channel.send(lang[language].command_prefix_changed.replace("{prefix}", command_prefix));
 		}
 		else
@@ -671,6 +681,16 @@ const bot_commands = [
 		var str = util.RandomFromArray(lang[language].opinion_responses[opinion]);
 		var reply = str.replace("{thing}", thing);
 
+		message.channel.send(reply);
+	}},
+	{command: "owoify", aliases: ["owoifier", "uwuify", "uwuifier", "furrify", "furfaginate"], func: function(message, txt)
+	{
+		var reply = "";
+		for (i = 1; i < txt.length; i++)
+		{ 
+			reply += " " + txt[i];
+		}
+		reply = reply.substring(1).replace("r", "w").replace("R", "W").replace("l", "w").replace("L", "W") + " " + util.RandomFromArray(FurFagFaces);
 		message.channel.send(reply);
 	}},
 	{command: "profile", func: function(message, txt)
