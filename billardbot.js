@@ -342,14 +342,17 @@ const emojiball_responses = [
 
 const WiseWords = [
 	"dont pee on people",
-	"dont be trans (just dont)",
+	"dont be transgender (just dont)",
 	"dont suicide yourself",
 	"dont open crates",
 	"look both ways when crossing the street",
 	"arrays start at 1",
+	"count from 0-9 in your everyday life. 1-10 is for boomers",
 	"dont expect too much",
-	"dont try your luck",
+	"dont try your luck too much",
 	"pursuing an art career? dont quit your day job",
+	"strange women lying in ponds distributing swords is no basis for a system of government",
+	"dont use microwaves, use an oven. better yet, use an open flame"
 ];
 
 // literally older than your grandma
