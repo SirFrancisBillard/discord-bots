@@ -676,18 +676,27 @@ const bot_commands = [
 	}},
 	{command: "opinion", func: function(message, txt)
 	{
-		var thing = "";
-		for (i = 1; i < txt.length; i++)
-		{ 
-			thing += " " + txt[i];
-		}
-		thing = thing.substring(1);
-
+		var thing = txt.slice(1).join(" ")
 		var opinion = GenerateOpinion(thing.toLowerCase());
 		var str = util.RandomFromArray(lang[language].opinion_responses[opinion]);
 		var reply = str.replace("{thing}", thing);
 
 		message.channel.send(reply);
+	}},
+	{command: "poll", aliases: ["vote", "startvote", "startpoll", "cockuss"], func: function(message, txt)
+	{
+		if (typeof txt[1] == "string")
+		{
+			message.delete()
+			message.channel.send(":ballot_box: ***VOTE***\n" + txt.slice(1).join(" ")).then(function(msg) {
+				msg.react('✅');
+				msg.react('❌');
+			})
+		}
+		else
+		{
+			message.channel.send("vote on what?")
+		}
 	}},
 	{command: "owoify", aliases: ["owoifier", "uwuify", "uwuifier", "furrify", "furfaginate", "furfaginator"], func: function(message, txt)
 	{
@@ -695,7 +704,7 @@ const bot_commands = [
 	}},
 	{command: "autofurry", aliases: ["autofur", "autouwu", "autoowo", "autofurfagresponder", "automaticallyrespondwithfurryshit"], func: function(message, txt)
 	{
-		if (typeof txt[1] == "string")
+		if (typeof txt[1] == "string" && txt[1] != bot.user.id)
 		{
 			let id = txt[1];
 			AutoFurry[id] = (typeof AutoFurry[id] == "undefined" || !AutoFurry[id]);
@@ -878,7 +887,8 @@ function LoopForBotCommand(msg, txt, i)
 	}
 	if (txt[0].toLowerCase() == cmd.toLowerCase())
 	{
-		return bot_commands[i].func(msg, txt);
+		bot_commands[i].func(msg, txt);
+		return true;
 	}
 	else if (bot_commands[i].aliases)
 	{
