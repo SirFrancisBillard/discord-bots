@@ -558,6 +558,9 @@ bot.on("ready", () =>
 
 var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
 
+var AutoFurry = {};
+function FurryText(txt) {return txt.substring(1).replace(/r/g, "w").replace(/R/g, "W").replace(/l/g, "w").replace(/L/g, "W") + " " + util.RandomFromArray(FurFagFaces);}
+
 const bot_commands = [
 	{command: "echo", func: function(message, txt){message.channel.send(":eggplant: (virgin)");}},
 	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("no");}},
@@ -686,15 +689,22 @@ const bot_commands = [
 
 		message.channel.send(reply);
 	}},
-	{command: "owoify", aliases: ["owoifier", "uwuify", "uwuifier", "furrify", "furfaginate"], func: function(message, txt)
+	{command: "owoify", aliases: ["owoifier", "uwuify", "uwuifier", "furrify", "furfaginate", "furfaginator"], func: function(message, txt)
 	{
-		var reply = "";
-		for (i = 1; i < txt.length; i++)
-		{ 
-			reply += " " + txt[i];
+		message.channel.send(FurryText(txt.slice(1).join(" ")));
+	}},
+	{command: "autofurry", aliases: ["autofur", "autouwu", "autoowo", "autofurfagresponder", "automaticallyrespondwithfurryshit"], func: function(message, txt)
+	{
+		if (typeof txt[1] == "string")
+		{
+			let id = txt[1];
+			AutoFurry[id] = (typeof AutoFurry[id] == "undefined" || !AutoFurry[id]);
+			message.channel.send(FurryText("automatic furfag responses " + (AutoFurry[id] ? "ENABLED" : "DISABLED") + " for ID " + id) + " lawl!");
 		}
-		reply = reply.substring(1).replace(/r/g, "w").replace(/R/g, "W").replace(/l/g, "w").replace(/L/g, "W") + " " + util.RandomFromArray(FurFagFaces);
-		message.channel.send(reply);
+		else
+		{
+			message.channel.send("gib user ID pls ^_^");
+		}
 	}},
 	{command: "profile", func: function(message, txt)
 	{
@@ -859,15 +869,8 @@ const bot_commands = [
 // more efficient method of adding commands
 function LoopForBotCommand(msg, txt, i)
 {
-	if (!i)
-	{
-		i = 0;
-	}
-	if (!bot_commands[i])
-	{
-		return;
-	}
-	
+	if (!i) {i = 0;}
+	if (!bot_commands[i]) {return false;}
 	var cmd = bot_commands[i].command;
 	if (!bot_commands[i].no_prefix)
 	{
@@ -890,7 +893,8 @@ function LoopForBotCommand(msg, txt, i)
 			}
 			if (txt[0].toLowerCase() == alias.toLowerCase())
 			{
-				return bot_commands[i].func(msg, txt);
+				bot_commands[i].func(msg, txt);
+				return true;
 			}
 		}
 	}
@@ -1119,7 +1123,7 @@ bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
 	var raw = message.content.toLowerCase();
-	LoopForBotCommand(message, txt);
+	if (LoopForBotCommand(message, txt)) {return;}
 	alexa.util.evaluate(raw, message);
 	censorship(message, txt);
 
@@ -1144,6 +1148,10 @@ bot.on("message", message =>
 	else if (util.ArrayHasValue(thanks_wins, raw))
 	{
 		message.channel.send("thillardbot");
+	}
+	else if (AutoFurry[message.author.id])
+	{
+		message.channel.send(FurryText(message.content))
 	}
 });
 
