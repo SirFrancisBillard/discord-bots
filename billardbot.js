@@ -559,7 +559,7 @@ bot.on("ready", () =>
 var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
 
 var AutoFurry = {};
-function FurryText(txt) {return txt.substring(1).replace(/r/g, "w").replace(/R/g, "W").replace(/l/g, "w").replace(/L/g, "W") + " " + util.RandomFromArray(FurFagFaces);}
+function FurryText(txt) {return txt.replace(/r/g, "w").replace(/R/g, "W").replace(/l/g, "w").replace(/L/g, "W") + " " + util.RandomFromArray(FurFagFaces);}
 
 const bot_commands = [
 	{command: "echo", func: function(message, txt){message.channel.send(":eggplant: (virgin)");}},
