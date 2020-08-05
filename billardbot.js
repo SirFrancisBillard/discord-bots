@@ -1,4 +1,4 @@
-// BillardBot 3.5 - Gambling Addiction Edition
+// BillardBot 3.6 - Kittys Edition
 // Vulgarity warning: this bot is approved by George Carlin
 // https://www.youtube.com/watch?v=vbZhpf3sQxQ
 
@@ -15,10 +15,9 @@ var language = "en"; // english by default cuz yeah
 
 function ValidLanguage(str)
 {
-	if (lang[str.toLowerCase()])
-	{
-		return str.toLowerCase();
-	}
+	str = str.toLowerCase()
+	if (lang[str])
+		return str;
 
 	return "en"; // idk
 }
@@ -230,6 +229,10 @@ var opinions = {
 
 // put random functions in here
 const util = {
+	RandomInt: function(min, max)
+	{
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	},
 	ArrayHasValue: function(arr, val)
 	{
 		return arr.indexOf(val) != -1;
@@ -480,7 +483,7 @@ function GetCommandHelpText(command)
 	cmd = GetCommandInfo(command);
 	if (!cmd) return false;
 
-	helptext += command;
+	let helptext = command;
 
 	if (cmd.aliases)
 	{
@@ -530,6 +533,131 @@ function AddBekos(id, amt)
 	return bekos[id];
 }
 
+function ItemStack(item, amt, max = 5)
+{
+	if (amt > max)
+	{
+		return item + " x " + AddCommas(amt);
+	}
+
+	let str = "";
+	for (let i = 0; i < amt; i++)
+	{
+		str += item;
+	}
+
+	return str;
+}
+
+//:snake::snail::::::sheep::::::::racehorse::mouse2::rabbit2::shark:
+
+var pets = {
+	data: {
+		breeds: [
+			{
+				name: "Kitty",
+				emoji: ":cat2:",
+				stats: [
+					{name: "health", min: 2, max: 3},
+					{name: "damage", min: 1, max: 2},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Puppy",
+				emoji: ":dog2:",
+				stats: [
+					{name: "health", min: 3, max: 4},
+					{name: "damage", min: 1, max: 2},
+					{name: "armor", min: 0, max: 0},
+				],
+				allergies: ["chocolate"]
+			},
+			{
+				name: "Cock",
+				emoji: ":rooster:",
+				stats: [
+					{name: "health", min: 1, max: 2},
+					{name: "damage", min: 1, max: 1},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Poodle",
+				emoji: ":poodle:",
+				stats: [
+					{name: "health", min: 1, max: 1},
+					{name: "damage", min: 1, max: 1},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Llama",
+				emoji: ":llama:",
+				stats: [
+					{name: "health", min: 3, max: 4},
+					{name: "damage", min: 1, max: 2},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Piggy",
+				emoji: ":pig2:",
+				stats: [
+					{name: "health", min: 3, max: 4},
+					{name: "damage", min: 1, max: 2},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Cow",
+				emoji: ":cow2:",
+				stats: [
+					{name: "health", min: 5, max: 6},
+					{name: "damage", min: 2, max: 3},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+		],
+		diseases: [
+			{
+				name: "Meno-paws",
+				cost: 12
+			},
+			{
+				name: "AIDS",
+				incurable: true,
+			},
+			{
+				name: "Cancer",
+				incurable: true,
+				terminal: true,
+			},
+		],
+		snacks: {
+			grapes: {name: "Grapes", health: 1},
+			cookie: {name: "Cookie", health: 1},
+			peach: {name: "Peach", health: 2},
+			cheese: {name: "Cheese", health: 2},
+			chocolate: {name: "Chocolate", emoji: ":chocolate_bar:", health: 2},
+			bread: {name: "Bread", health: 3},
+			bacon: {name: "Bacon", health: 3},
+			tea: {name: "Tea", health: 3},
+			donut: {name: "Donut", emoji: ":doughnut:", health: 4},
+			mooncake: {name: "Moon Cake", emoji: ":moon_cake:", health: 5},
+			pie: {name: "Pie", health: 5},
+			pizza: {name: "Pizza", health: 6},
+			burger: {name: "Burger", emoji: ":hamburger:", health: 6},
+		},
+	},
+	users: {
+		["default"]: {
+			pets: [],
+			snacks: {}
+		}
+	}
+};
+
 // hey peter! "begfedaf" !!! (??)
 
 function crypt(data, cipher, decrypt)
@@ -549,19 +677,19 @@ function crypt(data, cipher, decrypt)
 	return output;
 }
 
-const changelog = "**BillardBot 3.5: Gambling Addiction Edition**\n\n**New Features**\nBekos and gambling.)\nLearn something new! (.wisdom)\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
+const changelog = "**BillardBot 3.6: Kittys Edition**\n\n**New Features**\nBekos and gambling.\nLearn something new! (.wisdom)\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
 
 bot.on("ready", () =>
 {
 	// say the changelog in general or something idk
 });
 
-var command_prefix = "."; // make a way to change this or something idk (edit: i half-assed it)
+var command_prefix = ".";
 
 var AutoFurry = {};
 function FurryText(txt) {return txt.replace(/r/g, "w").replace(/R/g, "W").replace(/l/g, "w").replace(/L/g, "W") + " " + util.RandomFromArray(FurFagFaces);}
 
-const bot_commands = [
+var bot_commands = [
 	{command: "echo", func: function(message, txt){message.channel.send(":eggplant: (virgin)");}},
 	{command: "mentionshawntoannoyhim", func: function(message, txt){message.channel.send("no");}},
 	{command: "suicide", aliases: ["kms", "killmyself"], func: function(message, txt){message.channel.send("ur ded now\nrip");}},
@@ -573,7 +701,7 @@ const bot_commands = [
 		}
 		else
 		{
-			txt.shift(); // bad - it fucks with txt
+			txt.shift();
 			message.channel.send(FormatSuggestedSong(PickRandomSongFromTags(txt)) || "FUCK YOU STOP SUGGESTING SONGS");
 		}
 	}},
@@ -662,7 +790,7 @@ const bot_commands = [
 	}},
 	{command: "russian", aliases: ["russianroullette", "roullette"], help: "Kill yourself! (16.7% of the time)\n100% chance to kill JD.", func: function(message, txt)
 	{
-		var rando = Math.floor(Math.random() * 5);
+		var rando = Math.floor(Math.random() * 6000000) % 6;
 		var name = GetSenderName(message);
 		message.channel.send(util.RandomFromArray(lang[language].russian.start).replace("{name}", name));
 		if (rando == 0 || message.author.id == "358133639126581249") // KILL JD ALWAYS
@@ -689,8 +817,8 @@ const bot_commands = [
 		{
 			message.delete()
 			message.channel.send(":ballot_box: ***VOTE***\n" + txt.slice(1).join(" ")).then(function(msg) {
-				msg.react('✅');
-				msg.react('❌');
+				msg.react('?');
+				msg.react('?');
 			})
 		}
 		else
@@ -761,28 +889,15 @@ const bot_commands = [
 			message.channel.send("sry about the chat spam lmao im a dum nigga")
 		});
 	}},
-	{command: "help", aliases: ["wiki", "info"], args: "[command]", help: "Find out more about BillardBot's commands.", func: function(message, txt)
-	{		
-		if (txt[1])
-		{
-			let help = GetCommandHelpText(txt[1]);
-			message.channel.send(help ? "```" + help + "```" : "Error 69XD: Unknown command");
-		}
-		else
-		{
-			let help = "```";
-			for (let i in bot_commands)
-			{
-				help += GetCommandHelpText(bot_commands[i].command) + "\n\n";
-			}
-			message.channel.send(help + "```");
-		}
-	}},
 	{command: "wisdom", aliases: ["protip", "lifeprotip", "tip", "lifehack"], help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
 		message.channel.send(util.RandomFromArray(WiseWords));
 	}},
 	{command: "bekos", aliases: ["getbekos", "bekoks"], help: "See how many bekos you have.", func: function(message, txt) {
 		message.channel.send(GetSenderName(message) + " currently has " + GetBekos(message.author.id) + " bekos.");
+	}},
+	{command: "daily", help: "Get your free daily bekos.", func: function(message, txt) {
+		AddBekos(message.author.id, 100);
+		message.channel.send(":sunny: You received your :yen: **100** daily allowance. :crescent_moon:");
 	}},
 	{command: "save", aliases: ["savebekos"], help: "Save your bekos.", func: function(message, txt) {
 		let code = crypt(message.author.id + "=" + (GetBekos(message.author.id) * 7) + "=" + message.author.id, "begfedaf");
@@ -815,13 +930,35 @@ const bot_commands = [
 		}
 	}},
 	{command: "cheat_setbekos_lmao", func: function(message, txt) {
-		bekos[txt[1]] = Number(txt[2]);
+		let user = 0;
+		let amt = 0;
+		if (txt.length > 2)
+		{
+			user = txt[1];
+			amt = Number(txt[2])
+		}
+		else if (txt.length == 2)
+		{
+			user = message.author.id;
+			amt = Number(txt[1]);
+		}
+		if (user == "all" || user == "*" || user == "everyone" || user == "everybody")
+		{
+			for (const id in bekos)
+			{
+				bekos[id] = amt;
+			}
+		}
+		else
+		{
+			bekos[user] = amt;
+		}
 		message.delete();
 	}},
 	{command: "flip", func: function(message, txt) {
 		if (typeof txt[1] == "undefined")
 		{
-			message.channel.send("Specify how many bekos.");
+			message.channel.send("How many bekos?");
 		}
 		else
 		{
@@ -859,9 +996,22 @@ const bot_commands = [
 
 				default:
 					amt = Number(txt[1])
+					if (amt == NaN)
+					{
+						message.channel.send("Did you make a typo?");
+						return;
+					}
 					break;
 			}
-			if (amt > mekos)
+			if (amt < 0)
+			{
+				message.channel.send("nice try, buddy. that bug got FIXED!");
+			}
+			else if (amt == 0)
+			{
+				message.channel.send("oh haha i get it what a cool bet!");
+			}
+			else if (amt > mekos)
 			{
 				message.channel.send("You don't have that many bekos!");
 			}
@@ -869,11 +1019,84 @@ const bot_commands = [
 			{
 				let rand = Math.floor(Math.random() * 2);
 				AddBekos(message.author.id, amt * (rand ? 1 : -1));
-				message.channel.send(GetSenderName(message) + " has gambled " + AddCommas(amt) + " bekos on a coinflip and **" + (rand ? "WON" : "LOST") + "**!\n" + GetSenderName(message) + " now has " + GetBekos(message.author.id) + " bekos.");
+				message.channel.send(GetSenderName(message) + " has gambled " + AddCommas(amt) + " bekos on a coinflip and **" + (rand ? "WON" : "LOST") + "**!\n" + GetSenderName(message) + " now has " + AddCommas(GetBekos(message.author.id)) + " bekos.");
 			}
 		}
+	}},
+	{command: "pets", aliases: ["kittys"], func: function(message, txt) {
+		message.channel.send("You have no pets!");
+	}},
+	{command: "inventory", aliases: ["inv", "snacks", "petfood"], func: function(message, txt) {
+		let items = "";
+		let inventory = {donut: 10, pizza: 2, mooncake: 6, chocolate: 5, tea: 7, grapes: 1, peach: 0}; // pets.data.users[message.author.id].snacks;
+		for (const item in inventory)
+		{
+			if (inventory[item] < 1)
+			{
+				continue;
+			}
+			let item_obj = pets.data.snacks[item];
+			items += "\n" + ItemStack(item_obj.emoji ? item_obj.emoji : ":" + item_obj.name.toLowerCase() + ":", inventory[item])
+		}
+		if (items == "")
+		{
+			items = "\n...nothing? :sob:"
+		}
+		message.channel.send("**" + GetSenderName(message) + "'s Snacks**" + items);
+	}},
+	{command: "buy", aliases: ["purchase"], func: function(message, txt) {
+	}},
+	{command: "shop", aliases: ["petshop", "billco"], func: function(message, txt) {
+		let items = {};
+		for (const snack_id in pets.data.snacks)
+		{
+			let price = pets.data.snacks[snack_id].health * 20;
+			if (!items[price])
+			{
+				items[price] = [];
+			}
+			items[price].push(snack_id);
+		}
+		let stock = "";
+		for (const price in items)
+		{
+			stock += "\n:yen: **" + AddCommas(price) + "**    -->    ";
+			for (const snack_id_index in items[price])
+			{
+				let snack_id = items[price][snack_id_index];
+				let snack = pets.data.snacks[snack_id];
+				if (snack.emoji)
+				{
+					stock += snack.emoji;
+				}
+				else
+				{
+					stock += ":" + snack.name.toLowerCase() + ":";
+				}
+			}
+		}
+		message.channel.send(":shopping_cart: **Billard Co**:tm:\n*Your one-stop shop for pet food!*\n\n**In Stock:**" + stock);
 	}}
 ];
+
+bot_commands.push({command: "help", aliases: ["wiki", "info"], args: "[command]", help: "Find out more about BillardBot's commands.", func: function(message, txt)
+{
+	if (txt[1])
+	{
+		let cmd = txt[1]
+		let help = GetCommandHelpText(cmd);
+		message.channel.send(help ? "Help for **" + cmd + "**\n```" + help + "```" : "Error 69XD: Unknown command \"" + cmd + "\" (core dumped)");
+	}
+	else
+	{
+		let help = "Command List\n```";
+		for (let i in bot_commands)
+		{
+			help += GetCommandHelpText(bot_commands[i].command) + "\n\n";
+		}
+		message.channel.send(help + "```");
+	}
+}})
 
 // more efficient method of adding commands
 function LoopForBotCommand(msg, txt, i)
@@ -1129,11 +1352,28 @@ const thanks_wins = [
 	"thank you, billardbot"
 ];
 
+var confirmations = {};
+
 bot.on("message", message =>
 {
 	var txt = message.content.split(" ");
 	var raw = message.content.toLowerCase();
+
 	if (LoopForBotCommand(message, txt)) {return;}
+
+	if (confirmations[message.author.id])
+	{
+		if (raw.charAt(0) == 'y' && (raw.charAt(1) == 'e' || raw.charAt(1) == 'a'))
+		{
+			confirmations[message.author.id](message, txt)
+		}
+		else
+		{
+			message.channel.send(raw.charAt(0) == 'n' ? "ok nvm then" : "I'll take that as a no...")
+		}
+		confirmations[message.author.id] = false
+	}
+
 	alexa.util.evaluate(raw, message);
 	censorship(message, txt);
 
@@ -1147,12 +1387,12 @@ bot.on("message", message =>
 	}
 	else if (txt[0].toLowerCase() == "ding" && txt[1].toLowerCase() == "dong" && txt.length == 2)
 	{
-		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("suck my fuck");}
+		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("suck my fuck, dick weed");}
 		message.channel.send("your opinion is wrong");
 	}
 	else if (txt[0].toLowerCase() == "splish" && txt[1].toLowerCase() == "splash" && txt.length == 2)
 	{
-		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("fuck you loser");}
+		if (Math.floor(Math.random() * 100) == 0) {return message.channel.send("fuck you, loser");}
 		message.channel.send("your opinion is trash");
 	}
 	else if (util.ArrayHasValue(thanks_wins, raw))
