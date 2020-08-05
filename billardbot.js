@@ -670,7 +670,11 @@ function ValidateKittys(id)
 {
 	if (!pets.users[id])
 	{
-		pets.users[id] = pets.users.default;
+		pets.users[id] = {};
+		for (const prop in pets.users.default)
+		{
+			pets.users[id][prop] = pets.users.default[prop];
+		}
 	}
 }
 
