@@ -658,23 +658,14 @@ var pets = {
 			burger: {name: "Burger", emoji: ":hamburger:", health: 6},
 		}
 	},
-	users: {
-		["default"]: {
-			pets: [],
-			snacks: {}
-		}
-	}
+	users: {}
 };
 
 function ValidateKittys(id)
 {
 	if (!pets.users[id])
 	{
-		pets.users[id] = {};
-		for (const prop in pets.users.default)
-		{
-			pets.users[id][prop] = pets.users.default[prop];
-		}
+		pets.users[id] = {pets: [], snacks: {}};
 	}
 }
 
