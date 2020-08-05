@@ -634,6 +634,13 @@ var pets = {
 				terminal: true,
 			},
 		],
+		adoptable_max: 4,
+		adoptable: [
+			{index: util.RandomInt(0, 6), price: util.RandomInt(30, 60)},
+			{index: util.RandomInt(0, 6), price: util.RandomInt(50, 80)},
+			{index: util.RandomInt(0, 6), price: util.RandomInt(70, 100)},
+			{index: util.RandomInt(0, 6), price: util.RandomInt(90, 120)},
+		],
 		snacks: {
 			grapes: {name: "Grapes", health: 1},
 			cookie: {name: "Cookie", health: 1},
@@ -644,11 +651,12 @@ var pets = {
 			bacon: {name: "Bacon", health: 3},
 			tea: {name: "Tea", health: 3},
 			donut: {name: "Donut", emoji: ":doughnut:", health: 4},
+			croissant: {name: "Croissant", health: 4},
 			mooncake: {name: "Moon Cake", emoji: ":moon_cake:", health: 5},
 			pie: {name: "Pie", health: 5},
 			pizza: {name: "Pizza", health: 6},
 			burger: {name: "Burger", emoji: ":hamburger:", health: 6},
-		},
+		}
 	},
 	users: {
 		["default"]: {
@@ -657,6 +665,14 @@ var pets = {
 		}
 	}
 };
+
+function ValidateKittys(id)
+{
+	if (!pets.users[id])
+	{
+		pets.users[id] = pets.users.default;
+	}
+}
 
 // hey peter! "begfedaf" !!! (??)
 
@@ -899,6 +915,10 @@ var bot_commands = [
 		AddBekos(message.author.id, 100);
 		message.channel.send(":sunny: You received your :yen: **100** daily allowance. :crescent_moon:");
 	}},
+	{command: "welfare", aliases: ["welfarecheck", "gibs", "gibz", "gibsme"], help: "sheeeeeeeit, gibs me dat!", func: function(message, txt) {
+		AddBekos(message.author.id, 250);
+		message.channel.send("the gubsment been gibs'n u yo welfare check: :yen: **250**");
+	}},
 	{command: "save", aliases: ["savebekos"], help: "Save your bekos.", func: function(message, txt) {
 		let code = crypt(message.author.id + "=" + (GetBekos(message.author.id) * 7) + "=" + message.author.id, "begfedaf");
 		message.author.send("Here is your beko code. Use this with ``.load`` to recover your bekos if billardbot ever crashes.\n```" + code + "```");
@@ -996,7 +1016,7 @@ var bot_commands = [
 
 				default:
 					amt = Number(txt[1])
-					if (amt == NaN)
+					if (isNaN(amt))
 					{
 						message.channel.send("Did you make a typo?");
 						return;
@@ -1019,16 +1039,30 @@ var bot_commands = [
 			{
 				let rand = Math.floor(Math.random() * 2);
 				AddBekos(message.author.id, amt * (rand ? 1 : -1));
-				message.channel.send(GetSenderName(message) + " has gambled " + AddCommas(amt) + " bekos on a coinflip and **" + (rand ? "WON" : "LOST") + "**!\n" + GetSenderName(message) + " now has " + AddCommas(GetBekos(message.author.id)) + " bekos.");
+				message.channel.send(GetSenderName(message) + " has gambled :yen: **" + AddCommas(amt) + "** on a coinflip and **" + (rand ? "WON" : "LOST") + "**!\n" + GetSenderName(message) + " now has :yen: **" + AddCommas(GetBekos(message.author.id)) + "**.");
 			}
 		}
 	}},
 	{command: "pets", aliases: ["kittys"], func: function(message, txt) {
-		message.channel.send("You have no pets!");
+		ValidateKittys(message.author.id)
+		let kittys = "";
+		for (const pet_id in pets.users[message.author.id].pets)
+		{
+			let pet = pets.users[message.author.id].pets[pet_id]
+			let breed_obj = pets.data.breeds[pet.breed_index];
+			kittys += "\n #" + (Number(pet_id) + 1) + "   " + breed_obj.emoji + " **" + breed_obj.name + "** (*" + pet.name + "*)";
+		}
+		if (kittys == "")
+		{
+			message.channel.send("You have no pets!");
+			return
+		}
+		message.channel.send("**" + GetSenderName(message) + "'s Pets**" + kittys);
 	}},
 	{command: "inventory", aliases: ["inv", "snacks", "petfood"], func: function(message, txt) {
+		ValidateKittys(message.author.id)
 		let items = "";
-		let inventory = {donut: 10, pizza: 2, mooncake: 6, chocolate: 5, tea: 7, grapes: 1, peach: 0}; // pets.data.users[message.author.id].snacks;
+		let inventory = pets.users[message.author.id].snacks;
 		for (const item in inventory)
 		{
 			if (inventory[item] < 1)
@@ -1044,13 +1078,93 @@ var bot_commands = [
 		}
 		message.channel.send("**" + GetSenderName(message) + "'s Snacks**" + items);
 	}},
+	{command: "adopt", help: "Adopt a pet.", func: function(message, txt) {
+		ValidateKittys(message.author.id)
+		if (txt.length > 1)
+		{
+			let adopt_index = Number(txt[1])
+			if (isNaN(adopt_index) || adopt_index < 1 || adopt_index > pets.data.adoptable_max)
+			{
+				message.channel.send("Usage: ``" + command_prefix + "adopt <1-" + pets.data.adoptable_max + "> [name]``")
+			}
+			else
+			{
+				let adopt_obj = pets.data.adoptable[adopt_index - 1];
+				if (GetBekos(message.author.id) >= adopt_obj.price)
+				{
+					AddBekos(message.author.id, adopt_obj.price * -1)
+					let breed = pets.data.breeds[adopt_obj.index];
+					let new_pet = {breed_index: adopt_obj.index};
+					new_pet.name = txt[2] ? txt[2] : "unnamed";
+					for (const stat_index in breed.stats)
+					{
+						let stat = breed.stats[stat_index];
+						new_pet[stat.name] = util.RandomInt(stat.min, stat.max);
+					}
+					pets.users[message.author.id].pets.push(new_pet);
+					message.channel.send("Congratulations! You adopted a " + breed.emoji + " **" + breed.name + "**!");
+				}
+				else
+				{
+					message.channel.send("You can't afford that!");
+				}
+			}
+		}
+		else
+		{
+			let kittys = "";
+			for (const pet_id in pets.data.adoptable)
+			{
+				let pet = pets.data.adoptable[pet_id]
+				let breed_obj = pets.data.breeds[pet.index];
+				kittys += "\n #" + (Number(pet_id) + 1) + "   " + breed_obj.emoji + " **" + breed_obj.name + "**      :yen: **" + pet.price + "**";
+			}
+			message.channel.send("**Animals for Adoption**" + kittys);
+		}
+	}},
 	{command: "buy", aliases: ["purchase"], func: function(message, txt) {
+		ValidateKittys(message.author.id)
+		const extra_help = " Type ``" + command_prefix + "shop`` for a list of items."
+		if (txt.length > 1)
+		{
+			let item = txt[1]
+			if (pets.data.snacks[item])
+			{
+				let price = pets.data.snacks[item].health * 6;
+				let id = message.author.id;
+				let bekos = GetBekos(id)
+				if (bekos >= price)
+				{
+					if (!pets.users[id].snacks[item])
+					{
+						pets.users[id].snacks[item] = 0
+					}
+					pets.users[id].snacks[item]++
+					AddBekos(id, price * -1)
+					let item_obj = pets.data.snacks[item]
+					message.channel.send("You bought " + (item_obj.emoji ? item_obj.emoji : ":" + item_obj.name.toLowerCase() + ":") + " **" + item_obj.name + "**.")
+				}
+				else
+				{
+					message.channel.send("You can't afford that!")
+				}
+			}
+			else
+			{
+				message.channel.send("Unknown item." + extra_help);
+			}
+		}
+		else
+		{
+			message.channel.send("Buy what?" + extra_help);
+		}
 	}},
 	{command: "shop", aliases: ["petshop", "billco"], func: function(message, txt) {
+		ValidateKittys(message.author.id)
 		let items = {};
 		for (const snack_id in pets.data.snacks)
 		{
-			let price = pets.data.snacks[snack_id].health * 20;
+			let price = pets.data.snacks[snack_id].health * 6;
 			if (!items[price])
 			{
 				items[price] = [];
