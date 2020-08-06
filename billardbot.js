@@ -661,6 +661,11 @@ var pets = {
 	users: {}
 };
 
+function FormatMoney(amt)
+{
+	return ":yen: **" + AddCommas(amt) + "**"
+}
+
 function ValidateKittys(id)
 {
 	if (!pets.users[id])
@@ -673,16 +678,12 @@ function ValidateKittys(id)
 
 function crypt(data, cipher, decrypt)
 {
-	let s = 1
-	if (decrypt)
-	{
-		s *= -1;
-	}
+	let s = decrypt ? -1 : 1;
 	var output = "";
 	for (var i = 0, j = 0; i < data.length; i++)
 	{
 		var c = data.charCodeAt(i);
-		var j = cipher[i % cipher.length].toLowerCase().charCodeAt() - ('a').charCodeAt() * -2;
+		var j = cipher[i % cipher.length].toLowerCase().charCodeAt() - ('a').charCodeAt();// * -2;
 		output += String.fromCharCode(c + (j * s));
 	}
 	return output;
@@ -730,11 +731,6 @@ var bot_commands = [
 		}
 	}},
 	{command: "language", aliases: ["currentlanguage"], func: function(message, txt){message.channel.send("Current language:  " + ReadableLanguageName(language));}},
-	{command: "startvote", func: function(message, txt)
-	{
-		var yeah = "yeah";
-		message.channel.send(yeah); // under construction
-	}},
 	{command: "kiss", func: function(message, txt)
 	{
 		var good_thing = message.content.slice(6);
@@ -797,7 +793,7 @@ var bot_commands = [
 		var max = Number(txt[2]) || 6;
 		var num = Math.floor(Math.random() * (max - min + 1)) + min;
 
-		message.channel.send("You rolled a " + num + ".");
+		message.channel.send("You rolled " + AddCommas(num) + ".");
 	}},
 	{command: "russian", aliases: ["russianroullette", "roullette"], help: "Kill yourself! (16.7% of the time)\n100% chance to kill JD.", func: function(message, txt)
 	{
@@ -826,10 +822,10 @@ var bot_commands = [
 	{
 		if (typeof txt[1] == "string")
 		{
-			message.delete()
+			// message.delete()
 			message.channel.send(":ballot_box: ***VOTE***\n" + txt.slice(1).join(" ")).then(function(msg) {
-				msg.react('?');
-				msg.react('?');
+				msg.react('\u2705');
+				msg.react('\u274C');
 			})
 		}
 		else
@@ -903,35 +899,40 @@ var bot_commands = [
 	{command: "wisdom", aliases: ["protip", "lifeprotip", "tip", "lifehack"], help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
 		message.channel.send(util.RandomFromArray(WiseWords));
 	}},
-	{command: "bekos", aliases: ["getbekos", "bekoks"], help: "See how many bekos you have.", func: function(message, txt) {
-		message.channel.send(GetSenderName(message) + " currently has " + GetBekos(message.author.id) + " bekos.");
+	{command: "balance", aliases: ["bal", "bekos", "getbekos", "bekoks"], help: "See how many bekos you have.", func: function(message, txt) {
+		message.channel.send(GetSenderName(message) + " currently has " + FormatMoney(GetBekos(message.author.id)) + ".");
 	}},
 	{command: "daily", help: "Get your free daily bekos.", func: function(message, txt) {
 		AddBekos(message.author.id, 100);
-		message.channel.send(":sunny: You received your :yen: **100** daily allowance. :crescent_moon:");
+		message.channel.send(":sunny: You received your " + FormatMoney(100) + " daily allowance. :crescent_moon:");
 	}},
 	{command: "welfare", aliases: ["welfarecheck", "gibs", "gibz", "gibsme"], help: "sheeeeeeeit, gibs me dat!", func: function(message, txt) {
 		AddBekos(message.author.id, 250);
-		message.channel.send("the gubsment been gibs'n u yo welfare check: :yen: **250**");
+		message.channel.send("The gubsment has gibs'd u a welfare check of " + FormatMoney(250) + ".");
 	}},
-	{command: "save", aliases: ["savebekos"], help: "Save your bekos.", func: function(message, txt) {
-		let code = crypt(message.author.id + "=" + (GetBekos(message.author.id) * 7) + "=" + message.author.id, "begfedaf");
-		message.author.send("Here is your beko code. Use this with ``.load`` to recover your bekos if billardbot ever crashes.\n```" + code + "```");
+	{command: "save", aliases: ["savebekos", "savepets"], help: "Save your bekos and pets.", func: function(message, txt) {
+		// LoadEligible[message.author.id] = true
+		let user_id = message.author.id;
+		ValidateKittys(user_id)
+		let code = crypt(user_id + "{SPLIT}" + (GetBekos(user_id) * 7) + "{SPLIT}" + JSON.stringify(pets.users[user_id]), "begfedaf");
+		message.author.send("Here is your code. Use this with ``" + command_prefix + "load`` to recover your bekos and pets.\n```" + code + "```");
 	}},
-	{command: "load", aliases: ["loadbekos"], help: "Load your bekos.", func: function(message, txt) {
+	{command: "load", aliases: ["loadbekos", "savepets"], help: "Load your bekos and pets.", func: function(message, txt) {
 		if (txt[1])
 		{
-			let a = crypt(txt[1], "begfedaf", true).split("=");
+			let a = crypt(txt[1], "begfedaf", true).split("{SPLIT}");
 			if (a[0] && a[1] && a[2])
 			{
-				if (a[0] == message.author.id)
+				let user_id = a[0]
+				if (user_id == message.author.id)
 				{
-					bekos[a[0]] = a[1] / 7;
-					message.channel.send("Bekos restored successfully. You now have " + AddCommas(a[1] / 7) + " bekos.");
+					bekos[user_id] = a[1] / 7;
+					pets.users[user_id] = JSON.parse(a[2]);
+					message.channel.send("Progress restored successfully!");
 				}
 				else
 				{
-					message.channel.send("This is someone else's beko code.");
+					message.channel.send("This looks like someone else's code.");
 				}
 			}
 			else
@@ -941,7 +942,7 @@ var bot_commands = [
 		}
 		else
 		{
-			message.channel.send("Usage: .load <beko code>");
+			message.channel.send("Usage: ``" + command_prefix + "load <code>``");
 		}
 	}},
 	{command: "cheat_setbekos_lmao", func: function(message, txt) {
@@ -981,6 +982,8 @@ var bot_commands = [
 			let amt;
 			switch (txt[1])
 			{
+				case "allin":
+				case "max":
 				case "all":
 					amt = mekos;
 					break;
@@ -1045,7 +1048,7 @@ var bot_commands = [
 		{
 			let pet = pets.users[message.author.id].pets[pet_id]
 			let breed_obj = pets.data.breeds[pet.breed_index];
-			kittys += "\n #" + (Number(pet_id) + 1) + "   " + breed_obj.emoji + " **" + breed_obj.name + "** (*" + pet.name + "*)";
+			kittys += "\n ``#" + (Number(pet_id) + 1) + "``   " + breed_obj.emoji + " **" + breed_obj.name + "** (*" + pet.name + "*)";
 		}
 		if (kittys == "")
 		{
@@ -1054,7 +1057,27 @@ var bot_commands = [
 		}
 		message.channel.send("**" + GetSenderName(message) + "'s Pets**" + kittys);
 	}},
-	{command: "inventory", aliases: ["inv", "snacks", "petfood"], func: function(message, txt) {
+	{command: "euthanize", aliases: ["killpet"], func: function(message, txt) {
+		ValidateKittys(message.author.id)
+		if (txt[1])
+		{
+			let petnum = Number(txt[1])
+			if (isNaN(petnum) || petnum < 1 || petnum > pets.users[message.author.id].pets.length)
+			{
+				message.channel.send("Invalid pet #.");
+			}
+			else
+			{
+				message.channel.send(":skull_crossbones: **" + pets.users[message.author.id].pets[petnum - 1].name + "** has died :skull_crossbones:");
+				pets.users[message.author.id].pets.splice(petnum - 1, 1);
+			}
+		}
+		else
+		{
+			message.channel.send("Usage: ``" + command_prefix + "euthanize <pet #>``");
+		}
+	}},
+	{command: "inventory", aliases: ["inv", "snacks", "items"], func: function(message, txt) {
 		ValidateKittys(message.author.id)
 		let items = "";
 		let inventory = pets.users[message.author.id].snacks;
@@ -1090,7 +1113,7 @@ var bot_commands = [
 					AddBekos(message.author.id, adopt_obj.price * -1)
 					let breed = pets.data.breeds[adopt_obj.index];
 					let new_pet = {breed_index: adopt_obj.index};
-					new_pet.name = txt[2] ? txt[2] : "unnamed";
+					new_pet.name = txt[2] ? txt.slice(2).join(" ") : "unnamed";
 					for (const stat_index in breed.stats)
 					{
 						let stat = breed.stats[stat_index];
@@ -1112,7 +1135,7 @@ var bot_commands = [
 			{
 				let pet = pets.data.adoptable[pet_id]
 				let breed_obj = pets.data.breeds[pet.index];
-				kittys += "\n #" + (Number(pet_id) + 1) + "   " + breed_obj.emoji + " **" + breed_obj.name + "**      :yen: **" + pet.price + "**";
+				kittys += "\n ``#" + (Number(pet_id) + 1) + "``   " + breed_obj.emoji + " **" + breed_obj.name + "**    " + FormatMoney(pet.price);
 			}
 			message.channel.send("**Animals for Adoption**" + kittys);
 		}
@@ -1169,7 +1192,7 @@ var bot_commands = [
 		let stock = "";
 		for (const price in items)
 		{
-			stock += "\n:yen: **" + AddCommas(price) + "**    -->    ";
+			stock += "\n" + FormatMoney(price) + "    -->    ";
 			for (const snack_id_index in items[price])
 			{
 				let snack_id = items[price][snack_id_index];
@@ -1465,6 +1488,9 @@ var confirmations = {};
 
 bot.on("message", message =>
 {
+	if (message.author.bot)
+		return;
+
 	var txt = message.content.split(" ");
 	var raw = message.content.toLowerCase();
 
