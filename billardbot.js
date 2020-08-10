@@ -1,4 +1,4 @@
-// BillardBot 3.6 - Kittys Edition
+// BillardBot 3.7 - Animal Abuse Edition
 // Vulgarity warning: this bot is approved by George Carlin
 // https://www.youtube.com/watch?v=vbZhpf3sQxQ
 
@@ -345,14 +345,19 @@ const emojiball_responses = [
 
 const WiseWords = [
 	"dont pee on people",
-	"dont be transgender (just dont)",
+	"college is optional",
 	"dont suicide yourself",
 	"dont open crates",
 	"look both ways when crossing the street",
 	"arrays start at 1",
 	"count from 0-9 in your everyday life. 1-10 is for boomers",
 	"dont expect too much",
-	"dont try your luck too much",
+	"dont try your luck",
+	"learn how to shoot",
+	"make your own pizza every once in a while",
+	"if you like cheap ramen, keep it that way",
+	"addiction is hereditary, know your limits",
+	"traveling is what assholes do",
 	"pursuing an art career? dont quit your day job",
 	"strange women lying in ponds distributing swords is no basis for a system of government",
 	"dont use microwaves, use an oven. better yet, use an open flame"
@@ -533,24 +538,6 @@ function AddBekos(id, amt)
 	return bekos[id];
 }
 
-function ItemStack(item, amt, max = 5)
-{
-	if (amt > max)
-	{
-		return item + " x " + AddCommas(amt);
-	}
-
-	let str = "";
-	for (let i = 0; i < amt; i++)
-	{
-		str += item;
-	}
-
-	return str;
-}
-
-//:snake::snail::::::sheep::::::::racehorse::mouse2::rabbit2::shark:
-
 var pets = {
 	data: {
 		breeds: [
@@ -574,6 +561,15 @@ var pets = {
 				allergies: ["chocolate"]
 			},
 			{
+				name: "Snail",
+				emoji: ":snail:",
+				stats: [
+					{name: "health", min: 1, max: 1},
+					{name: "damage", min: 1, max: 1},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
 				name: "Cock",
 				emoji: ":rooster:",
 				stats: [
@@ -583,17 +579,8 @@ var pets = {
 				]
 			},
 			{
-				name: "Poodle",
-				emoji: ":poodle:",
-				stats: [
-					{name: "health", min: 1, max: 1},
-					{name: "damage", min: 1, max: 1},
-					{name: "armor", min: 0, max: 0},
-				]
-			},
-			{
-				name: "Llama",
-				emoji: ":llama:",
+				name: "Sheep",
+				emoji: ":sheep:",
 				stats: [
 					{name: "health", min: 3, max: 4},
 					{name: "damage", min: 1, max: 2},
@@ -618,6 +605,42 @@ var pets = {
 					{name: "armor", min: 0, max: 0},
 				]
 			},
+			{
+				name: "Poodle",
+				emoji: ":poodle:",
+				stats: [
+					{name: "health", min: 1, max: 1},
+					{name: "damage", min: 1, max: 1},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Llama",
+				emoji: ":llama:",
+				stats: [
+					{name: "health", min: 3, max: 4},
+					{name: "damage", min: 2, max: 3},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Snake",
+				emoji: ":snake:",
+				stats: [
+					{name: "health", min: 2, max: 3},
+					{name: "damage", min: 3, max: 4},
+					{name: "armor", min: 0, max: 0},
+				]
+			},
+			{
+				name: "Shark",
+				emoji: ":shark:",
+				stats: [
+					{name: "health", min: 4, max: 5},
+					{name: "damage", min: 4, max: 5},
+					{name: "armor", min: 0, max: 0},
+				]
+			}
 		],
 		diseases: [
 			{
@@ -636,10 +659,10 @@ var pets = {
 		],
 		adoptable_max: 4,
 		adoptable: [
-			{index: util.RandomInt(0, 6), price: util.RandomInt(30, 60)},
+			{index: util.RandomInt(0, 4), price: util.RandomInt(30, 60)},
 			{index: util.RandomInt(0, 6), price: util.RandomInt(50, 80)},
-			{index: util.RandomInt(0, 6), price: util.RandomInt(70, 100)},
-			{index: util.RandomInt(0, 6), price: util.RandomInt(90, 120)},
+			{index: util.RandomInt(0, 8), price: util.RandomInt(70, 100)},
+			{index: util.RandomInt(0, 10), price: util.RandomInt(90, 120)},
 		],
 		snacks: {
 			grapes: {name: "Grapes", health: 1},
@@ -661,9 +684,62 @@ var pets = {
 	users: {}
 };
 
+function LoopStr(str, amt)
+{
+	let ret = "";
+	for (let i = 0; i < amt; i++)
+	{
+		ret += str;
+	}
+
+	return ret;
+}
+
+function HealthBar(current, max)
+{
+	if (current <= 0)
+	{
+		return ":skull_crossbones:";
+	}
+	if (current > max)
+	{
+		return LoopStr(":heart:", max) + LoopStr(":yellow_heart:", current - max);
+	}
+	if (current == max)
+	{
+		return LoopStr(":heart:", current);
+	}
+	return LoopStr(":heart:", current) + LoopStr(":black_heart:", max - current);
+}
+
+function ItemStack(item, amt, max = 5)
+{
+	if (amt > max)
+	{
+		return item + " x " + AddCommas(amt);
+	}
+
+	return LoopStr(item, amt)
+}
+
 function FormatMoney(amt)
 {
 	return ":yen: **" + AddCommas(amt) + "**"
+}
+
+function FormatPet(obj)
+{
+	let pet = pets.data.breeds[obj.breed_index];
+	return pet.emoji + " **" + obj.name + "**";
+}
+
+function FormatSnack(obj)
+{
+	if (obj.emoji)
+	{
+		return obj.emoji + " **" + obj.name + "**";
+	}
+	return ":" + obj.name.toLowerCase() + ": **" + obj.name + "**";
 }
 
 function ValidateKittys(id)
@@ -689,7 +765,7 @@ function crypt(data, cipher, decrypt)
 	return output;
 }
 
-const changelog = "**BillardBot 3.6: Kittys Edition**\n\n**New Features**\nBekos and gambling.\nLearn something new! (.wisdom)\nMore preset opinions\nUpdated localization files\n\n**Features in Progress**\nCross compatibility between prefixes commands and addressed commands\nOverall nicer looks\nFinish the goddamn localization";
+const changelog = "**BillardBot 3.7: Animal Abuse Edition**\n\n**New Commands**\n``slap`` - slap your pet\n``feed`` - feed your pet";
 
 bot.on("ready", () =>
 {
@@ -945,6 +1021,12 @@ var bot_commands = [
 			message.channel.send("Usage: ``" + command_prefix + "load <code>``");
 		}
 	}},
+	{command: "decrypt", func: function(message, txt) {
+		if (txt[1])
+		{
+			message.channel.send(crypt(txt.slice(1).join(" "), "begfedaf", true));
+		}
+	}},
 	{command: "cheat_setbekos_lmao", func: function(message, txt) {
 		let user = 0;
 		let amt = 0;
@@ -1043,12 +1125,13 @@ var bot_commands = [
 	}},
 	{command: "pets", aliases: ["kittys"], func: function(message, txt) {
 		ValidateKittys(message.author.id)
+		let user = pets.users[message.author.id];
 		let kittys = "";
-		for (const pet_id in pets.users[message.author.id].pets)
+		for (const pet_id in user.pets)
 		{
-			let pet = pets.users[message.author.id].pets[pet_id]
+			let pet = user.pets[pet_id]
 			let breed_obj = pets.data.breeds[pet.breed_index];
-			kittys += "\n ``#" + (Number(pet_id) + 1) + "``   " + breed_obj.emoji + " **" + breed_obj.name + "** (*" + pet.name + "*)";
+			kittys += "\n ``#" + (Number(pet_id) + 1) + "``   " + breed_obj.emoji + " **" + breed_obj.name + "** (*" + pet.name + "*)   " + HealthBar(pet.health, pet.max_health);
 		}
 		if (kittys == "")
 		{
@@ -1057,7 +1140,7 @@ var bot_commands = [
 		}
 		message.channel.send("**" + GetSenderName(message) + "'s Pets**" + kittys);
 	}},
-	{command: "euthanize", aliases: ["killpet"], func: function(message, txt) {
+	{command: "stats", aliases: ["pet"], help: "View a pet's stats.", func: function(message, txt) {
 		ValidateKittys(message.author.id)
 		if (txt[1])
 		{
@@ -1068,8 +1151,48 @@ var bot_commands = [
 			}
 			else
 			{
-				message.channel.send(":skull_crossbones: **" + pets.users[message.author.id].pets[petnum - 1].name + "** has died :skull_crossbones:");
-				pets.users[message.author.id].pets.splice(petnum - 1, 1);
+				let pet_obj = pets.users[message.author.id].pets[petnum - 1];
+				let breed = pets.data.breeds[pet_obj.breed_index];
+				message.channel.send(breed.emoji + " **" + pet_obj.name + "'s Stats**\n" + HealthBar(pet_obj.health, pet_obj.max_health));
+			}
+		}
+		else
+		{
+			message.channel.send("Usage: ``" + command_prefix + "stats <pet #>``");
+		}
+	}},
+	{command: "euthanize", aliases: ["killpet"], help: "Put down one of your pets.", func: function(message, txt) {
+		ValidateKittys(message.author.id)
+		if (txt[1])
+		{
+			let user = pets.users[message.author.id];
+			if (txt[1] == "*" || txt[1] == "all")
+			{
+				let msg = "";
+				let len = user.pets.length;
+				for (let i = 0; i < len; i++)
+				{
+					msg += ":skull_crossbones: " + user.pets[i].name + " has died. :skull_crossbones:\n";
+				}
+				if (len > 2)
+				{
+					msg += "**" + GetSenderName(message) + "** is a horrible person...";
+				}
+				user.pets = [];
+				message.channel.send(msg);
+			}
+			else
+			{
+				let petnum = Number(txt[1])
+				if (isNaN(petnum) || petnum < 1 || petnum > user.pets.length)
+				{
+					message.channel.send("Invalid pet #.");
+				}
+				else
+				{
+					message.channel.send(":skull_crossbones: " + FormatPet(user.pets[petnum - 1]) + " has died. :skull_crossbones:");
+					user.pets.splice(petnum - 1, 1);
+				}
 			}
 		}
 		else
@@ -1077,7 +1200,7 @@ var bot_commands = [
 			message.channel.send("Usage: ``" + command_prefix + "euthanize <pet #>``");
 		}
 	}},
-	{command: "inventory", aliases: ["inv", "snacks", "items"], func: function(message, txt) {
+	{command: "inventory", aliases: ["inv", "snacks", "items"], help: "View your pet snack inventory.", func: function(message, txt) {
 		ValidateKittys(message.author.id)
 		let items = "";
 		let inventory = pets.users[message.author.id].snacks;
@@ -1095,6 +1218,87 @@ var bot_commands = [
 			items = "\n...nothing? :sob:"
 		}
 		message.channel.send("**" + GetSenderName(message) + "'s Snacks**" + items);
+	}},
+	{command: "feed", aliases: ["eat", "feedpet"], help: "Feed one of your pets.", func: function(message, txt) {
+		ValidateKittys(message.author.id)
+		if (txt.length > 2)
+		{
+			let petnum = Number(txt[1]);
+			if (isNaN(petnum) || petnum < 1 || petnum > pets.users[message.author.id].pets.length)
+			{
+				message.channel.send("Invalid pet #.");
+			}
+			else
+			{
+				let snack_name = txt[2].toLowerCase();
+				let snack_tab = pets.data.snacks[snack_name]
+				if (snack_tab)
+				{
+					let user_tab = pets.users[message.author.id];
+					let pet_tab = user_tab.pets[petnum - 1];
+					if (pet_tab.health >= pet_tab.max_health)
+					{
+						message.channel.send(FormatPet(pet_tab) + " is not hungry.");
+					}
+					else
+					{
+						if (user_tab.snacks[snack_name] && user_tab.snacks[snack_name] > 0)
+						{
+							user_tab.snacks[snack_name]--;
+							let new_health = pet_tab.health + snack_tab.health;
+							if (new_health > pet_tab.max_health)
+							{
+								new_health = pet_tab.max_health;
+							}
+							pet_tab.health = new_health;
+							message.channel.send("You fed " + FormatPet(pet_tab) + " some " + FormatSnack(snack_tab) + ".")
+						}
+						else
+						{
+							message.channel.send("You don't have any " + snack_name + ".");
+						}
+					}
+				}
+				else
+				{
+					message.channel.send("I don't know what a " + snack_name + " is.");
+				}
+			}
+		}
+		else
+		{
+			message.channel.send("Usage: ``" + command_prefix + "feed <pet #> <snack>``");
+		}
+	}},
+	{command: "beat", aliases: ["slap", "hit"], help: "Discipline your pet for 1 damage.", func: function(message, txt) {
+		ValidateKittys(message.author.id)
+		if (txt.length > 1)
+		{
+			let petnum = Number(txt[1]);
+			if (isNaN(petnum) || petnum < 1 || petnum > pets.users[message.author.id].pets.length)
+			{
+				message.channel.send("Invalid pet #.");
+			}
+			else
+			{
+				let user = pets.users[message.author.id];
+				let pet = user.pets[petnum - 1];
+				if (pet.health < 2)
+				{
+					message.channel.send(":skull_crossbones: " + FormatPet(pet) + " has died of slap wound. :skull_crossbones:");
+					user.pets.splice(petnum - 1, 1);
+				}
+				else
+				{
+					pet.health--;
+					message.channel.send("You hit " + FormatPet(pet) + ".")
+				}
+			}
+		}
+		else
+		{
+			message.channel.send("Usage: ``" + command_prefix + "beat <pet #>``");
+		}
 	}},
 	{command: "adopt", help: "Adopt a pet.", func: function(message, txt) {
 		ValidateKittys(message.author.id)
@@ -1119,8 +1323,9 @@ var bot_commands = [
 						let stat = breed.stats[stat_index];
 						new_pet[stat.name] = util.RandomInt(stat.min, stat.max);
 					}
+					new_pet.max_health = new_pet.health;
 					pets.users[message.author.id].pets.push(new_pet);
-					message.channel.send("Congratulations! You adopted a " + breed.emoji + " **" + breed.name + "**!");
+					message.channel.send("Congratulations! You adopted a " + breed.emoji + " **" + breed.name + "**" + (txt[2] ? " named **" + new_pet.name + "**" : "") + "!");
 				}
 				else
 				{
@@ -1140,9 +1345,8 @@ var bot_commands = [
 			message.channel.send("**Animals for Adoption**" + kittys);
 		}
 	}},
-	{command: "buy", aliases: ["purchase"], func: function(message, txt) {
+	{command: "shop", aliases: ["buy", "store", "purchase"], func: function(message, txt) {
 		ValidateKittys(message.author.id)
-		const extra_help = " Type ``" + command_prefix + "shop`` for a list of items."
 		if (txt.length > 1)
 		{
 			let item = txt[1]
@@ -1169,45 +1373,50 @@ var bot_commands = [
 			}
 			else
 			{
-				message.channel.send("Unknown item." + extra_help);
+				message.channel.send("Unknown item." + " Type ``" + command_prefix + "shop`` for a list of items.");
 			}
 		}
 		else
 		{
-			message.channel.send("Buy what?" + extra_help);
+			let items = {};
+			for (const snack_id in pets.data.snacks)
+			{
+				let price = pets.data.snacks[snack_id].health * 6;
+				if (!items[price])
+				{
+					items[price] = [];
+				}
+				items[price].push(snack_id);
+			}
+			let stock = "";
+			for (const price in items)
+			{
+				stock += "\n" + FormatMoney(price) + "    -->    ";
+				for (const snack_id_index in items[price])
+				{
+					let snack_id = items[price][snack_id_index];
+					let snack = pets.data.snacks[snack_id];
+					if (snack.emoji)
+					{
+						stock += snack.emoji;
+					}
+					else
+					{
+						stock += ":" + snack.name.toLowerCase() + ":";
+					}
+				}
+			}
+			message.channel.send(":shopping_cart: **Billard Co**:tm:\n*Your one-stop shop for pet food!*\n\n**In Stock:**" + stock);
 		}
 	}},
-	{command: "shop", aliases: ["petshop", "billco"], func: function(message, txt) {
-		ValidateKittys(message.author.id)
-		let items = {};
-		for (const snack_id in pets.data.snacks)
-		{
-			let price = pets.data.snacks[snack_id].health * 6;
-			if (!items[price])
-			{
-				items[price] = [];
-			}
-			items[price].push(snack_id);
-		}
-		let stock = "";
-		for (const price in items)
-		{
-			stock += "\n" + FormatMoney(price) + "    -->    ";
-			for (const snack_id_index in items[price])
-			{
-				let snack_id = items[price][snack_id_index];
-				let snack = pets.data.snacks[snack_id];
-				if (snack.emoji)
-				{
-					stock += snack.emoji;
-				}
-				else
-				{
-					stock += ":" + snack.name.toLowerCase() + ":";
-				}
-			}
-		}
-		message.channel.send(":shopping_cart: **Billard Co**:tm:\n*Your one-stop shop for pet food!*\n\n**In Stock:**" + stock);
+	// TEMP
+	{command: "refreshadoption", aliases: ["newpetlist"], func: function(message, txt) {
+		pets.data.adoptable = [
+			{index: util.RandomInt(0, 4), price: util.RandomInt(30, 60)},
+			{index: util.RandomInt(0, 6), price: util.RandomInt(50, 80)},
+			{index: util.RandomInt(0, 8), price: util.RandomInt(70, 100)},
+			{index: util.RandomInt(0, 10), price: util.RandomInt(90, 120)},
+		];
 	}}
 ];
 
