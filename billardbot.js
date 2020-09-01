@@ -265,11 +265,19 @@ const util = {
 const bushisms = [
 	"They misunderestimated me.",
 	"I know the human being and fish can coexist peacefully.",
-	"There's an old saying in Tennessee - I know it's in Texas, probably in Tennessee - thay says, 'Fool me once, shame on... shame on you. Fool me - you can't get fooled again.'",
+	"There's an old saying in Tennessee - I know it's in Texas, probably in Tennessee - that says, 'Fool me once, shame on... shame on you. Fool me - you can't get fooled again.'",
 	"Too many good docs are getting out of the business. Too many OB-GYNs aren't able to practice their love with women all across this country.",
 	"We ought to make the pie higher.",
 	"Rarely is the question asked; Is our children learning?",
 	"If you teach a child to read, he or her will be able to pass a literacy test.",
+	"I will not answer your question. Neither in French nor in English nor in Mexican.",
+	"I know how hard it is for you to put food on your family.",
+	"Our enemies are innovative and resourceful, and so are we. They never stop thinking about new ways to harm our country and our people, and neither do we.",
+	"It’s important for us to explain to our nation that life is important. It’s not only life of babies, but it’s life of children living in, you know, the dark dungeons of the Internet.",
+	"One of the great things about books is sometimes there are some fantastic pictures.",
+	"I think it’s really important for this great state of baseball to reach out to people of all walks of life to make sure that the sport is inclusive. The best way to do it is to convince little kids how to... the beauty of playing baseball.",
+	"Well, I think if you say you’re going to do something and don’t do it, that’s trustworthiness.",
+	"And so, General, I want to thank you for your service. And I appreciate the fact that you really snatched defeat out of the jaws of those who are trying to defeat us in Iraq.",
 ];
 
 const takyon = [
