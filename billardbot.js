@@ -934,50 +934,22 @@ var bot_commands = [
 			message.channel.send("gib user ID pls ^_^");
 		}
 	}},
-	{command: "profile", func: function(message, txt)
+	{command: "clear", func: function(message, txt)
 	{
-		var name = GetSenderName(message);
-		var target = message.mentions.users.first();
-		message.channel.send("Profiling dis nigga...")
-		if (!target)
+		let target = message.mentions.users.first();
+		if (target)
+			target = target.id;
+		else if (txt[1])
+			target = txt[1];
+		else
+			target = bot.user.id;
+		let amt = Number(txt[2]) || 50;
+		message.channel.fetchMessages({limit: amt}).then(function(messages)
 		{
-			message.channel.send("ERROR: Nigga Aint Real !!!");
-			return;
-		}
-		var target_name = target.username; // idk lmao
-		message.channel.send("This will take a fucking while...");
-		message.channel.fetchMessages({limit:100}).then(function(messages)
-		{
-			message.channel.send("Found " + messages.size + " messages...");
-			var MessagesThatDumbNiggaSent = {};
-			var SortNiggasAmount = {};
-			var SortNiggasDay = {};
-			for (var NiggaMsg in messages)
-			{
-				if (messages[NiggaMsg].author.id == target.id)
-				{
-					message.channel.send(" O H S H I T N I G G A LOOK OUT FOR THE LIZARD :burrito:")
-					MessagesThatDumbNiggaSent.push(messages[NiggaMsg].content)
-				}
-				var DisNigga = messages[NiggaMsg].content;
-				if (typeof SortNiggasAmount[DisNigga] == "number")
-				{
-					SortNiggasAmount[DisNigga] += 1;
-				}
-				else
-				{
-					SortNiggasAmount[DisNigga] = 1;
-				}
-			}
-			message.channel.send("Damn nigga found " + MessagesThatDumbNiggaSent.length + " messages from dis nigga");
-			message.channel.send("Calculating dis shit here nigga...");
-			var NiggaFinalMessage = "";
-			for (var OhShit in SortNiggasAmount)
-			{
-				NiggaFinalMessage += "i dunno: " + OhShit + " <- was dat | wuz dis -> " + SortNiggasAmount[OhShit];
-			}
-			message.channel.send(NiggaFinalMessage);
-			message.channel.send("sry about the chat spam lmao im a dum nigga")
+			messages.forEach(e => {
+				if (e.author.id == target)
+					e.delete().catch(e => {});
+			})
 		});
 	}},
 	{command: "wisdom", aliases: ["protip", "lifeprotip", "tip", "lifehack"], help: "Learn a little of BillardBot's wisdom.", func: function(message, txt) {
